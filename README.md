@@ -1,12 +1,13 @@
 # QuantLib Pro — Enterprise Quantitative Finance Platform
 
-> Production-grade quantitative finance platform consolidating 30+ specialized applications into a unified, scalable suite with comprehensive risk analytics, portfolio optimization, derivatives pricing, and advanced testing infrastructure.
+> Production-ready quantitative finance platform consolidating 30+ specialized applications into a unified, scalable suite with comprehensive risk analytics, portfolio optimization, derivatives pricing, and enterprise-grade infrastructure.
 
 [![Python](https://img.shields.io/badge/python-3.10%20|%203.11%20|%203.12-blue)](https://www.python.org)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Production](https://img.shields.io/badge/status-production--ready-success)](https://github.com/gdukens/quant-simulator)
 
-**📊 70% Complete** | **16 of 22 Weeks** | **15,000+ Lines of Production Code**
+**📊 100% Complete** | **22 of 22 Weeks** | **20,000+ Lines of Production Code** | **✅ Production-Ready**
 
 ---
 
@@ -103,6 +104,39 @@ docker run -p 8501:8501 quantlib-pro:latest
 # Or use Docker Compose
 docker-compose up -d
 ```
+
+### Production Deployment
+
+**Full production infrastructure with monitoring, alerting, and resilience:**
+
+```bash
+# Deploy to production with all services
+docker-compose -f docker-compose.prod.yml up -d
+
+# Services included:
+# - QuantLib Pro application (Streamlit)
+# - PostgreSQL database with persistent storage
+# - Redis cache with persistence
+# - Nginx reverse proxy with SSL/TLS
+# - Prometheus metrics collection
+# - Grafana dashboards
+# - AlertManager for notifications
+```
+
+**Cloud Deployment Scripts:**
+
+```bash
+# AWS deployment
+./deploy/aws-deploy.sh
+
+# GCP deployment
+./deploy/gcp-deploy.sh
+
+# Azure deployment
+./deploy/azure-deploy.sh
+```
+
+**See [Deployment Guide](docs/deployment-guide.md) for detailed production setup instructions.**
 
 ---
 
