@@ -118,10 +118,10 @@ with col2:
 
 with col3:
     with st.container():
-        st.markdown("#### ⚡ Execution")
-        st.markdown("Order execution simulation")
-        if st.button("View", key="execution"):
-            st.info("Coming in Week 13")
+        st.markdown("#### 🌊 Vol Surface")
+        st.markdown("Implied volatility analysis")
+        if st.button("View", key="vol_surface"):
+            st.switch_page("pages/6_🌊_Volatility_Surface.py")
 
 with col4:
     with st.container():
