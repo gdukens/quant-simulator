@@ -36,6 +36,14 @@ from quantlib_pro.risk.stress_testing import (
     run_stress_test,
 )
 
+# Advanced analytics (Week 15)
+from quantlib_pro.risk.advanced_analytics import (
+    ScenarioType,
+    StressTester,
+    StressTestResult as AdvancedStressTestResult,
+    TailRiskAnalyzer,
+)
+
 __all__ = [
     # Limits
     "RiskLimitFramework",
@@ -58,4 +66,9 @@ __all__ = [
     "StressTestEngine",
     "StressTestResult",
     "run_stress_test",
+    # Advanced Analytics
+    "ScenarioType",
+    "StressTester",
+    "AdvancedStressTestResult",
+    "TailRiskAnalyzer",
 ]

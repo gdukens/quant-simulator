@@ -54,6 +54,25 @@ from quantlib_pro.observability.performance import (
     time_function,
     benchmark,
 )
+from quantlib_pro.observability.profiler import (
+    PerformanceMeasurement,
+    PerformanceStats,
+    PerformanceProfiler,
+    PerformanceTarget,
+    profile,
+    get_profiler,
+    print_profile_report,
+    print_bottlenecks,
+)
+from quantlib_pro.observability.monitoring import (
+    AlertLevel,
+    MetricType,
+    PerformanceBaseline,
+    Alert,
+    PerformanceMonitor as RealTimeMonitor,
+    get_monitor,
+    reset_monitor,
+)
 
 __all__ = [
     # Metrics
@@ -105,4 +124,21 @@ __all__ = [
     "PerformanceTimer",
     "time_function",
     "benchmark",
+    # Profiler
+    "PerformanceMeasurement",
+    "PerformanceStats",
+    "PerformanceProfiler",
+    "PerformanceTarget",
+    "profile",
+    "get_profiler",
+    "print_profile_report",
+    "print_bottlenecks",
+    # Monitoring
+    "AlertLevel",
+    "MetricType",
+    "PerformanceBaseline",
+    "Alert",
+    "RealTimeMonitor",
+    "get_monitor",
+    "reset_monitor",
 ]

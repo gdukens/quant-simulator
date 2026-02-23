@@ -139,7 +139,12 @@ with col5:
         st.markdown("API docs & user guide")
         if st.button("View Docs", key="docs"):
             st.markdown("[API Documentation](/docs)")
-
+with col6:
+    with st.container():
+        st.markdown("#### 📊 Analytics")
+        st.markdown("Performance & correlation")
+        if st.button("View", key="analytics"):
+            st.switch_page("pages/8_📊_Advanced_Analytics.py")
 # Sidebar
 with st.sidebar:
     st.markdown("## ⚙️ Settings")
