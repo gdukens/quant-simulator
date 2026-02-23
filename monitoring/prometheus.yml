@@ -1,0 +1,75 @@
+# Prometheus Configuration for QuantLib Pro
+# Metrics collection and monitoring
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'quantlib-pro'
+    environment: 'production'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - 'alertmanager:9093'
+
+# Load rules
+rule_files:
+  - "alerts/*.yml"
+
+# Scrape configurations
+scrape_configs:
+  # ──────────────────────────────────────────────────────────────────────────
+  # Prometheus itself
+  # ──────────────────────────────────────────────────────────────────────────
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # QuantLib Pro Application
+  # ──────────────────────────────────────────────────────────────────────────
+  - job_name: 'quantlib-app'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets:
+          - 'quantlib-app:8501'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: '([^:]+):.*'
+        replacement: '${1}'
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Redis Cache
+  # ──────────────────────────────────────────────────────────────────────────
+  - job_name: 'redis'
+    static_configs:
+      - targets:
+          - 'redis:6379'
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Node Exporter (system metrics)
+  # ──────────────────────────────────────────────────────────────────────────
+  - job_name: 'node'
+    static_configs:
+      - targets:
+          - 'node-exporter:9100'
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Container metrics (cAdvisor)
+  # ──────────────────────────────────────────────────────────────────────────
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets:
+          - 'cadvisor:8080'
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Nginx metrics
+  # ──────────────────────────────────────────────────────────────────────────
+  - job_name: 'nginx'
+    static_configs:
+      - targets:
+          - 'nginx:9113'
