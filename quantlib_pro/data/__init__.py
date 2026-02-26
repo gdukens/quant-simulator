@@ -10,6 +10,37 @@ from quantlib_pro.data.quality import (
     QualityContract,
     QualityReport,
 )
+
+# Database connections and models
+try:
+    from quantlib_pro.data.database import (
+        postgres_engine,
+        timescale_engine,
+        get_postgres_session,
+        get_timescale_session,
+        get_postgres_session_sync,
+        get_timescale_session_sync,
+        init_db,
+        drop_db,
+    )
+    from quantlib_pro.data.models import (
+        Base,
+        User,
+        Portfolio,
+        Holding,
+        AuditLog,
+        BacktestResult,
+        CeleryTaskMeta,
+        Price,
+        Return,
+        RegimeState,
+    )
+except ImportError:
+    # Database not configured yet
+    postgres_engine = None
+    timescale_engine = None
+    get_postgres_session = None
+    get_timescale_session = None
 # Legacy providers (providers.py) - kept for backward compatibility
 try:
     from quantlib_pro.data.providers_legacy import (
@@ -43,6 +74,26 @@ __all__ = [
     "QualityReport",
     "OHLCV_CONTRACT",
     "PORTFOLIO_CONTRACT",
+    # database connections
+    "postgres_engine",
+    "timescale_engine",
+    "get_postgres_session",
+    "get_timescale_session",
+    "get_postgres_session_sync",
+    "get_timescale_session_sync",
+    "init_db",
+    "drop_db",
+    # database models
+    "Base",
+    "User",
+    "Portfolio",
+    "Holding",
+    "AuditLog",
+    "BacktestResult",
+    "CeleryTaskMeta",
+    "Price",
+    "Return",
+    "RegimeState",
 ]
 
 # Add legacy providers to __all__ if they're available

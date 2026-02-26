@@ -52,6 +52,64 @@ services:
           memory: 2G
 
   # ─────────────────────────────────────────────────────────────────────────
+  # PostgreSQL Database
+  # ─────────────────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:15-alpine
+    container_name: quantlib-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-quantlib_db}
+      POSTGRES_USER: ${POSTGRES_USER:-quantlib}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - quantlib-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-quantlib}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # TimescaleDB (Time-Series Data)
+  # ─────────────────────────────────────────────────────────────────────────
+  timescaledb:
+    image: timescale/timescaledb:latest-pg15
+    container_name: quantlib-timescaledb
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: ${TIMESCALE_DB:-timeseries_db}
+      POSTGRES_USER: ${POSTGRES_USER:-quantlib}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - timescale-data:/var/lib/postgresql/data
+    networks:
+      - quantlib-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-quantlib}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+
+  # ─────────────────────────────────────────────────────────────────────────
   # Redis Cache
   # ─────────────────────────────────────────────────────────────────────────
   redis:
@@ -62,7 +120,7 @@ services:
       - "6379:6379"
     command: >
       redis-server
-      --maxmemory 512mb
+      --maxmemory 2gb
       --maxmemory-policy allkeys-lru
       --appendonly yes
       --appendfsync everysec
@@ -79,7 +137,157 @@ services:
       resources:
         limits:
           cpus: '0.5'
+          memory: 2G
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # FastAPI Application (Instance 1)
+  # ─────────────────────────────────────────────────────────────────────────
+  api-1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: quantlib-pro:${VERSION:-latest}
+    container_name: quantlib-api-1
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    command: uvicorn main_api:app --host 0.0.0.0 --port 8000 --workers 4
+    environment:
+      - APP_ENV=production
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-quantlib}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-quantlib_db}
+      - TIMESCALE_URL=postgresql://${POSTGRES_USER:-quantlib}:${POSTGRES_PASSWORD:-changeme}@timescaledb:5432/${TIMESCALE_DB:-timeseries_db}
+      - REDIS_URL=redis://redis:6379/0
+      - ALPHA_VANTAGE_API_KEY=${ALPHA_VANTAGE_API_KEY}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    env_file:
+      - .env
+    volumes:
+      - quantlib-logs:/app/data/logs
+    depends_on:
+      - postgres
+      - timescaledb
+      - redis
+    networks:
+      - quantlib-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # FastAPI Application (Instance 2 - for HA)
+  # ─────────────────────────────────────────────────────────────────────────
+  api-2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: quantlib-pro:${VERSION:-latest}
+    container_name: quantlib-api-2
+    restart: unless-stopped
+    ports:
+      - "8001:8000"
+    command: uvicorn main_api:app --host 0.0.0.0 --port 8000 --workers 4
+    environment:
+      - APP_ENV=production
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-quantlib}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-quantlib_db}
+      - TIMESCALE_URL=postgresql://${POSTGRES_USER:-quantlib}:${POSTGRES_PASSWORD:-changeme}@timescaledb:5432/${TIMESCALE_DB:-timeseries_db}
+      - REDIS_URL=redis://redis:6379/0
+      - ALPHA_VANTAGE_API_KEY=${ALPHA_VANTAGE_API_KEY}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    env_file:
+      - .env
+    volumes:
+      - quantlib-logs:/app/data/logs
+    depends_on:
+      - postgres
+      - timescaledb
+      - redis
+    networks:
+      - quantlib-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Celery Workers (Async Task Processing)
+  # ─────────────────────────────────────────────────────────────────────────
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: quantlib-pro:${VERSION:-latest}
+    restart: unless-stopped
+    command: celery -A quantlib_pro.tasks.celery_app worker --loglevel=info --concurrency=4
+    environment:
+      - APP_ENV=production
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-quantlib}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-quantlib_db}
+      - TIMESCALE_URL=postgresql://${POSTGRES_USER:-quantlib}:${POSTGRES_PASSWORD:-changeme}@timescaledb:5432/${TIMESCALE_DB:-timeseries_db}
+      - REDIS_URL=redis://redis:6379/0
+      - ALPHA_VANTAGE_API_KEY=${ALPHA_VANTAGE_API_KEY}
+    depends_on:
+      - redis
+      - postgres
+      - timescaledb
+    networks:
+      - quantlib-network
+    deploy:
+      replicas: 4
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Dask Scheduler (Distributed Computing)
+  # ─────────────────────────────────────────────────────────────────────────
+  dask-scheduler:
+    image: daskdev/dask:latest
+    container_name: quantlib-dask-scheduler
+    restart: unless-stopped
+    command: dask-scheduler
+    ports:
+      - "8786:8786"
+      - "8787:8787"
+    environment:
+      DASK_DISTRIBUTED__SCHEDULER__WORK_STEALING: "True"
+    networks:
+      - quantlib-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
           memory: 512M
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Dask Workers (Distributed Computing)
+  # ─────────────────────────────────────────────────────────────────────────
+  dask-worker:
+    image: daskdev/dask:latest
+    restart: unless-stopped
+    command: dask-worker dask-scheduler:8786 --nthreads 2 --memory-limit 2GB
+    depends_on:
+      - dask-scheduler
+    networks:
+      - quantlib-network
+    deploy:
+      replicas: 10
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
 
   # ─────────────────────────────────────────────────────────────────────────
   # Nginx Reverse Proxy (for production load balancing)
@@ -182,6 +390,10 @@ volumes:
   quantlib-logs:
     driver: local
   quantlib-cache:
+    driver: local
+  postgres-data:
+    driver: local
+  timescale-data:
     driver: local
   redis-data:
     driver: local
