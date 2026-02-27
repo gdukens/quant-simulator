@@ -41,10 +41,10 @@ services:
       context: .
       target: runtime
     container_name: quantlib-pro-ui
-    command: streamlit run streamlit_app.py --server.port 8501 --server.address 0.0.0.0
+    command: streamlit run streamlit_app.py --server.port 8503 --server.address 0.0.0.0
     env_file: .env
     ports:
-      - "8501:8501"
+      - "8503:8503"
     volumes:
       - ./quantlib_pro:/app/quantlib_pro:ro
     depends_on:

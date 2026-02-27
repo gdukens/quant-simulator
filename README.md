@@ -94,7 +94,7 @@ quantlib_env\Scripts\activate
 pip install -r requirements-enterprise.txt
 
 # Initialize with real market data
-streamlit run streamlit_app.py --server.port 8501
+streamlit run streamlit_app.py --server.port 8503
 ```
 
 **Platform Access**: `http://localhost:8501`  

@@ -67,7 +67,7 @@ print("  • Session persistence across page navigation")
 print("  • No database setup required")
 
 print("\n🚀 Next steps:")
-print("  1. Start Streamlit: streamlit run streamlit_app.py --server.port 8501")
+print("  1. Start Streamlit: streamlit run streamlit_app.py --server.port 8503")
 print("  2. Navigate pages - see caching in action")
 print("  3. Check Redis: docker exec quantlib-pro-redis redis-cli KEYS 'quantlib:*'")
 

@@ -146,7 +146,7 @@ function Get-MonitoringStatus {
     Write-MonitorLog "📡 Metrics Endpoints:" "Yellow" "📡"
     
     $endpoints = @{
-        "QuantLib App" = "http://localhost:8501/metrics"
+        "QuantLib App" = "http://localhost:8503/metrics"
         "Prometheus" = "http://localhost:9090/metrics"
         "Node Exporter" = "http://localhost:9100/metrics"
         "Redis Exporter" = "http://localhost:9121/metrics"

@@ -12,7 +12,7 @@ from typing import Dict, Any, Tuple
 
 # Configuration
 API_BASE = "http://localhost:8001"
-STREAMLIT_BASE = "http://localhost:8501"
+STREAMLIT_BASE = "http://localhost:8503"
 
 # Test results
 results = {

@@ -310,7 +310,7 @@ app.add_middleware(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:8501",  # Streamlit app
+        "http://localhost:8503",  # Streamlit app
         "http://localhost:3000",  # React development
         "https://quantlibpro.com",  # Production frontend
     ],
