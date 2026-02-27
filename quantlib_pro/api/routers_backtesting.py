@@ -19,7 +19,14 @@ from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 
-backtesting_router = APIRouter(prefix="/backtesting", tags=["backtesting"])
+backtesting_router = APIRouter(
+    prefix="/backtesting", 
+    tags=["Strategy Backtesting"],
+    responses={
+        429: {"description": "Rate limit exceeded"},
+        500: {"description": "Internal server error"}
+    }
+)
 
 # =============================================================================
 # Models

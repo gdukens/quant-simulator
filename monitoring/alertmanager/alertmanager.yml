@@ -1,0 +1,127 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# AlertManager Configuration for QuantLib Pro Production
+# ═══════════════════════════════════════════════════════════════════════════
+
+global:
+  # SMTP configuration for email alerts
+  smtp_smarthost: 'localhost:587'
+  smtp_from: 'alerts@quantlibpro.com'
+  smtp_auth_username: 'alerts@quantlibpro.com'
+  smtp_auth_password: 'alert_email_password'
+
+  # Slack webhook for team notifications  
+  slack_api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+
+# Template files
+templates:
+  - '/etc/alertmanager/templates/*.tmpl'
+
+# Route tree for alert routing
+route:
+  group_by: ['alertname', 'service']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  receiver: 'default-notifications'
+  
+  routes:
+    # Critical alerts - immediate notification
+    - match:
+        severity: critical
+      receiver: 'critical-alerts'
+      group_wait: 10s
+      repeat_interval: 1h
+      
+    # Database alerts
+    - match:
+        service: postgresql
+      receiver: 'database-team'
+      
+    # Security alerts
+    - match_re:
+        service: '(authentication|rate-limiting)'
+      receiver: 'security-team'
+      
+    # Business logic alerts
+    - match_re:
+        service: '(fred-integration|portfolio-engine)'
+      receiver: 'dev-team'
+
+# Notification receivers
+receivers:
+  - name: 'default-notifications'
+    slack_configs:
+      - api_url: '{{ .SlackURL }}'
+        channel: '#quantlib-alerts'
+        title: 'QuantLib Pro Alert'
+        text: '{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+        
+  - name: 'critical-alerts'
+    email_configs:
+      - to: 'oncall@quantlibpro.com'
+        subject: '🚨 CRITICAL: {{ .GroupLabels.alertname }}'
+        html: |
+          <h2>Critical Alert: {{ .GroupLabels.alertname }}</h2>
+          {{ range .Alerts }}
+          <p><strong>{{ .Annotations.summary }}</strong></p>
+          <p>{{ .Annotations.description }}</p>
+          <p>Severity: {{ .Labels.severity }}</p>
+          <p>Service: {{ .Labels.service }}</p>
+          {{ end }}
+    slack_configs:
+      - api_url: '{{ .SlackURL }}'
+        channel: '#quantlib-critical'
+        title: '🚨 CRITICAL ALERT'
+        text: '{{ range .Alerts }}{{ .Annotations.summary }}\n{{ .Annotations.description }}{{ end }}'
+        color: 'danger'
+        
+  - name: 'database-team'
+    email_configs:
+      - to: 'dba@quantlibpro.com'
+        subject: 'Database Alert: {{ .GroupLabels.alertname }}'
+        body: |
+          {{ range .Alerts }}
+          Summary: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Service: {{ .Labels.service }}
+          {{ end }}
+          
+  - name: 'security-team'
+    email_configs:
+      - to: 'security@quantlibpro.com'
+        subject: 'Security Alert: {{ .GroupLabels.alertname }}'
+        body: |
+          {{ range .Alerts }}
+          Summary: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Service: {{ .Labels.service }}
+          {{ end }}
+    slack_configs:
+      - api_url: '{{ .SlackURL }}'
+        channel: '#security-alerts'
+        title: '🔒 Security Alert'
+        text: '{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+        color: 'warning'
+        
+  - name: 'dev-team'
+    slack_configs:
+      - api_url: '{{ .SlackURL }}'
+        channel: '#quantlib-dev'
+        title: 'QuantLib Development Alert'
+        text: '{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+
+# Inhibit rules - prevent spamming
+inhibit_rules:
+  # If application is down, don't alert on high latency
+  - source_match:
+      alertname: QuantLibAppDown
+    target_match:
+      alertname: QuantLibAPIHighLatency
+    equal: ['service']
+    
+  # If database is down, don't alert on connection issues
+  - source_match:
+      alertname: PostgreSQLDown
+    target_match:
+      alertname: PostgreSQLTooManyConnections
+    equal: ['service']

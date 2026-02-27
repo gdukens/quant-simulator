@@ -715,10 +715,17 @@ with tab6:
         col1, col2 = st.columns([2, 1])
         
         with col1:
+            # Filter available tickers (exclude the selected ticker)
+            available_tickers = [t for t in COMMON_TICKERS if t != results['ticker']]
+            
+            # Set defaults, but only include tickers that are in available_tickers
+            default_tickers = ["QQQ", "IWM", "TLT", "GLD"]
+            filtered_defaults = [t for t in default_tickers if t in available_tickers]
+            
             additional_tickers = st.multiselect(
                 "Additional Assets for Correlation",
-                options=[t for t in COMMON_TICKERS if t != results['ticker']],
-                default=["QQQ", "IWM", "TLT", "GLD"],
+                options=available_tickers,
+                default=filtered_defaults,
                 help="Select assets to analyze correlation structure"
             )
             

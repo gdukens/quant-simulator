@@ -23,7 +23,15 @@ from quantlib_pro.data.models import User, Portfolio, Holding, Price
 
 logger = logging.getLogger(__name__)
 
-realdata_router = APIRouter(prefix="/realdata", tags=["real-data"])
+realdata_router = APIRouter(
+    prefix="/realdata", 
+    tags=["Real-Time Market Data"],
+    responses={
+        429: {"description": "Rate limit exceeded"},
+        500: {"description": "Internal server error"},
+        503: {"description": "Market data service unavailable"}
+    }
+)
 
 # Initialize global data router and cache (reuse connections)
 _data_router: Optional[DataProviderRouter] = None

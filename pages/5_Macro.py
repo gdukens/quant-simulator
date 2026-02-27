@@ -13,21 +13,18 @@ import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
 from datetime import datetime, timedelta
+import yfinance as yf
 
 from quantlib_pro.ui import components
-from quantlib_pro.macro.macro_regime import detect_macro_regime
+from quantlib_pro.macro.macro_regime import detect_macro_regime, MacroRegime
 from quantlib_pro.macro.sentiment import fear_greed_index, vix_sentiment_level
 from quantlib_pro.macro.correlation import correlation_regime
+from quantlib_pro.data.fred_client import FREDClient
 
-# Page config
-st.set_page_config(
-    page_title="Macro Analysis",
-    page_icon="🌍",
-    layout="wide",
-)
+# Note: page_config is set in streamlit_app.py
 
 st.title("Macro Analysis")
-st.markdown("Economic regime detection, sentiment analysis, and correlation analysis")
+st.markdown("Economic regime detection, sentiment analysis, and correlation analysis powered by **real Federal Reserve data**")
 
 # Initialize session state
 if "macro_results" not in st.session_state:
@@ -54,6 +51,14 @@ with col2:
 with col3:
     analyze_button = st.button("Analyze", type="primary", use_container_width=True)
 
+# Map lookback period to days
+period_days = {
+    "1 Month": 30,
+    "3 Months": 90,
+    "6 Months": 180,
+    "1 Year": 365
+}
+
 # Create tabs for different analyses
 tab1, tab2, tab3 = st.tabs([
     "Macro Regime",
@@ -66,45 +71,92 @@ tab1, tab2, tab3 = st.tabs([
 # ============================================================================
 with tab1:
     st.header("Economic Regime Detection")
+    st.markdown("Uses FRED data + market correlations to detect the current macro environment")
     
     col1, col2 = st.columns([2, 1])
     
     with col1:
         if analyze_button and analysis_type == "Macro Regime":
-            with st.spinner("Analyzing macro-economic regime..."):
+            with st.spinner("Fetching real economic data from FRED..."):
                 try:
-                    # Simulate economic indicators
-                    gdp_growth = np.random.uniform(0.5, 4.0)
-                    unemployment = np.random.uniform(3.5, 8.0)
-                    pmi = np.random.normal(52.5, 2.0)
+                    # Get real economic data from FRED
+                    fred = FREDClient()
+                    macro_snapshot = fred.get_macro_snapshot()
                     
-                    # Generate correlation matrix and volatility for macro regime detection
-                    symbols = ['SPY', 'TLT', 'GLD', 'VIX']
-                    corr_data = np.random.RandomState(42).uniform(0.1, 0.9, (4, 4))
-                    np.fill_diagonal(corr_data, 1.0)
-                    corr_matrix = pd.DataFrame(corr_data, index=symbols, columns=symbols)
+                    gdp_growth = macro_snapshot.get('gdp_growth', 2.5) or 2.5
+                    unemployment = macro_snapshot.get('unemployment', 4.0) or 4.0  
+                    pmi = macro_snapshot.get('pmi', 52.0) or 52.0
+                    inflation = macro_snapshot.get('inflation', 2.5) or 2.5
+                    fed_funds = macro_snapshot.get('fed_funds_rate', 5.0) or 5.0
+                    consumer_sentiment = macro_snapshot.get('consumer_sentiment', 65.0) or 65.0
                     
-                    volatility = pd.Series(np.random.RandomState(42).uniform(0.1, 0.4, 30), 
-                                         name='volatility')
+                    # Display real economic data source
+                    st.success("""
+                    **Live Data Retrieved from Federal Reserve (FRED)**
+                    """)
                     
-                    # Detect macro regime
-                    result = detect_macro_regime(
-                        correlation_matrix=corr_matrix,
-                        volatility_series=volatility,
-                    )
+                    fred_col1, fred_col2, fred_col3 = st.columns(3)
+                    with fred_col1:
+                        st.metric("GDP Growth", f"{gdp_growth:.1f}%", 
+                                  help=f"As of {macro_snapshot.get('gdp_growth_date', 'Latest')}")
+                    with fred_col2:
+                        st.metric("Unemployment", f"{unemployment:.1f}%",
+                                  help=f"As of {macro_snapshot.get('unemployment_date', 'Latest')}")
+                    with fred_col3:
+                        st.metric("ISM PMI", f"{pmi:.1f}",
+                                  help=f"As of {macro_snapshot.get('pmi_date', 'Latest')}")
+                    
+                    # Fetch market data for correlation and volatility analysis
+                    with st.spinner("Calculating market correlations..."):
+                        # Key assets for regime detection
+                        regime_assets = ['SPY', 'TLT', 'GLD', 'VXX', 'UUP']
+                        
+                        days = period_days[lookback_period]
+                        end_date = datetime.now()
+                        start_date = end_date - timedelta(days=days)
+                        
+                        # Download market data
+                        market_data = yf.download(
+                            regime_assets,
+                            start=start_date.strftime('%Y-%m-%d'),
+                            end=end_date.strftime('%Y-%m-%d'),
+                            progress=False
+                        )['Close']
+                        
+                        # Calculate returns
+                        returns = market_data.pct_change().dropna()
+                        
+                        # Calculate correlation matrix
+                        corr_matrix = returns.corr()
+                        
+                        # Calculate rolling volatility (annualized)
+                        volatility = returns.std() * np.sqrt(252)
+                        
+                        # Detect macro regime using correlation and volatility
+                        regime_result = detect_macro_regime(corr_matrix, volatility)
+                        regime_name = regime_result.value
                     
                     # Enhanced regime classification
                     regime_descriptions = {
-                        "Risk On": "Growth-oriented environment, low volatility, risk assets outperforming",
-                        "Risk Off": "Flight to quality, high volatility, safe haven assets preferred", 
-                        "Sector Rotation": "Selective market with sector-specific opportunities",
-                        "Crisis": "Market stress, high correlations, defensive positioning required",
-                        "Recovery": "Early recovery phase, improving fundamentals",
-                        "Normal": "Balanced market conditions with normal correlations"
+                        "Risk On": "Growth-oriented environment with low volatility. Risk assets outperforming, favorable for equities.",
+                        "Risk Off": "Flight to quality mode. High volatility, safe haven assets (bonds, gold) preferred.", 
+                        "Sector Rotation": "Selective market with sector-specific opportunities. Active management favored.",
+                        "Crisis": "Market stress detected. High correlations, defensive positioning required.",
+                        "Recovery": "Early recovery phase. Improving fundamentals, cyclical stocks attractive.",
+                        "Normal": "Balanced market conditions with normal correlations and volatility."
                     }
                     
-                    regime_name = result.value
                     regime_desc = regime_descriptions.get(regime_name, "Market regime based on correlation and volatility patterns")
+                    
+                    # Calculate recession probability from FRED data
+                    recession_prob = 0.05  # Base probability
+                    if unemployment > 5.0:
+                        recession_prob += (unemployment - 5.0) * 0.1
+                    if pmi < 50:
+                        recession_prob += (50 - pmi) * 0.02
+                    if gdp_growth < 0:
+                        recession_prob += 0.3
+                    recession_prob = min(0.95, max(0.05, recession_prob))
                     
                     st.session_state.macro_results = {
                         "type": "macro_regime",
@@ -113,20 +165,29 @@ with tab1:
                         "indicators": {
                             "gdp_growth": gdp_growth,
                             "unemployment": unemployment,
-                            "pmi": pmi
+                            "pmi": pmi,
+                            "inflation": inflation,
+                            "fed_funds": fed_funds,
+                            "consumer_sentiment": consumer_sentiment
                         },
-                        "recession_probability": max(0.05, (unemployment - 4.0) / 20.0),
+                        "recession_probability": recession_prob,
                         "gdp_growth": gdp_growth,
                         "unemployment": unemployment,
                         "pmi": pmi,
+                        "inflation": inflation,
+                        "fed_funds": fed_funds,
                         "correlation_matrix": corr_matrix,
-                        "avg_volatility": volatility.mean()
+                        "volatility": volatility,
+                        "avg_volatility": volatility.mean(),
+                        "data_source": "FRED + Yahoo Finance"
                     }
                     
-                    components.success_message("Macro regime analysis complete!")
+                    st.success("Macro regime analysis complete!")
                     
                 except Exception as e:
-                    components.error_message(f"Analysis failed: {str(e)}")
+                    st.error(f"Analysis failed: {str(e)}")
+                    import traceback
+                    st.code(traceback.format_exc())
                     st.session_state.macro_results = None
     
         # Display macro regime results

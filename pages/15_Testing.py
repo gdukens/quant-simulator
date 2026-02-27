@@ -107,7 +107,7 @@ with tab1:
                 })
                 
                 # Test Greeks
-                delta = bs_model.delta()
+                delta = bs_model.delta_call()
                 delta_passed = 0.4 <= delta <= 0.7  # Reasonable ATM delta range
                 
                 validation_results.append({
@@ -120,11 +120,11 @@ with tab1:
                 })
                 
                 # Bachelier tests
-                bachelier_model = BachelierModel(
-                    forward=100, strike=100, volatility=20, time_to_expiry=0.25
-                )
+                bachelier_model = BachelierModel(sigma=20.0)
                 
-                bach_call = bachelier_model.call_price()
+                bach_call = bachelier_model.price(
+                    F0=100, K=100, T=0.25, option_type='call'
+                )
                 bach_call_passed = 5.0 <= bach_call <= 15.0
                 
                 validation_results.append({

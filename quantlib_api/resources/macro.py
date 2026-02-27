@@ -16,24 +16,24 @@ class MacroResource(BaseResource):
         period: str = "1Y",
     ) -> Dict[str, Any]:
         """
-        Get economic indicator values.
+        Get economic indicator values from FRED.
 
         Parameters
         ----------
         indicators : list of str
-            Indicator codes (e.g., ["GDP", "CPI", "UNEMPLOYMENT", "FED_RATE"])
+            Indicator codes (e.g., ["GDP_GROWTH", "UNEMPLOYMENT", "CPI", "FED_RATE"])
         period : str
             Time period (e.g., "1Y", "5Y", "10Y")
 
         Returns
         -------
         dict
-            Indicator values and time series
+            Real economic indicator values and time series from Federal Reserve
         """
         return self._http.post(
             self._url("/indicators"),
             json={
-                "indicators": indicators or ["GDP", "CPI", "UNEMPLOYMENT", "FED_RATE"],
+                "indicators": indicators or ["GDP_GROWTH", "UNEMPLOYMENT", "CPI", "FED_RATE"],
                 "period": period,
             },
         )

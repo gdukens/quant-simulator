@@ -48,7 +48,7 @@ class RegimeState(Base):
     regime = Column(Integer, nullable=False)  # 0=low_vol, 1=high_vol, 2=crisis
     regime_label = Column(String(20), nullable=False)
     transition_probability = Column(DECIMAL(8, 6), nullable=True)
-    metadata = Column(JSONB, nullable=True)  # Additional regime metrics
+    regime_metadata = Column(JSONB, nullable=True)  # Additional regime metrics
     
     def __repr__(self):
         return f"<RegimeState(ticker={self.ticker}, time={self.time}, regime={self.regime_label})>"

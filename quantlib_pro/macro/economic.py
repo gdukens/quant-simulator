@@ -19,6 +19,7 @@ import numpy as np
 import pandas as pd
 
 from quantlib_pro.utils.validation import ValidationError, require_positive
+from quantlib_pro.data.fred_provider import FREDProvider
 
 log = logging.getLogger(__name__)
 

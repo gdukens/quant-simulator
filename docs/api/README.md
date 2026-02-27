@@ -1,85 +1,224 @@
-# QuantLib Pro API Reference
+# **QuantLib Pro API Reference**
 
-Complete API documentation for QuantLib Pro - a comprehensive quantitative finance library.
+Comprehensive REST API documentation for the enterprise quantitative finance platform. Built for institutional traders, portfolio managers, risk analysts, and quantitative researchers requiring production-grade financial modeling capabilities.
 
-## Table of Contents
+## **API Overview**
 
-- [Core Modules](#core-modules)
-- [Portfolio Management](#portfolio-management)
-- [Risk Analytics](#risk-analytics)
-- [Options Pricing](#options-pricing)
-- [Data Management](#data-management)
-- [Backtesting](#backtesting)
-- [Utilities](#utilities)
+**Base URL**: `https://api.quantlibpro.com/v1`  
+**Documentation**: `https://api.quantlibpro.com/docs`  
+**Health Status**: `https://api.quantlibpro.com/health`
 
 ---
 
-## Core Modules
+## **Authentication**
 
-### Portfolio Optimization
-
-**Module:** `quantlib_pro.portfolio`
-
-#### `PortfolioOptimizer`
-
-Optimize portfolio weights using modern portfolio theory.
-
-```python
-from quantlib_pro.portfolio import PortfolioOptimizer
-
-optimizer = PortfolioOptimizer(
-    expected_returns=returns,
-    cov_matrix=cov_matrix,
-    risk_free_rate=0.02
-)
-
-# Maximum Sharpe ratio portfolio
-weights = optimizer.max_sharpe_ratio()
-
-# Minimum volatility portfolio
-weights = optimizer.min_volatility()
-
-# Efficient frontier
-frontier = optimizer.efficient_frontier(n_points=50)
+### **API Key Authentication**
+```http
+X-API-Key: your_enterprise_api_key
 ```
 
-**Methods:**
+### **JWT Bearer Token** 
+```http
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
 
-- `max_sharpe_ratio(constraints=None) -> np.ndarray`
-  - Returns optimal weights maximizing Sharpe ratio
-  - Constraints: dict with 'type', 'fun', 'bounds'
+### **Rate Limits**
 
-- `min_volatility(target_return=None) -> np.ndarray`
-  - Returns minimum variance portfolio
-  - Optional target return constraint
+| Tier | Requests/Hour | Burst Limit | Features |
+|------|---------------|-------------|----------|
+| Developer | 100 | 20/min | Core endpoints |
+| Professional | 2,500 | 100/min | Advanced analytics |
+| Enterprise | Unlimited | 500/min | Full platform access |
 
-- `efficient_frontier(n_points=50) -> pd.DataFrame`
-  - Returns DataFrame with returns, volatility, weights
-  - n_points: number of portfolios on frontier
+---
 
-- `portfolio_performance(weights) -> Dict[str, float]`
-  - Returns expected return, volatility, Sharpe ratio
+## **Core API Endpoints**
 
-**Example:**
+### **Portfolio Management**
 
-```python
-import pandas as pd
-import numpy as np
-from quantlib_pro.portfolio import PortfolioOptimizer
+#### **POST** `/portfolio/optimize`
+Optimize portfolio weights using Modern Portfolio Theory.
 
-# Load data
-returns = pd.read_csv('returns.csv', index_col=0, parse_dates=True)
+```bash
+curl -X POST "https://api.quantlibpro.com/v1/portfolio/optimize" \
+  -H "X-API-Key: your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "assets": ["AAPL", "GOOGL", "MSFT", "TSLA"],
+    "objective": "max_sharpe",
+    "risk_free_rate": 0.02,
+    "constraints": {
+      "max_weight": 0.4,
+      "min_weight": 0.05
+    }
+  }'
+```
 
-# Calculate inputs
-expected_returns = returns.mean() * 252
-cov_matrix = returns.cov() * 252
+**Response:**
+```json
+{
+  "optimal_weights": {
+    "AAPL": 0.25,
+    "GOOGL": 0.30, 
+    "MSFT": 0.35,
+    "TSLA": 0.10
+  },
+  "expected_return": 0.12,
+  "volatility": 0.18,
+  "sharpe_ratio": 0.67
+}
+```
 
-# Optimize
-optimizer = PortfolioOptimizer(expected_returns, cov_matrix)
-optimal_weights = optimizer.max_sharpe_ratio()
+#### **GET** `/portfolio/efficient-frontier`
+Generate efficient frontier for portfolio optimization.
 
-# Analyze
-performance = optimizer.portfolio_performance(optimal_weights)
+---
+
+### **Risk Analytics**
+
+#### **POST** `/risk/var`
+Calculate Value-at-Risk using multiple methodologies.
+
+```bash
+curl -X POST "https://api.quantlibpro.com/v1/risk/var" \
+  -H "X-API-Key: your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "portfolio_value": 1000000,
+    "confidence_level": 0.95,
+    "method": "historical",
+    "horizon_days": 1
+  }'
+```
+
+**Response:**
+```json
+{
+  "var_95": 25000,
+  "cvar_95": 35000,
+  "method": "historical",
+  "horizon_days": 1,
+  "confidence_level": 0.95
+}
+```
+
+---
+
+### **Macro Economic Data (FRED Integration)**
+
+#### **GET** `/macro/regime`
+Get current macroeconomic regime assessment using real Federal Reserve data.
+
+```bash
+curl -X GET "https://api.quantlibpro.com/v1/macro/regime" \
+  -H "X-API-Key: your_api_key"
+```
+
+**Response:**
+```json
+{
+  "regime": "Expansion",
+  "confidence": 0.78,
+  "expansion_probability": 0.78,
+  "recession_probability": 0.22,
+  "indicators": {
+    "gdp_growth": 1.4,
+    "unemployment_rate": 4.3,
+    "treasury_10y": 4.21,
+    "inflation_rate": 3.2,
+    "fed_funds_rate": 5.25
+  },
+  "last_updated": "2026-02-26T14:30:00Z"
+}
+```
+
+#### **POST** `/macro/indicators`
+Retrieve specific economic indicators from Federal Reserve data.
+
+```bash
+curl -X POST "https://api.quantlibpro.com/v1/macro/indicators" \
+  -H "X-API-Key: your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "indicators": ["GDP_GROWTH", "UNEMPLOYMENT", "TREASURY_10Y"],
+    "periods": 12
+  }'
+```
+
+---
+### **Options & Derivatives**
+
+#### **POST** `/options/price`
+Price options using Black-Scholes and calculate Greeks.
+
+```bash
+curl -X POST "https://api.quantlibpro.com/v1/options/price" \
+  -H "X-API-Key: your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "spot_price": 100,
+    "strike_price": 105,
+    "time_to_expiry": 0.25,
+    "risk_free_rate": 0.05,
+    "volatility": 0.25,
+    "option_type": "call"
+  }'
+```
+
+**Response:**
+```json
+{
+  "option_price": 2.85,
+  "greeks": {
+    "delta": 0.45,
+    "gamma": 0.03,
+    "theta": -0.05,
+    "vega": 0.12,
+    "rho": 0.08
+  },
+  "model": "black_scholes"
+}
+```
+
+---
+
+### **Market Data**
+
+#### **GET** `/market/prices`
+Retrieve real-time market prices with multi-provider failover.
+
+```bash
+curl -X GET "https://api.quantlibpro.com/v1/market/prices?symbols=AAPL,GOOGL,MSFT" \
+  -H "X-API-Key: your_api_key"
+```
+
+---
+
+## **Enterprise Support**
+
+### **Enterprise Support Channels**
+
+| Support Level | Contact Method | Response Time | Availability |
+|---------------|----------------|---------------|-------------|
+| **Community** | GitHub Issues | 48-72 hours | Business days |
+| **Professional** | support@quantlibpro.com | 4-8 hours | Extended hours |
+| **Enterprise** | Dedicated CSM | 1-2 hours | 24/7 |
+
+### **Custom Integration Services**
+- **Technical Consultation**: architecture@quantlibpro.com
+- **Partnership Opportunities**: partnerships@quantlibpro.com  
+- **Enterprise Sales**: enterprise@quantlibpro.com
+
+### **SLA Guarantees**
+- **Enterprise Tier**: 99.9% uptime guarantee
+- **Response SLA**: <2 hours for critical issues
+- **Data SLA**: <100ms latency for core endpoints
+
+---
+
+**Ready to integrate institutional-grade quantitative finance into your applications?**
+
+*Contact our enterprise team for production API keys, custom endpoints, and dedicated support.*
 print(f"Expected Return: {performance['return']:.2%}")
 print(f"Volatility: {performance['volatility']:.2%}")
 print(f"Sharpe Ratio: {performance['sharpe']:.2f}")

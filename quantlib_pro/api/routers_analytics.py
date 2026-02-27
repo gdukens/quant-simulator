@@ -19,7 +19,14 @@ from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 
-analytics_router = APIRouter(prefix="/analytics", tags=["analytics"])
+analytics_router = APIRouter(
+    prefix="/analytics", 
+    tags=["Advanced Analytics"],
+    responses={
+        429: {"description": "Rate limit exceeded"},
+        500: {"description": "Internal server error"}
+    }
+)
 
 # =============================================================================
 # Models

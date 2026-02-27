@@ -19,7 +19,15 @@ from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 
-data_router = APIRouter(prefix="/data", tags=["data-management"])
+data_router = APIRouter(
+    prefix="/data", 
+    tags=["Market Data & Providers"],
+    responses={
+        429: {"description": "Rate limit exceeded"},
+        500: {"description": "Internal server error"},
+        503: {"description": "Data provider unavailable"}
+    }
+)
 
 # =============================================================================
 # Models

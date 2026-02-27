@@ -1,0 +1,77 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# Prometheus Configuration for QuantLib Pro Production Monitoring
+# ═══════════════════════════════════════════════════════════════════════════
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'quantlibpro-production'
+    environment: 'production'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+# Load rules once and periodically evaluate them
+rule_files:
+  - "alert_rules.yml"
+  - "recording_rules.yml"
+
+# Scrape configuration
+scrape_configs:
+  # QuantLib Pro Application
+  - job_name: 'quantlib-app'
+    static_configs:
+      - targets: ['quantlib-app:8501']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # FastAPI Metrics
+  - job_name: 'quantlib-api'
+    static_configs:
+      - targets: ['quantlib-app:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 5s
+
+  # PostgreSQL Monitoring
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+    scrape_interval: 15s
+
+  # Redis Monitoring  
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis-exporter:9121']
+    scrape_interval: 15s
+
+  # Node/System Monitoring
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    scrape_interval: 15s
+
+  # Docker Container Monitoring
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+    scrape_interval: 15s
+
+  # Prometheus Self-Monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # QuantLib Pro Custom Metrics
+  - job_name: 'quantlib-business-metrics'
+    static_configs:
+      - targets: ['quantlib-app:8501']
+    metrics_path: '/business-metrics'
+    scrape_interval: 30s
+
+# Storage configuration handled by Docker Compose command-line arguments

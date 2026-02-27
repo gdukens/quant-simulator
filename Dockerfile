@@ -16,12 +16,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libffi-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements
-COPY requirements.txt ./
+# Copy project dependencies
+COPY pyproject.toml ./
 
 # Build wheels for all dependencies
 RUN pip install --upgrade pip && \
-    pip wheel --no-cache-dir --wheel-dir /wheels -r requirements.txt
+    pip install build && \
+    pip wheel --no-cache-dir --wheel-dir /wheels .
 
 # ── Stage 2: Runtime ──────────────────────────────────────────────────────────
 FROM python:3.12-slim AS runtime
@@ -53,8 +54,9 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Copy application code
 COPY --chown=quantlib:quantlib quantlib_pro/ ./quantlib_pro/
 COPY --chown=quantlib:quantlib pages/ ./pages/
-COPY --chown=quantlib:quantlib QuantLib_Pro.py ./
-COPY --chown=quantlib:quantlib .streamlit/ ./.streamlit/
+COPY --chown=quantlib:quantlib streamlit_app.py ./
+COPY --chown=quantlib:quantlib main_api.py ./
+COPY --chown=quantlib:quantlib pyproject.toml ./
 
 # Create necessary directories with proper permissions
 RUN mkdir -p data/cache data/logs data/backups data/uat && \

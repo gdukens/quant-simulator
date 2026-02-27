@@ -1,0 +1,82 @@
+# Production Security Configuration for Docker Swarm
+# Manages secrets as Docker Swarm secrets for enhanced security
+
+version: '3.8'
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Docker Secrets (Swarm Mode) 
+# ═══════════════════════════════════════════════════════════════════════════
+secrets:
+  jwt_secret:
+    external: true
+  encryption_key:
+    external: true  
+  database_password:
+    external: true
+  api_master_key:
+    external: true
+  redis_password:
+    external: true
+
+services:
+  # QuantLib Pro with Docker Secrets
+  quantlib-app-secure:
+    extends:
+      file: docker-compose.prod.yml
+      service: quantlib-app
+    secrets:
+      - jwt_secret
+      - encryption_key
+      - database_password
+      - api_master_key
+      - redis_password
+    environment:
+      # Use Docker secrets instead of .env file
+      - JWT_SECRET_KEY_FILE=/run/secrets/jwt_secret
+      - ENCRYPTION_KEY_FILE=/run/secrets/encryption_key
+      - DATABASE_PASSWORD_FILE=/run/secrets/database_password
+      - API_MASTER_KEY_FILE=/run/secrets/api_master_key
+      - REDIS_PASSWORD_FILE=/run/secrets/redis_password
+      # Security hardening
+      - SECURE_SSL_REDIRECT=true
+      - SESSION_COOKIE_SECURE=true
+      - CSRF_COOKIE_SECURE=true
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+        reservations:
+          cpus: '1.0'
+          memory: 2G
+
+  # PostgreSQL with Docker Secrets  
+  postgres-secure:
+    extends:
+      file: docker-compose.prod.yml
+      service: postgres
+    secrets:
+      - database_password
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/database_password
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./config/postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+      - ./config/postgres/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
+
+networks:
+  quantlib-network:
+    driver: overlay
+    encrypted: true
+    
+volumes:
+  postgres-data:
+    driver: local

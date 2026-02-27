@@ -15,23 +15,21 @@ st.set_page_config(
 
 # Persistent sidebar shown on every page
 with st.sidebar:
-    st.markdown("## Settings")
+    st.markdown("## QuantLib Pro")
+    st.caption("Enterprise Quantitative Finance Platform")
+    
+    st.divider()
 
-    st.markdown("### Data Source")
-    data_source = st.selectbox(
-        "Choose data provider",
-        ["Yahoo Finance", "Alpha Vantage"],
-        index=0,
-    )
-
-    st.markdown("### Date Range")
+    st.markdown("### Analysis Parameters")
+    
+    st.markdown("##### Date Range")
     c1, c2 = st.columns(2)
     with c1:
         start_date = st.date_input("Start", value=None)
     with c2:
         end_date = st.date_input("End", value=None)
 
-    st.markdown("### Risk Parameters")
+    st.markdown("##### Risk Parameters")
     risk_free_rate = st.slider(
         "Risk-free Rate (%)", 0.0, 10.0, 2.0, 0.1
     ) / 100
@@ -39,7 +37,6 @@ with st.sidebar:
         "VaR Confidence (%)", 90, 99, 95
     ) / 100
 
-    st.session_state.data_source      = data_source
     st.session_state.risk_free_rate   = risk_free_rate
     st.session_state.confidence_level = confidence_level
     if start_date:
@@ -51,15 +48,32 @@ with st.sidebar:
 
     st.markdown("### System Status")
     import requests
+    import os
+    
+    # Check API status
     try:
         r = requests.get("http://localhost:8000/health/", timeout=2)
         st.success("API: Online") if r.status_code == 200 else st.warning("API: Degraded")
     except Exception:
-        st.error("API: Offline")
+        st.info("API: Standalone Mode")
+    
+    # Check data providers
+    fred_key = os.getenv("FRED_API_KEY", "")
+    fred_ok = fred_key and fred_key != "REPLACE_WITH_FRED_API_KEY" and len(fred_key) > 10
+    av_key = os.getenv("ALPHA_VANTAGE_API_KEY", "")
+    av_ok = av_key and av_key != "REPLACE_WITH_ALPHA_VANTAGE_KEY" and len(av_key) > 10
+    
     st.success("UI: Online")
+    st.success("Yahoo Finance: Ready")
+    if fred_ok:
+        st.success("FRED: Connected")
+    else:
+        st.warning("FRED: Configure in Settings")
+    if av_ok:
+        st.success("Alpha Vantage: Connected")
 
     st.divider()
-    st.caption("QuantLib Pro v1.0.0 · Streamlit · FastAPI")
+    st.caption("v1.0.0 · Streamlit · FastAPI")
 
 # Navigation with grouped sections and Material Design icons
 pg = st.navigation(
@@ -90,6 +104,10 @@ pg = st.navigation(
             st.Page("pages/14_Trader_Stress_Monitor.py", title="Stress Monitor", icon=":material/psychology:"),
             st.Page("pages/16_UAT_Dashboard.py",     title="UAT Dashboard",     icon=":material/dashboard:"),
             st.Page("pages/15_Testing.py",           title="Testing",           icon=":material/science:"),
+        ],
+        "Developer": [
+            st.Page("pages/17_API_Explorer.py",      title="API Explorer",      icon=":material/api:"),
+            st.Page("pages/18_Settings.py",          title="Settings",          icon=":material/settings:"),
         ],
     }
 )

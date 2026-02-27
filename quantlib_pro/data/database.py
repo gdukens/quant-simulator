@@ -14,12 +14,12 @@ from quantlib_pro.data.models.base import Base
 # Database URLs from environment
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "postgresql://quantlib:changeme@localhost:5432/quantlib_db"
+    "postgresql://quantlib:devpassword@localhost:5433/quantlib_pro"
 )
 
 TIMESCALE_URL = os.getenv(
     "TIMESCALE_URL",
-    "postgresql://quantlib:changeme@localhost:5433/timeseries_db"
+    "postgresql://quantlib:devpassword@localhost:5433/timeseries_db"
 )
 
 # PostgreSQL engine (transactional data)

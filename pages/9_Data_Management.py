@@ -251,7 +251,7 @@ with tab3:
     if st.button(" Run Quality Check", type="primary"):
         try:
             from quantlib_pro.data.market_data import MarketDataProvider
-            from quantlib_pro.data.quality import DataValidator, QualityContract
+            from quantlib_pro.data.quality import DataQualityValidator, OHLCV_CONTRACT
             
             st.info(f"Validating {ticker_quality}...")
             
@@ -259,12 +259,8 @@ with tab3:
             data = provider.get_stock_data(ticker_quality, period="1y")
             
             # Run validation
-            validator = DataValidator()
-            contract = QualityContract(
-                required_columns=['Open', 'High', 'Low', 'Close', 'Volume'],
-                min_rows=1
-            )
-            report = validator.validate(data, contract)
+            validator = DataQualityValidator()
+            report = validator.validate(data, OHLCV_CONTRACT)
             
             # Display results
             col1, col2, col3 = st.columns(3)
@@ -415,14 +411,10 @@ with tab4:
             st.dataframe(df.head(10), use_container_width=True)
             
             # Validate uploaded data
-            from quantlib_pro.data.quality import DataValidator, QualityContract
+            from quantlib_pro.data.quality import DataQualityValidator, OHLCV_CONTRACT
             
-            validator = DataValidator() 
-            contract = QualityContract(
-                required_columns=['Open', 'High', 'Low', 'Close', 'Volume'],
-                min_rows=1
-            )
-            report = validator.validate(df, contract)
+            validator = DataQualityValidator() 
+            report = validator.validate(df, OHLCV_CONTRACT)
             
             if report.is_valid:
                 st.success(" Data passes quality checks")

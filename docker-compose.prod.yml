@@ -140,7 +140,7 @@ services:
           memory: 2G
 
   # ─────────────────────────────────────────────────────────────────────────
-  # FastAPI Application (Instance 1)
+  # FastAPI Application (Instance 1) - Optimized for <500ms SLA
   # ─────────────────────────────────────────────────────────────────────────
   api-1:
     build:
@@ -151,14 +151,26 @@ services:
     restart: unless-stopped
     ports:
       - "8000:8000"
-    command: uvicorn main_api:app --host 0.0.0.0 --port 8000 --workers 4
+    command: >
+      uvicorn quantlib_pro.api:app 
+      --host 0.0.0.0 
+      --port 8000 
+      --workers 6
+      --worker-class uvicorn.workers.UvicornWorker
+      --max-requests 10000
+      --max-requests-jitter 1000
+      --preload
+      --access-logformat '%(h)s "%(r)s" %(s)s %(b)s %(D)s'
     environment:
       - APP_ENV=production
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-quantlib}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-quantlib_db}
-      - TIMESCALE_URL=postgresql://${POSTGRES_USER:-quantlib}:${POSTGRES_PASSWORD:-changeme}@timescaledb:5432/${TIMESCALE_DB:-timeseries_db}
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-quantlib}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-quantlib_db}
+      - TIMESCALE_URL=postgresql+asyncpg://${POSTGRES_USER:-quantlib}:${POSTGRES_PASSWORD:-changeme}@timescaledb:5432/${TIMESCALE_DB:-timeseries_db}
       - REDIS_URL=redis://redis:6379/0
       - ALPHA_VANTAGE_API_KEY=${ALPHA_VANTAGE_API_KEY}
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - PERFORMANCE_MODE=optimized
+      - CACHE_ENABLED=true
+      - ASYNC_POOL_SIZE=20
     env_file:
       - .env
     volumes:
@@ -172,16 +184,19 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
-      timeout: 10s
+      timeout: 5s
       retries: 3
     deploy:
       resources:
         limits:
+          cpus: '3.0'
+          memory: 3G
+        reservations:
           cpus: '2.0'
           memory: 2G
 
   # ─────────────────────────────────────────────────────────────────────────
-  # FastAPI Application (Instance 2 - for HA)
+  # FastAPI Application (Instance 2) - High Availability + Performance
   # ─────────────────────────────────────────────────────────────────────────
   api-2:
     build:
@@ -192,11 +207,20 @@ services:
     restart: unless-stopped
     ports:
       - "8001:8000"
-    command: uvicorn main_api:app --host 0.0.0.0 --port 8000 --workers 4
+    command: >
+      uvicorn quantlib_pro.api:app 
+      --host 0.0.0.0 
+      --port 8000 
+      --workers 6
+      --worker-class uvicorn.workers.UvicornWorker
+      --max-requests 10000
+      --max-requests-jitter 1000
+      --preload
+      --access-logformat '%(h)s "%(r)s" %(s)s %(b)s %(D)s'
     environment:
       - APP_ENV=production
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-quantlib}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-quantlib_db}
-      - TIMESCALE_URL=postgresql://${POSTGRES_USER:-quantlib}:${POSTGRES_PASSWORD:-changeme}@timescaledb:5432/${TIMESCALE_DB:-timeseries_db}
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-quantlib}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-quantlib_db}
+      - TIMESCALE_URL=postgresql+asyncpg://${POSTGRES_USER:-quantlib}:${POSTGRES_PASSWORD:-changeme}@timescaledb:5432/${TIMESCALE_DB:-timeseries_db}
       - REDIS_URL=redis://redis:6379/0
       - ALPHA_VANTAGE_API_KEY=${ALPHA_VANTAGE_API_KEY}
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
@@ -333,16 +357,137 @@ services:
       - '--storage.tsdb.retention.time=30d'
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-lifecycle'
     volumes:
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/prometheus/alert_rules.yml:/etc/prometheus/alert_rules.yml:ro
       - prometheus-data:/prometheus
     networks:
       - quantlib-network
     deploy:
       resources:
         limits:
-          cpus: '0.5'
-          memory: 512M
+          cpus: '1.0'
+          memory: 1G
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # AlertManager (Alert Management)
+  # ─────────────────────────────────────────────────────────────────────────
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: quantlib-alertmanager
+    restart: unless-stopped
+    ports:
+      - "9093:9093"
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+      - '--web.external-url=http://localhost:9093'
+    volumes:
+      - ./monitoring/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - alertmanager-data:/alertmanager
+    networks:
+      - quantlib-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Node Exporter (System Metrics)
+  # ─────────────────────────────────────────────────────────────────────────
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: quantlib-node-exporter
+    restart: unless-stopped
+    ports:
+      - "9100:9100"
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    networks:
+      - quantlib-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # cAdvisor (Container Metrics)
+  # ─────────────────────────────────────────────────────────────────────────
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: quantlib-cadvisor
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    privileged: true
+    devices:
+      - /dev/kmsg
+    networks:
+      - quantlib-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Redis Exporter (Redis Metrics)
+  # ─────────────────────────────────────────────────────────────────────────
+  redis-exporter:
+    image: oliver006/redis_exporter:latest
+    container_name: quantlib-redis-exporter
+    restart: unless-stopped
+    ports:
+      - "9121:9121"
+    environment:
+      - REDIS_ADDR=redis://redis:6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+    depends_on:
+      - redis
+    networks:
+      - quantlib-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 64M
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # PostgreSQL Exporter (Database Metrics)
+  # ─────────────────────────────────────────────────────────────────────────
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:latest
+    container_name: quantlib-postgres-exporter
+    restart: unless-stopped
+    ports:
+      - "9187:9187"
+    environment:
+      - DATA_SOURCE_NAME=postgresql://${POSTGRES_USER:-quantlib}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/quantlib_db?sslmode=disable
+    depends_on:
+      - postgres
+    networks:
+      - quantlib-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 64M
 
   # ─────────────────────────────────────────────────────────────────────────
   # Grafana (Monitoring Dashboards)
@@ -356,7 +501,8 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_USER:-admin}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
-      - GF_INSTALL_PLUGINS=
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
     volumes:
       - grafana-data:/var/lib/grafana
       - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
@@ -379,7 +525,7 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.20.0.0/16
+        - subnet: 172.21.0.0/16
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Persistent Volumes
@@ -402,4 +548,6 @@ volumes:
   prometheus-data:
     driver: local
   grafana-data:
+    driver: local
+  alertmanager-data:
     driver: local

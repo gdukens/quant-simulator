@@ -1,0 +1,144 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# QuantLib Pro Production Alert Rules
+# ═══════════════════════════════════════════════════════════════════════════
+
+groups:
+  - name: quantlib_critical
+    rules:
+      # Application availability
+      - alert: QuantLibAppDown
+        expr: up{job="quantlib-app"} == 0
+        for: 30s
+        labels:
+          severity: critical
+          service: quantlib-app
+        annotations:
+          summary: "QuantLib Pro application is down"
+          description: "QuantLib Pro application has been down for more than 30 seconds"
+
+      # API performance
+      - alert: QuantLibAPIHighLatency
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="quantlib-api"}[5m])) > 0.5
+        for: 2m
+        labels:
+          severity: warning  
+          service: quantlib-api
+        annotations:
+          summary: "High API latency detected"
+          description: "95th percentile latency is {{ $value }}s (threshold: 0.5s)"
+
+      # Database connectivity
+      - alert: PostgreSQLDown
+        expr: up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: postgresql
+        annotations:
+          summary: "PostgreSQL database is down"
+          description: "PostgreSQL has been unreachable for more than 1 minute"
+
+      # Database connections
+      - alert: PostgreSQLTooManyConnections
+        expr: (pg_stat_database_numbackends / pg_settings_max_connections) > 0.8
+        for: 2m
+        labels:
+          severity: warning
+          service: postgresql  
+        annotations:
+          summary: "PostgreSQL approaching connection limit"
+          description: "Database using {{ $value | humanizePercentage }} of available connections"
+
+  - name: quantlib_performance
+    rules:
+      # Memory usage
+      - alert: QuantLibHighMemoryUsage
+        expr: (container_memory_usage_bytes{name="quantlib-app"} / container_spec_memory_limit_bytes{name="quantlib-app"}) > 0.85
+        for: 5m
+        labels:
+          severity: warning
+          service: quantlib-app
+        annotations:
+          summary: "High memory usage in QuantLib application"
+          description: "Memory usage is {{ $value | humanizePercentage }} (threshold: 85%)"
+
+      # CPU usage
+      - alert: QuantLibHighCPUUsage  
+        expr: rate(container_cpu_usage_seconds_total{name="quantlib-app"}[5m]) > 0.8
+        for: 5m
+        labels:
+          severity: warning
+          service: quantlib-app
+        annotations:
+          summary: "High CPU usage in QuantLib application"
+          description: "CPU usage is {{ $value | humanizePercentage }} (threshold: 80%)"
+
+      # Disk usage
+      - alert: QuantLibHighDiskUsage
+        expr: (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) < 0.1
+        for: 1m
+        labels:
+          severity: critical
+          service: system
+        annotations:
+          summary: "Critical disk space low"
+          description: "Available disk space is {{ $value | humanizePercentage }} (threshold: 10%)"
+
+  - name: quantlib_business
+    rules:
+      # API error rate
+      - alert: QuantLibHighErrorRate
+        expr: (rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m])) > 0.05
+        for: 3m
+        labels:
+          severity: warning
+          service: quantlib-api
+        annotations:
+          summary: "High API error rate"
+          description: "API error rate is {{ $value | humanizePercentage }} (threshold: 5%)"
+
+      # FRED API integration
+      - alert: FREDAPIFailures
+        expr: increase(fred_api_failures_total[5m]) > 5
+        for: 2m
+        labels:
+          severity: warning
+          service: fred-integration
+        annotations:
+          summary: "FRED API integration failures"
+          description: "{{ $value }} FRED API failures in the last 5 minutes"
+
+      # Portfolio calculation failures  
+      - alert: PortfolioCalculationFailures
+        expr: increase(portfolio_calculation_failures_total[10m]) > 3
+        for: 2m
+        labels:
+          severity: warning
+          service: portfolio-engine
+        annotations:
+          summary: "Portfolio calculation failures"
+          description: "{{ $value }} portfolio calculation failures in the last 10 minutes"
+
+  - name: quantlib_security
+    rules:
+      # Authentication failures
+      - alert: HighAuthenticationFailures
+        expr: increase(authentication_failures_total[5m]) > 10
+        for: 2m
+        labels:
+          severity: warning
+          service: authentication
+        annotations:
+          summary: "High authentication failure rate"
+          description: "{{ $value }} authentication failures in the last 5 minutes"
+
+      # Suspicious API access patterns
+      - alert: SuspiciousAPIAccess
+        expr: rate(http_requests_total{status="429"}[5m]) > 1
+        for: 1m
+        labels:
+          severity: warning
+          service: rate-limiting
+        annotations:
+          summary: "High rate of rate-limited requests"
+          description: "{{ $value }} rate-limited requests per second indicates potential abuse"

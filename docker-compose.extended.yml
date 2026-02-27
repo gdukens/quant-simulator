@@ -1,0 +1,58 @@
+# Docker Network Configuration for QuantLib Pro
+# Extended configuration including external network support
+
+version: '3.8'
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Extended Networks Configuration
+# ─────────────────────────────────────────────────────────────────────────────
+networks:
+  # Primary QuantLib Pro network
+  quantlib-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1
+
+  # External Supabase network (preserved)
+  supabase_network_sxdwyjyydsnvcbcrsyml:
+    external: true
+    
+  # External A/B Testing network (preserved)  
+  abtesting_default:
+    external: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Extended Services with Multi-Network Support
+# ─────────────────────────────────────────────────────────────────────────────
+services:
+  # QuantLib Pro App with external network access
+  quantlib-app-extended:
+    extends:
+      file: docker-compose.prod.yml
+      service: quantlib-app
+    networks:
+      - quantlib-network
+      - subabase_network_sxdwyjyydsnvcbcrsyml  # For Supabase integration
+      - abtesting_default                      # For A/B testing features
+    environment:
+      # Additional environment variables for external services
+      - SUPABASE_NETWORK=supabase_network_sxdwyjyydsnvcbcrsyml
+      - ABTESTING_NETWORK=abtesting_default
+    profiles: ["extended"]
+
+  # Integration gateway for external services
+  integration-gateway:
+    image: nginx:alpine
+    container_name: quantlib-integration-gateway
+    restart: unless-stopped
+    networks:
+      - quantlib-network
+      - supabase_network_sxdwyjyydsnvcbcrsyml
+      - abtesting_default
+    volumes:
+      - ./config/nginx/integration.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8090:80"
+    profiles: ["integration"]
