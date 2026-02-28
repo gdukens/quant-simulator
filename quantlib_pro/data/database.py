@@ -2,13 +2,21 @@
 
 import os
 from contextlib import contextmanager
-from typing import Generator
+from typing import Generator, Optional
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
-from sqlalchemy.pool import QueuePool
-
-from quantlib_pro.data.models.base import Base
+try:
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import sessionmaker, Session
+    from sqlalchemy.pool import QueuePool
+    from quantlib_pro.data.models.base import Base
+    SQLALCHEMY_AVAILABLE = True
+except ImportError:
+    SQLALCHEMY_AVAILABLE = False
+    create_engine = None
+    sessionmaker = None
+    Session = None
+    QueuePool = None
+    Base = None
 
 
 # Database URLs from environment
@@ -22,37 +30,104 @@ TIMESCALE_URL = os.getenv(
     "postgresql://quantlib:devpassword@localhost:5433/timeseries_db"
 )
 
-# PostgreSQL engine (transactional data)
-postgres_engine = create_engine(
-    DATABASE_URL,
-    poolclass=QueuePool,
-    pool_size=10,
-    max_overflow=20,
-    pool_pre_ping=True,  # Verify connections before using
-    pool_recycle=3600,   # Recycle connections after 1 hour
-    echo=False,          # Set to True for SQL debug logging
-)
+# Global engine and session variables (created lazily)
+_postgres_engine = None
+_timescale_engine = None
+_PostgresSession = None
+_TimescaleSession = None
 
-# TimescaleDB engine (time-series data)
-timescale_engine = create_engine(
-    TIMESCALE_URL,
-    poolclass=QueuePool,
-    pool_size=5,
-    max_overflow=10,
-    pool_pre_ping=True,
-    pool_recycle=3600,
-    echo=False,
-)
 
-# Session factories
-PostgresSession = sessionmaker(bind=postgres_engine, expire_on_commit=False)
-TimescaleSession = sessionmaker(bind=timescale_engine, expire_on_commit=False)
+def _get_postgres_engine():
+    """Get or create PostgreSQL engine (lazy initialization)."""
+    global _postgres_engine
+    if not SQLALCHEMY_AVAILABLE:
+        return None
+    if _postgres_engine is None:
+        try:
+            _postgres_engine = create_engine(
+                DATABASE_URL,
+                poolclass=QueuePool,
+                pool_size=10,
+                max_overflow=20,
+                pool_pre_ping=True,
+                pool_recycle=3600,
+                echo=False,
+            )
+        except Exception as e:
+            print(f"Warning: Could not connect to PostgreSQL: {e}")
+            return None
+    return _postgres_engine
+
+
+def _get_timescale_engine():
+    """Get or create TimescaleDB engine (lazy initialization)."""
+    global _timescale_engine
+    if not SQLALCHEMY_AVAILABLE:
+        return None
+    if _timescale_engine is None:
+        try:
+            _timescale_engine = create_engine(
+                TIMESCALE_URL,
+                poolclass=QueuePool,
+                pool_size=5,
+                max_overflow=10,
+                pool_pre_ping=True,
+                pool_recycle=3600,
+                echo=False,
+            )
+        except Exception as e:
+            print(f"Warning: Could not connect to TimescaleDB: {e}")
+            return None
+    return _timescale_engine
+
+
+def _get_postgres_session_factory():
+    """Get PostgreSQL session factory (lazy initialization)."""
+    global _PostgresSession
+    if not SQLALCHEMY_AVAILABLE:
+        return None
+    engine = _get_postgres_engine()
+    if engine is None:
+        return None
+    if _PostgresSession is None:
+        _PostgresSession = sessionmaker(bind=engine, expire_on_commit=False)
+    return _PostgresSession
+
+
+def _get_timescale_session_factory():
+    """Get TimescaleDB session factory (lazy initialization)."""
+    global _TimescaleSession
+    if not SQLALCHEMY_AVAILABLE:
+        return None
+    engine = _get_timescale_engine()
+    if engine is None:
+        return None
+    if _TimescaleSession is None:
+        _TimescaleSession = sessionmaker(bind=engine, expire_on_commit=False)
+    return _TimescaleSession
+
+
+# Module-level "constants" that are actually None (for graceful degradation)
+# These prevent import errors when SQLAlchemy is not available
+postgres_engine = None
+timescale_engine = None
+PostgresSession = None
+TimescaleSession = None
 
 
 def init_db() -> None:
     """Initialize database schemas (create all tables)."""
+    if not SQLALCHEMY_AVAILABLE:
+        print("Warning: SQLAlchemy not available, skipping database initialization")
+        return
+    
+    engine = _get_postgres_engine()
+    if engine is None:
+        print("Warning: Could not connect to database, skipping initialization")
+        return
+        
     # Create PostgreSQL tables
-    Base.metadata.create_all(bind=postgres_engine)
+    Base.metadata.create_all(bind=engine)
     print("✓ PostgreSQL tables created")
     
     # TimescaleDB tables will be created via Alembic migrations
@@ -62,7 +137,16 @@ def init_db() -> None:
 
 def drop_db() -> None:
     """Drop all database tables (DANGEROUS - use only in dev/test)."""
-    Base.metadata.drop_all(bind=postgres_engine)
+    if not SQLALCHEMY_AVAILABLE:
+        print("Warning: SQLAlchemy not available, cannot drop tables")
+        return
+        
+    engine = _get_postgres_engine()
+    if engine is None:
+        print("Warning: Could not connect to database, cannot drop tables")
+        return
+        
+    Base.metadata.drop_all(bind=engine)
     print("✓ PostgreSQL tables dropped")
 
 

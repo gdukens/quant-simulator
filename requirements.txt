@@ -37,7 +37,14 @@ networkx>=3.2.0
 # ── Utilities ────────────────────────────────────────────────
 python-dotenv>=1.0.0
 pydantic>=2.6.0
-
+# ── Backend Dependencies (Optional for Streamlit Cloud) ──────
+# These are only needed if running the full API backend
+# Comment out for lighter cloud deployments
+# sqlalchemy>=2.0.0
+# redis>=5.0.0
+# psycopg2-binary>=2.9.0
+# fastapi>=0.110.0
+# uvicorn>=0.27.0
 # ── Optional for cloud deployment ────────────────────────────
 # Note: Redis and PostgreSQL will be optional in cloud deployment
 # The app will gracefully degrade without database connections
