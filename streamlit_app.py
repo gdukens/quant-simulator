@@ -4,6 +4,7 @@ Uses st.navigation with Material Design icons (Streamlit 1.36+).
 """
 
 import streamlit as st
+import os
 
 # Global page config - called ONCE here; pages must NOT call it
 st.set_page_config(
@@ -12,6 +13,71 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+# Check API credentials and show setup dialog if needed
+def check_and_prompt_credentials():
+    """Check for API credentials and prompt user if they're missing."""
+    fred_key = os.getenv("FRED_API_KEY", "")
+    fred_configured = fred_key and fred_key != "REPLACE_WITH_FRED_API_KEY" and len(fred_key) > 10
+    
+    av_key = os.getenv("ALPHA_VANTAGE_API_KEY", "")
+    av_configured = av_key and av_key != "REPLACE_WITH_ALPHA_VANTAGE_KEY" and len(av_key) > 10
+    
+    # If credentials are missing, show setup instructions
+    if not fred_configured or not av_configured:
+        st.warning("🔑 **API Credentials Setup Required**")
+        
+        with st.expander("**Click here to set up your API credentials for full functionality**", expanded=True):
+            st.markdown("""
+            ### 🚀 Get the Most Out of QuantLib Pro!
+            
+            To access all features including real-time market data, economic indicators, and enhanced analytics, 
+            please configure your free API credentials:
+            """)
+            
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                if not fred_configured:
+                    st.error("❌ **FRED API Key Missing**")
+                    st.markdown("""
+                    **Federal Reserve Economic Data (FRED)**
+                    - Free API for US economic data
+                    - Get your key: [https://fred.stlouisfed.org/docs/api/api_key.html](https://fred.stlouisfed.org/docs/api/api_key.html)
+                    - Required for: Economic indicators, yield curves, inflation data
+                    """)
+                else:
+                    st.success("✅ **FRED API Key Configured**")
+            
+            with col2:
+                if not av_configured:
+                    st.error("❌ **Alpha Vantage API Key Missing**")
+                    st.markdown("""
+                    **Alpha Vantage Market Data**
+                    - Free API for stock market data
+                    - Get your key: [https://www.alphavantage.co/support/#api-key](https://www.alphavantage.co/support/#api-key)
+                    - Required for: Real-time quotes, technical indicators, forex data
+                    """)
+                else:
+                    st.success("✅ **Alpha Vantage API Key Configured**")
+            
+            st.info("""
+            **📝 How to Configure:**
+            1. Get your free API keys from the links above
+            2. Go to **Settings** (in the Developer section of the sidebar)
+            3. Enter your API keys in the configuration panel
+            4. Restart the application to apply changes
+            
+            **💡 Note:** You can still use QuantLib Pro without these keys, but some features will be limited to Yahoo Finance data only.
+            """)
+            
+            if st.button("🔧 Go to Settings", type="primary"):
+                st.switch_page("pages/18_Settings.py")
+        
+        st.divider()
+
+# Show credentials prompt on app startup
+check_and_prompt_credentials()
 
 # Persistent sidebar shown on every page
 with st.sidebar:
