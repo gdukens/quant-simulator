@@ -19,8 +19,15 @@ matplotlib>=3.9.0
 plotly>=5.20.0
 seaborn>=0.13.0
 
+# ── Computer Vision ──────────────────────────────────────────
+opencv-python>=4.13.0
+mediapipe>=0.10.32
+av>=16.1.0
+
 # ── UI ───────────────────────────────────────────────────────
 streamlit>=1.32.0
+streamlit-autorefresh>=1.0.1
+streamlit-webrtc>=0.64.5
 
 # ── Graph / Network ──────────────────────────────────────────
 networkx>=3.2.0
