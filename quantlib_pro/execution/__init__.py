@@ -9,6 +9,9 @@ Provides:
   - Backtesting framework for strategy evaluation
 """
 
+# SDK Manager interface
+from .manager import ExecutionManager
+
 from .order_book import (
     Order,
     Trade,

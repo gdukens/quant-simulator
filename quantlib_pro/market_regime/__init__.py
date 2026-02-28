@@ -3,9 +3,12 @@ Market regime detection suite.
 
 Provides:
   - HMM-based regime detection (Bull/Bear/Sideways)
-  - Volatility regime classification (Low/Medium/High)
+  - Volatility regime classification (Low/Medium/High)  
   - Trend regime detection (Uptrend/Downtrend/Sideways)
 """
+
+# SDK Manager interface
+from .manager import MarketRegimeManager
 
 from .hmm_detector import (
     RegimeType,

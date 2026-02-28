@@ -5,7 +5,12 @@ Consolidates:
 - Monte-Carlo-Option-Pricing-Simulator
 - Volatility-Surface-Builder
 - Bachelier Model (Arithmetic Brownian Motion)
+- Options pricing and Greeks calculation tools
 """
+
+# SDK Manager interface
+from .manager import OptionsManager
+
 # Black-Scholes analytical pricing
 from quantlib_pro.options.black_scholes import (
     delta as bs_delta,
@@ -49,6 +54,8 @@ from quantlib_pro.options.greeks import (
 )
 
 __all__ = [
+    # SDK Manager
+    "OptionsManager",
     # Black-Scholes
     "price_call",
     "price_put",

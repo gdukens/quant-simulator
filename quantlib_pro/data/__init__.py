@@ -1,5 +1,8 @@
 """Market data pipeline: resilient fetching, multi-tier caching, quality validation, multi-provider support."""
 
+# SDK Manager interface
+from .manager import DataManager
+
 from quantlib_pro.data.cache import get_dataframe, set_dataframe
 from quantlib_pro.data.fetcher import DataFetchError, ResilientDataFetcher
 from quantlib_pro.data.quality import (
@@ -61,6 +64,8 @@ except ImportError:
     MultiProviderAggregator = None
 
 __all__ = [
+    # SDK Manager
+    "DataManager",
     # fetcher
     "ResilientDataFetcher",
     "DataFetchError",

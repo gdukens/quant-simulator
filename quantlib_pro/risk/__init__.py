@@ -4,7 +4,11 @@ Consolidates:
 - Real-Time-Stress-Detection (market risk variant)
 - Tail-Risk-Distribution-Morph-Engine
 - Portfolio-Fragility-Hidden-Leverage-Map
+- Risk management and analysis tools
 """
+
+# SDK Manager interface
+from .manager import RiskManager
 
 # Risk limits (Week 2)
 from quantlib_pro.risk.limits import (
@@ -45,6 +49,8 @@ from quantlib_pro.risk.advanced_analytics import (
 )
 
 __all__ = [
+    # SDK Manager
+    "RiskManager",
     # Limits
     "RiskLimitFramework",
     "LimitCheckResult",

@@ -6,7 +6,11 @@ Provides:
   - Efficient frontier construction
   - Risk parity allocation
   - Black-Litterman model with investor views
+  - Portfolio management and analysis tools
 """
+
+# SDK Manager interface
+from .manager import PortfolioManager
 
 from .optimization import (
     PortfolioResult,
@@ -29,6 +33,8 @@ from .black_litterman import (
 )
 
 __all__ = [
+    # SDK Manager
+    "PortfolioManager",
     # Optimization
     "PortfolioResult",
     "max_sharpe_portfolio",

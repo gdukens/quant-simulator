@@ -8,6 +8,9 @@ Consolidates:
 Provides advanced analytical tools for market analysis.
 """
 
+# SDK Manager interface
+from .manager import AnalyticsManager
+
 # Correlation analysis (Week 15)
 from quantlib_pro.analytics.correlation_analysis import (
     CorrelationAnalyzer,
@@ -17,6 +20,8 @@ from quantlib_pro.analytics.correlation_analysis import (
 )
 
 __all__ = [
+    # SDK Manager
+    "AnalyticsManager",
     # Correlation
     "CorrelationAnalyzer",
     "CorrelationBreakdown",

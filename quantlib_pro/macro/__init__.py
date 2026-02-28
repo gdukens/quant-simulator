@@ -2,6 +2,9 @@
 Macro analysis: correlations, economic indicators, sentiment.
 """
 
+# SDK Manager interface
+from .manager import MacroManager
+
 from quantlib_pro.macro.correlation import (
     CorrelationMetrics,
     rolling_correlation,

@@ -2,6 +2,9 @@
 Volatility surface and term structure analysis.
 """
 
+# SDK Manager interface  
+from .manager import VolatilityManager
+
 from quantlib_pro.volatility.surface import (
     SurfacePoint,
     VolatilitySurface,
@@ -23,6 +26,8 @@ from quantlib_pro.volatility.smile_models import (
 )
 
 __all__ = [
+    # SDK Manager
+    "VolatilityManager",
     # Surface construction
     "SurfacePoint",
     "VolatilitySurface",

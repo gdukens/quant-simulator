@@ -1,0 +1,35 @@
+include README.md
+include LICENSE
+include pyproject.toml
+include requirements.txt  
+include SDK_README.md
+include PYPI_PUBLICATION_GUIDE.md
+
+# Documentation
+recursive-include docs *
+
+# Data files
+recursive-include quantlib_pro/data *.json *.csv *.yaml *.yml
+recursive-include config *.json *.yaml *.yml
+
+# Templates and static files
+recursive-include quantlib_pro/ui *.html *.css *.js
+
+# Exclude development and cache files
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * .pytest_cache
+recursive-exclude * .mypy_cache
+recursive-exclude * *.log
+recursive-exclude * .DS_Store
+exclude .env
+exclude .env.*
+exclude docker-compose*.yml
+exclude Dockerfile
+prune .git
+prune .github
+prune .venv
+prune logs
+prune cache
+prune monitoring
+prune deploy
