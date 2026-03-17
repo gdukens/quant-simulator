@@ -19,11 +19,6 @@ from quantlib_pro.ui import components
 from quantlib_pro.data.market_data import MarketDataProvider
 
 # Configure page
-st.set_page_config(
-    page_title="Trading Signals & Strategy Lab",
-    page_icon="",
-    layout="wide"
-)
 
 # ============================================================================
 # Common Ticker List

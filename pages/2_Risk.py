@@ -16,11 +16,6 @@ from quantlib_pro.risk.stress import StressTester
 from quantlib_pro.data.market_data import MarketDataProvider
 
 # Page config
-st.set_page_config(
-    page_title="Risk Analytics - QuantLib Pro",
-    page_icon="",
-    layout="wide",
-)
 
 st.title("Risk Analytics")
 st.markdown("Comprehensive risk analysis including VaR, CVaR, stress testing, and tail risk metrics.")

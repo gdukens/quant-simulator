@@ -16,11 +16,6 @@ from quantlib_pro.portfolio.optimizer import PortfolioOptimizer
 from quantlib_pro.data.market_data import MarketDataProvider
 
 # Page config
-st.set_page_config(
-    page_title="Portfolio Optimization - QuantLib Pro",
-    page_icon="",
-    layout="wide",
-)
 
 st.title("Portfolio Optimization")
 st.markdown("Optimize portfolio allocations using advanced mean-variance optimization. Get dynamic insights and context-aware analysis of your portfolio's risk-return profile.")

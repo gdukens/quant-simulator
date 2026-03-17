@@ -28,11 +28,6 @@ from quantlib_pro.uat import (
 
 
 # Page config
-st.set_page_config(
-    page_title="UAT Dashboard",
-    page_icon="",
-    layout="wide"
-)
 
 st.title("User Acceptance Testing Dashboard")
 st.markdown("*Comprehensive UAT management, feedback collection, and quality assurance*")

@@ -20,11 +20,6 @@ from quantlib_pro.data.market_data import MarketDataProvider
 from quantlib_pro.market_microstructure import CalibratedOrderBookSimulator
 
 # Configure page
-st.set_page_config(
-    page_title="Liquidity & Market Microstructure",
-    page_icon="",
-    layout="wide"
-)
 
 # ============================================================================
 # Common Ticker List

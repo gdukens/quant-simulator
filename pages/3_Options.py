@@ -17,11 +17,6 @@ from quantlib_pro.options.bachelier import BachelierModel, bachelier_call, bache
 from quantlib_pro.utils.types import OptionType
 
 # Page config
-st.set_page_config(
-    page_title="Options Pricing - QuantLib Pro",
-    page_icon="",
-    layout="wide",
-)
 
 st.title(" Options Pricing")
 st.markdown("Price European options using Black-Scholes and Monte Carlo methods, analyze Greeks, and visualize payoffs.")

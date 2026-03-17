@@ -48,12 +48,6 @@ except ImportError as e:
     st.stop()
 
 # ── Page config ──────────────────────────────────────────────────────────────
-st.set_page_config(
-    page_title="Trader Stress Monitor",
-    page_icon="",
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 MODEL_PATH = os.path.abspath(

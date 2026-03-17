@@ -19,7 +19,6 @@ from quantlib_pro.execution.backtesting import (
 )
 from quantlib_pro.data.providers_legacy import DataProviderFactory
 
-st.set_page_config(page_title="Backtesting", page_icon="", layout="wide")
 
 st.title("Strategy Backtesting")
 st.markdown("Test trading strategies with historical data and analyze performance metrics.")

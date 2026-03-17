@@ -12,11 +12,6 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 
 # Page config
-st.set_page_config(
-    page_title="Advanced Analytics",
-    page_icon="",
-    layout="wide",
-)
 
 st.title("Advanced Analytics")
 st.markdown("Performance profiling, stress testing, and correlation analysis")

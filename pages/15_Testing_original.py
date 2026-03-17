@@ -17,11 +17,6 @@ from plotly.subplots import make_subplots
 import time
 
 # Page config
-st.set_page_config(
-    page_title="Testing & Validation",
-    page_icon="",
-    layout="wide",
-)
 
 st.title("Testing & Validation Dashboard")
 st.markdown("Performance testing, model validation, and chaos engineering")

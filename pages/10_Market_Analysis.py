@@ -13,11 +13,6 @@ from datetime import datetime, timedelta
 from scipy import stats
 
 # Page config
-st.set_page_config(
-    page_title="Market Analysis",
-    page_icon="",
-    layout="wide",
-)
 
 st.title("Market Analysis")
 st.markdown("Technical analysis, trend detection, and volatility comparison across multiple stocks")

@@ -14,11 +14,6 @@ from quantlib_pro.market_regime.hmm_detector import detect_regimes_hmm
 from quantlib_pro.data.market_data import MarketDataProvider
 
 # Page config
-st.set_page_config(
-    page_title="Market Regime - QuantLib Pro",
-    page_icon="",
-    layout="wide",
-)
 
 st.title("Market Regime Detection")
 st.markdown("Identify market regimes (bull, bear, high vol, low vol) using Hidden Markov Models.")

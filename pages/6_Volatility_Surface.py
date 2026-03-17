@@ -13,11 +13,6 @@ from quantlib_pro.ui import components
 from quantlib_pro.volatility.surface import construct_volatility_surface
 
 # Page config
-st.set_page_config(
-    page_title="Volatility Surface - QuantLib Pro",
-    page_icon="",
-    layout="wide",
-)
 
 st.title("Volatility Surface")
 st.markdown("Construct and analyze implied volatility surfaces across strikes and maturities.")

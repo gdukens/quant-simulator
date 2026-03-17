@@ -11,7 +11,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 # Page config
-st.set_page_config(page_title="Data Management", page_icon="", layout="wide")
 
 st.title("Data Management")
 st.markdown("Manage market data sources, cache, and data quality.")

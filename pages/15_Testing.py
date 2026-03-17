@@ -18,11 +18,6 @@ import time
 from datetime import datetime
 
 # Page config
-st.set_page_config(
-    page_title="Testing & Validation",
-    page_icon="",
-    layout="wide",
-)
 
 st.title("Testing & Validation Dashboard")
 st.markdown("Live testing with actual model validation and performance benchmarks")
