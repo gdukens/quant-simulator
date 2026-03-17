@@ -8,7 +8,6 @@ developmentMode = false
 # Server settings
 runOnSave = false
 allowRunOnSave = false
-port = 8503
 address = "0.0.0.0"
 
 # File watcher
@@ -21,8 +20,6 @@ maxMessageSize = 200
 [browser]
 # Browser settings for cloud deployment
 gatherUsageStats = false
-serverAddress = "0.0.0.0"
-serverPort = 8503
 
 [theme]
 # Professional dark theme
