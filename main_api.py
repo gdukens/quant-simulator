@@ -88,7 +88,7 @@ async def lifespan(app: FastAPI):
     global cache_instance
     
     # Startup
-    logging.info("🚀 QuantLib Pro API starting up (Performance Mode)...")
+    logging.info(" QuantLib Pro API starting up (Performance Mode)...")
     
     # Initialize Redis connection pool for production performance
     try:
@@ -103,9 +103,9 @@ async def lifespan(app: FastAPI):
             socket_keepalive_options={1: 1, 2: 3, 3: 5}
         )
         await cache_instance.ping()
-        logging.info("✅ Redis cache connected with connection pooling")
+        logging.info(" Redis cache connected with connection pooling")
     except Exception as e:
-        logging.warning(f"⚠️  Redis cache unavailable: {e}")
+        logging.warning(f"  Redis cache unavailable: {e}")
         cache_instance = None
     
     # Set async event loop policy for better performance
@@ -115,22 +115,22 @@ async def lifespan(app: FastAPI):
     # Configure garbage collection for memory optimization
     gc.set_threshold(700, 10, 10)  # More aggressive GC
     
-    logging.info("✅ QuantLib Pro API ready (Production Performance Mode)")
+    logging.info(" QuantLib Pro API ready (Production Performance Mode)")
     
     yield  # Application is running
     
     # Shutdown
-    logging.info("⚠️  QuantLib Pro API shutting down...")
+    logging.info("  QuantLib Pro API shutting down...")
     
     # Close Redis connections
     if cache_instance:
         await cache_instance.close()
-        logging.info("✅ Redis connections closed")
+        logging.info(" Redis connections closed")
     
     # Force garbage collection on shutdown
     gc.collect()
     
-    logging.info("✅ Shutdown complete")
+    logging.info(" Shutdown complete")
 
 
 # =============================================================================
@@ -546,10 +546,10 @@ if __name__ == "__main__":
         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
     )
     
-    print("🚀 Starting QuantLib Pro API Server...")
-    print("📊 Quantitative Finance Platform")
-    print("🌐 Access API documentation at: http://localhost:8000/docs")
-    print("❤️  Health checks at: http://localhost:8000/health")
+    print(" Starting QuantLib Pro API Server...")
+    print(" Quantitative Finance Platform")
+    print(" Access API documentation at: http://localhost:8000/docs")
+    print("  Health checks at: http://localhost:8000/health")
     
     # Run with production-optimized uvicorn configuration
     uvicorn.run(

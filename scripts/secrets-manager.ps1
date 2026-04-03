@@ -14,7 +14,7 @@ Add-Type -AssemblyName System.Security
 Add-Type -AssemblyName System.Web
 
 function Write-SecureLog {
-    param([string]$Message, [string]$Color = "White", [string]$Icon = "🔐")
+    param([string]$Message, [string]$Color = "White", [string]$Icon = "")
     Write-Host "$Icon $Message" -ForegroundColor $Color
 }
 
@@ -94,7 +94,7 @@ function Test-SecretStrength {
 }
 
 function Generate-ProductionSecrets {
-    Write-SecureLog "Generating Production-Grade Secrets..." "Cyan" "🛠️"
+    Write-SecureLog "Generating Production-Grade Secrets..." "Cyan" ""
     
     $secrets = @{
         # Authentication & Authorization
@@ -143,7 +143,7 @@ function Create-SecureEnvFile {
 # Generated: $((Get-Date).ToString("yyyy-MM-dd HH:mm:ss UTC"))
 # Security Level: ENTERPRISE GRADE
 # ══════════════════════════════════════════════════════════════════════════════
-# 🚨 CRITICAL SECURITY NOTICE:
+#  CRITICAL SECURITY NOTICE:
 #    - This file contains production secrets
 #    - NEVER commit to version control
 #    - Store in secure location with restricted access
@@ -227,7 +227,7 @@ SECURITY_MODE=strict
         $acl.SetAccessRule($rule)
         Set-Acl -Path $envFile -AclObject $acl
     } catch {
-        Write-SecureLog "⚠️  Could not set file permissions: $($_.Exception.Message)" "Yellow" "⚠️"
+        Write-SecureLog "  Could not set file permissions: $($_.Exception.Message)" "Yellow" ""
     }
     
     return $envFile
@@ -235,7 +235,7 @@ SECURITY_MODE=strict
 
 function Validate-CurrentSecrets {
     if (Test-Path ".env") {
-        Write-SecureLog "Validating Current Secret Strength..." "Blue" "🔍"
+        Write-SecureLog "Validating Current Secret Strength..." "Blue" ""
         
         $content = Get-Content ".env"
         $weakSecrets = @()
@@ -249,9 +249,9 @@ function Validate-CurrentSecrets {
                     $strength = Test-SecretStrength -Secret $value
                     
                     $status = switch ($strength.Grade) {
-                        "STRONG" { "✅" }
-                        "MEDIUM" { "⚠️ " }
-                        "WEAK" { "❌" }
+                        "STRONG" { "" }
+                        "MEDIUM" { " " }
+                        "WEAK" { "" }
                     }
                     
                     Write-SecureLog "$status $key`: $($strength.Grade) (Score: $($strength.Score)/100)" -Color $(
@@ -274,70 +274,70 @@ function Validate-CurrentSecrets {
         }
         
         if ($weakSecrets.Count -eq 0) {
-            Write-SecureLog "✅ All secrets meet security requirements!" "Green" "🎉"
+            Write-SecureLog " All secrets meet security requirements!" "Green" ""
         } else {
-            Write-SecureLog "⚠️  Found $($weakSecrets.Count) weak secrets that need replacement" "Yellow" "⚠️"
+            Write-SecureLog "  Found $($weakSecrets.Count) weak secrets that need replacement" "Yellow" ""
         }
         
         return $weakSecrets.Count -eq 0
     } else {
-        Write-SecureLog "❌ No .env file found" "Red" "❌"
+        Write-SecureLog " No .env file found" "Red" ""
         return $false
     }
 }
 
 # Main execution
-Write-SecureLog "QuantLib Pro - Production Secrets Management" "Cyan" "🔐"
+Write-SecureLog "QuantLib Pro - Production Secrets Management" "Cyan" ""
 Write-SecureLog "═══════════════════════════════════════════" "Gray"
 
 switch ($true) {
     $Generate {
-        Write-SecureLog "🛠️  GENERATING PRODUCTION SECRETS" "Green" "🛠️"
+        Write-SecureLog "  GENERATING PRODUCTION SECRETS" "Green" ""
         
         $secrets = Generate-ProductionSecrets
         $envFile = Create-SecureEnvFile -Secrets $secrets -Environment $Environment
         
-        Write-SecureLog "✅ Production secrets generated successfully!" "Green" "✅"
-        Write-SecureLog "📁 Configuration saved to: $envFile" "Blue" "📁"
-        Write-SecureLog "🔒 File permissions set to restricted access" "Blue" "🔒"
+        Write-SecureLog " Production secrets generated successfully!" "Green" ""
+        Write-SecureLog " Configuration saved to: $envFile" "Blue" ""
+        Write-SecureLog " File permissions set to restricted access" "Blue" ""
         
         # Security summary
         Write-SecureLog "" 
-        Write-SecureLog "🛡️  SECURITY SUMMARY:" "Cyan" "🛡️"
-        Write-SecureLog "  • JWT Secret: 512-bit cryptographically secure" "White" "🔑"
-        Write-SecureLog "  • Encryption Keys: AES-256 compatible" "White" "🔐"
-        Write-SecureLog "  • Database Passwords: Enterprise strength" "White" "🗄️"
-        Write-SecureLog "  • All secrets: Cryptographically random" "White" "⚡"
-        Write-SecureLog "  • Next rotation: $((Get-Date).AddDays(90).ToString('yyyy-MM-dd'))" "White" "📅"
+        Write-SecureLog "  SECURITY SUMMARY:" "Cyan" ""
+        Write-SecureLog "  • JWT Secret: 512-bit cryptographically secure" "White" ""
+        Write-SecureLog "  • Encryption Keys: AES-256 compatible" "White" ""
+        Write-SecureLog "  • Database Passwords: Enterprise strength" "White" ""
+        Write-SecureLog "  • All secrets: Cryptographically random" "White" ""
+        Write-SecureLog "  • Next rotation: $((Get-Date).AddDays(90).ToString('yyyy-MM-dd'))" "White" ""
     }
     
     $Validate {
-        Write-SecureLog "🔍 VALIDATING SECRET STRENGTH" "Blue" "🔍"
+        Write-SecureLog " VALIDATING SECRET STRENGTH" "Blue" ""
         $isSecure = Validate-CurrentSecrets
         
         if ($isSecure) {
-            Write-SecureLog "🎉 All secrets are production-ready!" "Green" "🎉"
+            Write-SecureLog " All secrets are production-ready!" "Green" ""
         } else {
-            Write-SecureLog "⚠️  Secrets need strengthening for production use" "Yellow" "⚠️"
-            Write-SecureLog "💡 Run with -Generate to create secure secrets" "Blue" "💡"
+            Write-SecureLog "  Secrets need strengthening for production use" "Yellow" ""
+            Write-SecureLog " Run with -Generate to create secure secrets" "Blue" ""
         }
     }
     
     $Backup {
-        Write-SecureLog "💾 CREATING ENCRYPTED BACKUP" "Blue" "💾"
+        Write-SecureLog " CREATING ENCRYPTED BACKUP" "Blue" ""
         # Implementation for encrypted backup
-        Write-SecureLog "✅ Backup functionality ready for implementation" "Green" "✅"
+        Write-SecureLog " Backup functionality ready for implementation" "Green" ""
     }
     
     default {
-        Write-SecureLog "Production Secrets Management System" "Blue" "🔐"
-        Write-SecureLog "Usage:" "Yellow" "📖"
+        Write-SecureLog "Production Secrets Management System" "Blue" ""
+        Write-SecureLog "Usage:" "Yellow" ""
         Write-SecureLog "  -Generate     Create new production-grade secrets" "White"
         Write-SecureLog "  -Validate     Check current secret strength" "White" 
         Write-SecureLog "  -Rotate       Rotate existing secrets" "White"
         Write-SecureLog "  -Backup       Create encrypted backup" "White"
         Write-SecureLog "" 
-        Write-SecureLog "Examples:" "Green" "💡"
+        Write-SecureLog "Examples:" "Green" ""
         Write-SecureLog "  .\secrets-manager.ps1 -Generate" "White"
         Write-SecureLog "  .\secrets-manager.ps1 -Validate" "White"
     }

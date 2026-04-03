@@ -413,7 +413,7 @@ with monitor.track('portfolio_optimization'):
 metrics = monitor.get_metrics('portfolio_optimization')
 print(f"\nOptimization Performance:")
 print(f"Duration: {metrics['avg_duration_ms']:.0f}ms")
-print(f"Status: {'✅ Normal' if metrics['is_healthy'] else '⚠️ Degraded'}")
+print(f"Status: {' Normal' if metrics['is_healthy'] else ' Degraded'}")
 ```
 
 ---

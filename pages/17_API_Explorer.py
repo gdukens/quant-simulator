@@ -521,11 +521,11 @@ def generate_python_code(method: str, url: str, params: dict = None, body: dict 
         "",
         "# ===== HANDLE RESPONSE =====",
         "if response.status_code == 200:",
-        "    print('✓ Success!')",
+        "    print(' Success!')",
         "    data = response.json()",
         "    print(json.dumps(data, indent=2))",
         "else:",
-        "    print(f'✗ Error: {response.status_code}')",
+        "    print(f' Error: {response.status_code}')",
         "    print(response.text)"
     ])
     
@@ -643,24 +643,24 @@ def run_python_code(code: str) -> str:
             final_output += f"\n[WARNINGS/ERRORS]\n{errors}"
         
         final_output += "\n" + "="*50
-        final_output += f"\n✓ Completed successfully in {elapsed:.3f}s"
+        final_output += f"\n Completed successfully in {elapsed:.3f}s"
         
         return final_output
     
     except requests.exceptions.RequestException as e:
         elapsed = time.time() - start_time
-        return f"[NETWORK ERROR]\n{str(e)}\n\nCheck that the API server is running and the URL is correct.\n\n✗ Failed after {elapsed:.3f}s"
+        return f"[NETWORK ERROR]\n{str(e)}\n\nCheck that the API server is running and the URL is correct.\n\n Failed after {elapsed:.3f}s"
     
     except json.JSONDecodeError as e:
         elapsed = time.time() - start_time
-        return f"[JSON ERROR]\n{str(e)}\n\nThe response was not valid JSON.\n\n✗ Failed after {elapsed:.3f}s"
+        return f"[JSON ERROR]\n{str(e)}\n\nThe response was not valid JSON.\n\n Failed after {elapsed:.3f}s"
     
     except Exception as e:
         elapsed = time.time() - start_time
         error_lines = traceback.format_exc().split('\n')
         # Filter out internal exec() lines
         relevant_lines = [l for l in error_lines if '<string>' not in l or 'File' in l]
-        return f"[RUNTIME ERROR]\n{''.join(relevant_lines)}\n✗ Failed after {elapsed:.3f}s"
+        return f"[RUNTIME ERROR]\n{''.join(relevant_lines)}\n Failed after {elapsed:.3f}s"
 
 
 def search_endpoints(query: str) -> List[dict]:
@@ -800,7 +800,7 @@ with right_col:
         
         with col1:
             st.markdown("""
-            ### 1️⃣ Find Endpoint
+            ### 1⃣ Find Endpoint
             
             **Browse** the endpoint collections on the left panel, organized by category.
             
@@ -809,7 +809,7 @@ with right_col:
         
         with col2:
             st.markdown("""
-            ### 2️⃣ Configure & Test
+            ### 2⃣ Configure & Test
             
             **Edit Parameters** - Modify path params, query params, and request body.
             
@@ -818,7 +818,7 @@ with right_col:
         
         with col3:
             st.markdown("""
-            ### 3️⃣ Generate Code
+            ### 3⃣ Generate Code
             
             **View Code** - Get production-ready Python, curl, or JavaScript code.
             
@@ -837,7 +837,7 @@ with right_col:
         with stat_col2:
             st.metric("Categories", categories)
         with stat_col3:
-            api_status = "✅ Online" if check_api_status() else "❌ Offline"
+            api_status = " Online" if check_api_status() else " Offline"
             st.metric("API Status", api_status)
         with stat_col4:
             history_count = len(st.session_state.request_history)
@@ -846,7 +846,7 @@ with right_col:
         st.markdown("---")
         
         # Popular endpoints
-        st.markdown("### 🔥 Popular Endpoints")
+        st.markdown("###  Popular Endpoints")
         
         popular = [
             ("Health", "Health Check"),
@@ -956,9 +956,9 @@ with right_col:
             )
             try:
                 body_data = json.loads(body_input)
-                st.success("✓ Valid JSON")
+                st.success(" Valid JSON")
             except json.JSONDecodeError as e:
-                st.error(f"✗ Invalid JSON: {e.msg} at line {e.lineno}, column {e.colno}")
+                st.error(f" Invalid JSON: {e.msg} at line {e.lineno}, column {e.colno}")
                 json_valid = False
                 body_data = None
         
@@ -968,12 +968,12 @@ with right_col:
             # Disable send if JSON is invalid
             can_send = json_valid or not endpoint.get("body")
             if can_send:
-                send_clicked = st.button("🚀 SEND REQUEST", type="primary", use_container_width=True)
+                send_clicked = st.button(" SEND REQUEST", type="primary", use_container_width=True)
             else:
-                send_clicked = st.button("🚀 SEND REQUEST", type="primary", use_container_width=True, disabled=True)
-                st.caption("⚠️ Fix JSON errors before sending")
+                send_clicked = st.button(" SEND REQUEST", type="primary", use_container_width=True, disabled=True)
+                st.caption(" Fix JSON errors before sending")
         with btn_cols[1]:
-            if st.button("🗑️ Clear Response", use_container_width=True):
+            if st.button(" Clear Response", use_container_width=True):
                 st.session_state.response_data = None
                 st.session_state.response_status = None
                 st.session_state.code_output = None
@@ -1002,16 +1002,16 @@ with right_col:
                 
                 # Show toast notification
                 if status == 0:
-                    st.toast("❌ Request failed - check connection", icon="❌")
+                    st.toast(" Request failed - check connection", icon="")
                 elif 200 <= status < 300:
-                    st.toast(f"✅ Success! {status} in {elapsed:.0f}ms", icon="✅")
+                    st.toast(f" Success! {status} in {elapsed:.0f}ms", icon="")
                 else:
-                    st.toast(f"⚠️ Error {status}", icon="⚠️")
+                    st.toast(f" Error {status}", icon="")
         
         # Response section
         if st.session_state.response_data is not None:
             st.markdown("---")
-            st.markdown("### 📨 Response")
+            st.markdown("###  Response")
             
             # Status bar
             status = st.session_state.response_status
@@ -1020,37 +1020,37 @@ with right_col:
             stat_cols = st.columns([1, 1, 1, 1])
             with stat_cols[0]:
                 if status == 0:
-                    st.error("❌ Connection Error")
+                    st.error(" Connection Error")
                 elif 200 <= status < 300:
-                    st.success(f"✅ {status} OK")
+                    st.success(f" {status} OK")
                 elif 400 <= status < 500:
-                    st.warning(f"⚠️ {status} Client Error")
+                    st.warning(f" {status} Client Error")
                 elif 500 <= status < 600:
-                    st.error(f"❌ {status} Server Error")
+                    st.error(f" {status} Server Error")
                 else:
-                    st.info(f"ℹ️ {status}")
+                    st.info(f"ℹ {status}")
             
             with stat_cols[1]:
                 if elapsed < 100:
-                    st.success(f"⚡ {elapsed:.0f} ms")
+                    st.success(f" {elapsed:.0f} ms")
                 elif elapsed < 1000:
-                    st.info(f"⏱️ {elapsed:.0f} ms")
+                    st.info(f"⏱ {elapsed:.0f} ms")
                 else:
-                    st.warning(f"🐌 {elapsed:.0f} ms")
+                    st.warning(f" {elapsed:.0f} ms")
             
             with stat_cols[2]:
                 size = len(json.dumps(st.session_state.response_data))
                 if size < 1024:
-                    st.info(f"📦 {size} B")
+                    st.info(f" {size} B")
                 elif size < 1024*1024:
-                    st.info(f"📦 {size/1024:.1f} KB")
+                    st.info(f" {size/1024:.1f} KB")
                 else:
-                    st.info(f"📦 {size/(1024*1024):.1f} MB")
+                    st.info(f" {size/(1024*1024):.1f} MB")
             
             with stat_cols[3]:
                 # Copy response button
-                if st.button("📋 Copy JSON", use_container_width=True):
-                    st.toast("Response copied to clipboard!", icon="✅")
+                if st.button(" Copy JSON", use_container_width=True):
+                    st.toast("Response copied to clipboard!", icon="")
             
             # Check if this is an error response
             data = st.session_state.response_data
@@ -1064,12 +1064,12 @@ with right_col:
                 if "message" in data:
                     st.markdown(f"**Message:** {data.get('message')}")
                 if "suggestion" in data:
-                    st.info(f"💡 **Suggestion:** {data.get('suggestion')}")
+                    st.info(f" **Suggestion:** {data.get('suggestion')}")
                 if "detail" in data:
                     st.markdown(f"**Details:** {data.get('detail')}")
             
             # Response tabs
-            resp_tabs = st.tabs(["📄 JSON", "📊 Table", "📈 Chart"])
+            resp_tabs = st.tabs([" JSON", " Table", " Chart"])
             
             with resp_tabs[0]:
                 st.json(st.session_state.response_data)
@@ -1145,7 +1145,7 @@ with right_col:
                                     break
                     
                     if not chart_created:
-                        st.info("💡 No chartable data detected. Charts work best with:\n- Portfolio weights (dict)\n- Numeric metrics (var, sharpe, etc.)\n- Time series (dates + prices/values)")
+                        st.info(" No chartable data detected. Charts work best with:\n- Portfolio weights (dict)\n- Numeric metrics (var, sharpe, etc.)\n- Time series (dates + prices/values)")
                 
                 except Exception as e:
                     st.warning(f"Could not create chart: {str(e)}")
@@ -1156,7 +1156,7 @@ with right_col:
         st.markdown("#### CODE PLAYGROUND")
         
         # Info box
-        st.info("💡 **Tip:** Parameters are clearly marked in sections. Edit the values in `params`, `payload`, etc. then click RUN CODE to test.")
+        st.info(" **Tip:** Parameters are clearly marked in sections. Edit the values in `params`, `payload`, etc. then click RUN CODE to test.")
         
         lang_col, action_col = st.columns([1, 3])
         with lang_col:
@@ -1175,7 +1175,7 @@ with right_col:
         code_col, output_col = st.columns(2)
         
         with code_col:
-            st.markdown("**Code Editor** ✏️")
+            st.markdown("**Code Editor** ")
             code_input = st.text_area(
                 "code_editor",
                 value=generated_code,
@@ -1193,7 +1193,7 @@ with right_col:
                     run_clicked = False
                     st.button("▶ RUN CODE", disabled=True, use_container_width=True, help="Only Python can be executed in sandbox")
             with reset_col:
-                if st.button("🔄 Reset to Original", use_container_width=True):
+                if st.button(" Reset to Original", use_container_width=True):
                     st.session_state.code_output = None
                     st.rerun()
             
@@ -1209,12 +1209,12 @@ with right_col:
                             st.session_state.code_output = f"[EXECUTION ERROR]\n{str(e)}"
         
         with output_col:
-            st.markdown("**Execution Output** 📋")
+            st.markdown("**Execution Output** ")
             if st.session_state.code_output:
                 # Color-code based on success/failure
-                if "✓" in st.session_state.code_output:
+                if "" in st.session_state.code_output:
                     st.success("Execution successful!")
-                elif "✗" in st.session_state.code_output:
+                elif "" in st.session_state.code_output:
                     st.error("Execution failed - see details below")
                 
                 st.code(st.session_state.code_output, language="text")

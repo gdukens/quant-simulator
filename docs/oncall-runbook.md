@@ -841,22 +841,22 @@ docker exec postgres psql -U quantlib -c "SELECT * FROM pg_stat_database WHERE d
 ## On-Call Best Practices
 
 ### Do's
-✅ Acknowledge alerts within 15 minutes  
-✅ Document everything in incident channel  
-✅ Escalate early if unsure  
-✅ Update status page proactively  
-✅ Take breaks (get backup coverage)  
-✅ Ask for help when needed  
-✅ Keep calm under pressure  
+ Acknowledge alerts within 15 minutes  
+ Document everything in incident channel  
+ Escalate early if unsure  
+ Update status page proactively  
+ Take breaks (get backup coverage)  
+ Ask for help when needed  
+ Keep calm under pressure  
 
 ### Don'ts
-❌ Ignore alerts  
-❌ Make changes without documenting  
-❌ Skip communication steps  
-❌ Work beyond exhaustion  
-❌ Blame others  
-❌ Rush without thinking  
-❌ Forget to learn from incidents  
+ Ignore alerts  
+ Make changes without documenting  
+ Skip communication steps  
+ Work beyond exhaustion  
+ Blame others  
+ Rush without thinking  
+ Forget to learn from incidents  
 
 ---
 

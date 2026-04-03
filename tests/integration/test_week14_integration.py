@@ -295,11 +295,11 @@ def test_full_workflow_integration():
     print(f"   Integrity: {audit.verify_integrity()['integrity_rate']:.0%}")
     
     print(f"\n4. COMPLIANCE:")
-    print(f"   Status: {'✓ COMPLIANT' if compliance_report.is_compliant else '✗ NON-COMPLIANT'}")
+    print(f"   Status: {' COMPLIANT' if compliance_report.is_compliant else ' NON-COMPLIANT'}")
     print(f"   Violations: {len(compliance_report.violations)}")
     
     print(f"\n5. GOVERNANCE:")
-    print(f"   Policy Result: {'✓ APPROVED' if policy_result.approved else '✗ REJECTED'}")
+    print(f"   Policy Result: {' APPROVED' if policy_result.approved else ' REJECTED'}")
     print(f"   Warnings: {len(policy_result.warnings)}")
     
     assert len(data) > 0
@@ -316,4 +316,4 @@ if __name__ == '__main__':
     test_policy_engine_with_approval_workflow()
     test_full_workflow_integration()
     
-    print("\n✓ All integration tests passed!")
+    print("\n All integration tests passed!")

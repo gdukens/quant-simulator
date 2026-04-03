@@ -15,10 +15,10 @@ load_dotenv()
 print("=" * 60)
 print("LITE MODE INFRASTRUCTURE INITIALIZATION")
 print("=" * 60)
-print("\n📦 Components:")
-print("  ✓ Redis Cache (for performance)")
-print("  ✓ In-Memory Storage (session state)")
-print("  ✗ PostgreSQL (deferred - auth issues to resolve)")
+print("\n Components:")
+print("   Redis Cache (for performance)")
+print("   In-Memory Storage (session state)")
+print("   PostgreSQL (deferred - auth issues to resolve)")
 
 # Test Redis  
 print("\n[1/2] Testing Redis connection...")
@@ -40,13 +40,13 @@ try:
     r.setex("quantlib:test_ttl", 300, "expires_in_5min")
     
     info = r.info()
-    print(f"✓ Redis {info['redis_version']} connected")
+    print(f" Redis {info['redis_version']} connected")
     print(f"  • Host: {redis_host}:{redis_port}")
     print(f"  • Memory: {info['used_memory_human']}")
     print(f"  • Keys: {r.dbsize()}")
     
 except Exception as e:
-    print(f"✗ Redis connection failed: {e}")
+    print(f" Redis connection failed: {e}")
     print("  Application will run without caching (slower)")
 
 # Show configuration
@@ -57,19 +57,19 @@ print(f"  • Cache Enabled: {os.getenv('CACHE_ENABLED', 'true')}")
 print(f"  • Cache TTL: {os.getenv('CACHE_TTL', '3600')}s")
 
 print("\n" + "=" * 60)
-print("✓ LITE MODE READY!")
+print(" LITE MODE READY!")
 print("=" * 60)
 
-print("\n📊 Benefits of LITE MODE:")
+print("\n Benefits of LITE MODE:")
 print("  • 10-50x faster correlation calculations (Redis cache)")
 print("  • Reduced Alpha Vantage API calls")
 print("  • Session persistence across page navigation")
 print("  • No database setup required")
 
-print("\n🚀 Next steps:")
+print("\n Next steps:")
 print("  1. Start Streamlit: streamlit run streamlit_app.py --server.port 8503")
 print("  2. Navigate pages - see caching in action")
 print("  3. Check Redis: docker exec quantlib-pro-redis redis-cli KEYS 'quantlib:*'")
 
-print("\n📝 Note: PostgreSQL persistence deferred due to auth configuration.")
+print("\n Note: PostgreSQL persistence deferred due to auth configuration.")
 print("   LITE MODE provides 80% of production benefits with zero setup.")

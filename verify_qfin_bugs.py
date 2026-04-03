@@ -34,7 +34,7 @@ try:
     from QFin.stochastics import ArithmeticBrownianMotion
     QFIN_AVAILABLE = True
 except ImportError as e:
-    print(f"❌ Cannot import Q-Fin: {e}")
+    print(f" Cannot import Q-Fin: {e}")
     QFIN_AVAILABLE = False
 
 
@@ -50,7 +50,7 @@ def test_put_gamma_bug():
     print("="*70)
     
     if not QFIN_AVAILABLE:
-        print("❌ SKIPPED - Q-Fin not available")
+        print(" SKIPPED - Q-Fin not available")
         return
     
     # Test parameters
@@ -71,20 +71,20 @@ def test_put_gamma_bug():
     
     # Check if they match
     if abs(call.gamma - correct_gamma) < 1e-10:
-        print("✅ Call gamma is CORRECT")
+        print(" Call gamma is CORRECT")
     else:
-        print(f"❌ Call gamma is WRONG (diff: {abs(call.gamma - correct_gamma):.2e})")
+        print(f" Call gamma is WRONG (diff: {abs(call.gamma - correct_gamma):.2e})")
     
     if abs(put.gamma - correct_gamma) < 1e-10:
-        print("✅ Put gamma is CORRECT")
+        print(" Put gamma is CORRECT")
     else:
-        print(f"❌ Put gamma is WRONG (diff: {abs(put.gamma - correct_gamma):.2e})")
+        print(f" Put gamma is WRONG (diff: {abs(put.gamma - correct_gamma):.2e})")
     
     # Final verdict
     if abs(call.gamma - put.gamma) < 1e-10:
-        print("\n✅ VERDICT: Call and Put gammas match (Bug may be fixed)")
+        print("\n VERDICT: Call and Put gammas match (Bug may be fixed)")
     else:
-        print(f"\n❌ VERDICT: Bug CONFIRMED - Put gamma differs by {abs(call.gamma - put.gamma):.2e}")
+        print(f"\n VERDICT: Bug CONFIRMED - Put gamma differs by {abs(call.gamma - put.gamma):.2e}")
         print("   Put gamma is using norm.cdf instead of norm.pdf")
 
 
@@ -100,7 +100,7 @@ def test_barrier_option_bug():
     print("="*70)
     
     if not QFIN_AVAILABLE:
-        print("❌ SKIPPED - Q-Fin not available")
+        print(" SKIPPED - Q-Fin not available")
         return
     
     print("\nTesting with small n to observe behavior...")
@@ -139,13 +139,13 @@ def test_barrier_option_bug():
         
         # If std dev is very low with small n, likely only using 1 simulation
         if np.std(prices) < 0.1 and n_sims == 10:
-            print("\n❌ VERDICT: Bug likely PRESENT - std dev too low for 10 simulations")
+            print("\n VERDICT: Bug likely PRESENT - std dev too low for 10 simulations")
             print("   This suggests the nested loop bug is resetting payouts")
         else:
-            print("\n✅ VERDICT: Bug may be FIXED - reasonable variance observed")
+            print("\n VERDICT: Bug may be FIXED - reasonable variance observed")
             
     except Exception as e:
-        print(f"\n❌ ERROR: Barrier option raised exception: {e}")
+        print(f"\n ERROR: Barrier option raised exception: {e}")
         print("   This confirms the implementation is broken")
 
 
@@ -160,7 +160,7 @@ def test_performance_benchmark():
     print("="*70)
     
     if not QFIN_AVAILABLE:
-        print("❌ SKIPPED - Q-Fin not available")
+        print(" SKIPPED - Q-Fin not available")
         return
     
     S, K, sigma, r = 100, 100, 0.3, 0.01
@@ -211,15 +211,15 @@ def test_performance_benchmark():
     
     print("\n--- Verdict ---")
     if mc_time_10k > 1.0:  # More than 1 second for 10k sims
-        print("❌ Performance is SLOW (>1s for 10k simulations)")
+        print(" Performance is SLOW (>1s for 10k simulations)")
         print("   Needs vectorization and optimization")
     else:
-        print("✅ Performance is ACCEPTABLE")
+        print(" Performance is ACCEPTABLE")
     
     if mc_time_1k / mc_time_10k > 0.05:  # Should scale roughly linearly
-        print("⚠️  Scaling is sub-linear (object creation overhead likely)")
+        print("  Scaling is sub-linear (object creation overhead likely)")
     else:
-        print("✅ Good linear scaling")
+        print(" Good linear scaling")
 
 
 def test_arithmetic_brownian_motion():
@@ -233,7 +233,7 @@ def test_arithmetic_brownian_motion():
     print("="*70)
     
     if not QFIN_AVAILABLE:
-        print("❌ SKIPPED - Q-Fin not available")
+        print(" SKIPPED - Q-Fin not available")
         return
     
     # Bachelier model parameters
@@ -282,10 +282,10 @@ def test_arithmetic_brownian_motion():
     
     # Verify pricing formula is correct
     if abs(call_price - expected_call) < 1e-10:
-        print("\n✅ VERDICT: ABM pricing is CORRECT")
-        print("   ✅ This component should be EXTRACTED and kept")
+        print("\n VERDICT: ABM pricing is CORRECT")
+        print("    This component should be EXTRACTED and kept")
     else:
-        print("\n❌ VERDICT: ABM pricing has errors")
+        print("\n VERDICT: ABM pricing has errors")
 
 
 def run_all_tests():
@@ -299,7 +299,7 @@ def run_all_tests():
     print("="*70)
     
     if not QFIN_AVAILABLE:
-        print("\n❌ CRITICAL: Cannot import Q-Fin")
+        print("\n CRITICAL: Cannot import Q-Fin")
         print("   Make sure Q-Fin-main/ exists and contains QFin/ package")
         return
     

@@ -4,7 +4,7 @@
 
 The **Trader Stress Monitor** is a real-time computer vision system that analyzes facial expressions and micro-movements to detect stress levels during trading sessions. This helps traders maintain emotional discipline and recognize when stress might be affecting decision-making.
 
-## ⚠️ Important Notice
+##  Important Notice
 
 **This is a personal wellness monitoring tool, NOT a market stress indicator.**
 
@@ -143,9 +143,9 @@ def get_stress_score(metrics):
 ```
 
 **Composite Score Interpretation:**
-- 🟢 **Calm** (0.00 - 0.08): Optimal decision-making state
-- 🟡 **Mild** (0.08 - 0.15): Heightened awareness, monitor closely
-- 🔴 **High** (> 0.15): Consider taking a break
+-  **Calm** (0.00 - 0.08): Optimal decision-making state
+-  **Mild** (0.08 - 0.15): Heightened awareness, monitor closely
+-  **High** (> 0.15): Consider taking a break
 
 ---
 
@@ -205,7 +205,7 @@ The application requires webcam access:
 
 ```
 ┌─────────────────────────────────────┬─────────────────────┐
-│                                     │ 🚨 HIGH STRESS      │
+│                                     │  HIGH STRESS      │
 │                                     │                     │
 │     Live Video Feed                 │ Stress Score: 0.12  │
 │     (with facial landmarks)         │                     │
@@ -230,9 +230,9 @@ The application requires webcam access:
 - **Score**: Real-time composite stress score
 - **Metric Bars**: Individual component visualization
 - **Color Coding**:
-  - 🟢 Green: Normal range
-  - 🟡 Yellow: Elevated
-  - 🔴 Red: High stress
+  -  Green: Normal range
+  -  Yellow: Elevated
+  -  Red: High stress
 
 ---
 
@@ -257,9 +257,9 @@ graph TD
     E5 --> F
     F --> G[Stress Score 0-1]
     G --> H{Classification}
-    H -->|< 0.08| I[🟢 Calm]
-    H -->|0.08-0.15| J[🟡 Mild]
-    H -->|> 0.15| K[🔴 High]
+    H -->|< 0.08| I[ Calm]
+    H -->|0.08-0.15| J[ Mild]
+    H -->|> 0.15| K[ High]
 ```
 
 ### Frame Processing Pipeline
@@ -286,11 +286,11 @@ def process_frame(frame):
         
         # 6. Classify stress level
         if score < STRESS_THRESHOLDS['calm']:
-            level = "🟢 Calm"
+            level = " Calm"
         elif score < STRESS_THRESHOLDS['mild']:
-            level = "🟡 Mild"
+            level = " Mild"
         else:
-            level = "🔴 High"
+            level = " High"
         
         return score, level, metrics
 ```
@@ -389,21 +389,21 @@ Repeat:  3-5 cycles
 ### Long-Term Strategies
 
 **Daily:**
-- 🏋️ Exercise (30 min cardio or strength)
-- 🧘 Meditation (10-15 min mindfulness)
-- 💧 Hydration (8+ glasses water)
-- 😴 Sleep (7-8 hours)
+-  Exercise (30 min cardio or strength)
+-  Meditation (10-15 min mindfulness)
+-  Hydration (8+ glasses water)
+-  Sleep (7-8 hours)
 
 **Weekly:**
-- 📝 Review stress patterns in trading journal
-- 🎯 Identify high-stress triggers
-- 🔄 Adjust trading plan if needed
-- 🌳 Outdoor activity/nature exposure
+-  Review stress patterns in trading journal
+-  Identify high-stress triggers
+-  Adjust trading plan if needed
+-  Outdoor activity/nature exposure
 
 **Monthly:**
-- 📊 Analyze stress-performance correlation
-- 🎓 Update stress management techniques
-- 👨‍⚕️ Health checkup if persistent high stress
+-  Analyze stress-performance correlation
+-  Update stress management techniques
+- ‍ Health checkup if persistent high stress
 
 ---
 
@@ -497,7 +497,7 @@ import winsound  # Windows
 import os  # Cross-platform
 
 def play_alert(stress_level):
-    if stress_level == "🔴 High":
+    if stress_level == " High":
         # Windows
         winsound.Beep(1000, 200)  # Frequency, duration
         
@@ -557,13 +557,13 @@ logger.log(stress_score, stress_level, metrics)
 
 ### Disclaimers
 
-⚠️ **This tool:**
+ **This tool:**
 - Does NOT diagnose medical conditions
 - Should NOT replace professional mental health support
 - Is for self-awareness and wellness only
 - May not be accurate for everyone
 
-✅ **If experiencing persistent stress:**
+ **If experiencing persistent stress:**
 - Consult a licensed therapist or psychologist
 - Consider medical evaluation
 - Take breaks from trading

@@ -221,33 +221,33 @@ pages/17_API_Explorer.py
 17_API_Explorer.py
 │
 ├── SIDEBAR
-│   ├── 🔑 Authentication Widget
+│   ├──  Authentication Widget
 │   │   ├── username/password input
 │   │   ├── [Login] button → POST /auth/login → stores token in st.session_state
-│   │   └── status badge: 🟢 Authenticated / 🔴 Not Authenticated
+│   │   └── status badge:  Authenticated /  Not Authenticated
 │   │
-│   ├── 🌐 API Status Badge (live ping to /health)
+│   ├──  API Status Badge (live ping to /health)
 │   │
-│   ├── 🔍 Endpoint Search Box
+│   ├──  Endpoint Search Box
 │   │
-│   └── 📁 Domain Tree (17 domains)
-│       ├── 📊 Portfolio (5 endpoints)
-│       ├── ⚙️  Options (4 endpoints)
-│       ├── 🛡️  Risk (5 endpoints)
-│       ├── 🎯 Market Regime (4 endpoints)
-│       ├── 📉 Volatility (4 endpoints)
-│       ├── 🌍 Macro (3 endpoints)
-│       ├── 📈 Backtesting (4 endpoints)
-│       ├── 🔬 Analytics (4 endpoints)
-│       ├── 💾 Data (4 endpoints)
-│       ├── 📊 Market Analysis (5 endpoints)
-│       ├── 🔔 Trading Signals (4 endpoints)
-│       ├── 💧 Liquidity (5 endpoints)
-│       ├── 🌐 Systemic Risk (5 endpoints)
-│       ├── ⚡ Execution (5 endpoints)
-│       ├── ✅ Compliance (6 endpoints)
-│       ├── 🧪 UAT (6 endpoints)
-│       └── ❤️  Health (2 endpoints)
+│   └──  Domain Tree (17 domains)
+│       ├──  Portfolio (5 endpoints)
+│       ├──   Options (4 endpoints)
+│       ├──   Risk (5 endpoints)
+│       ├──  Market Regime (4 endpoints)
+│       ├──  Volatility (4 endpoints)
+│       ├──  Macro (3 endpoints)
+│       ├──  Backtesting (4 endpoints)
+│       ├──  Analytics (4 endpoints)
+│       ├──  Data (4 endpoints)
+│       ├──  Market Analysis (5 endpoints)
+│       ├──  Trading Signals (4 endpoints)
+│       ├──  Liquidity (5 endpoints)
+│       ├──  Systemic Risk (5 endpoints)
+│       ├──  Execution (5 endpoints)
+│       ├──  Compliance (6 endpoints)
+│       ├──  UAT (6 endpoints)
+│       └──   Health (2 endpoints)
 │
 └── MAIN PANEL
     ├── Endpoint Header
@@ -255,22 +255,22 @@ pages/17_API_Explorer.py
     │   ├── Path: /api/v1/portfolio/optimize
     │   └── Description text
     │
-    ├── 📝 Request Configuration
+    ├──  Request Configuration
     │   ├── Dynamic form (st.text_input / st.number_input / st.multiselect)
     │   ├── Fields auto-generated from ENDPOINT_CATALOG schema definitions
-    │   └── [Send Request 🚀] button
+    │   └── [Send Request ] button
     │
-    ├── 📊 Response Panel
+    ├──  Response Panel
     │   ├── Status badge: 200 OK | latency: 143ms
     │   ├── Auto-viz: chart if array detected / dataframe if table detected
     │   └── Raw JSON (st.json / st.code)
     │
     ├── </> Code Generator Tabs
-    │   ├── [🐍 Python SDK]
-    │   ├── [⚡ curl]
-    │   └── [📋 Copy]
+    │   ├── [ Python SDK]
+    │   ├── [ curl]
+    │   └── [ Copy]
     │
-    └── 🕐 Request History (collapsible, last 20 requests)
+    └──  Request History (collapsible, last 20 requests)
 ```
 
 #### **Endpoint Catalog Data Structure**
@@ -280,7 +280,7 @@ The Explorer is driven by a declarative `ENDPOINT_CATALOG` dictionary, making it
 ```python
 ENDPOINT_CATALOG = {
     "Portfolio": {
-        "icon": "📊",
+        "icon": "",
         "prefix": "/api/v1/portfolio",
         "endpoints": [
             {
@@ -307,7 +307,7 @@ ENDPOINT_CATALOG = {
         ]
     },
     "Risk": {
-        "icon": "🛡️",
+        "icon": "",
         "prefix": "/api/v1/risk",
         "endpoints": [
             {
@@ -572,104 +572,104 @@ quantlib health --watch --interval 30
 
 ```
 QuantLib Pro API.postman_collection.json
-├── 🔑 Authentication
+├──  Authentication
 │   ├── Login (POST /auth/login) → saves {{token}}
 │   └── Validate Token (GET /auth/validate)
 │
-├── ❤️  Health & Status
+├──   Health & Status
 │   ├── Health Check (GET /health)
 │   └── Detailed Health (GET /health/detailed)
 │
-├── 📊 Portfolio
+├──  Portfolio
 │   ├── Optimize Portfolio
 │   ├── Portfolio Performance
 │   ├── Efficient Frontier
 │   ├── Sharpe Analysis
 │   └── Portfolio Rebalance
 │
-├── ⚙️  Options & Derivatives
+├──   Options & Derivatives
 │   ├── Price Option (BS)
 │   ├── Calculate Greeks
 │   ├── Monte Carlo Pricing
 │   └── Volatility Surface
 │
-├── 🛡️  Risk Analysis
+├──   Risk Analysis
 │   ├── Value at Risk (VaR)
 │   ├── CVaR Calculation
 │   ├── Stress Testing
 │   ├── Tail Risk Analysis
 │   └── Drawdown Analysis
 │
-├── 🎯 Market Regime
+├──  Market Regime
 │   ├── Detect Regime
 │   ├── Regime History
 │   ├── Current Regime (GET)
 │   └── Regime Probabilities
 │
-├── 📉 Volatility
+├──  Volatility
 │   ├── Volatility Surface
 │   ├── GARCH Analysis
 │   ├── Realized Volatility
 │   └── Volatility Term Structure
 │
-├── 🌍 Macro Analysis
+├──  Macro Analysis
 │   ├── Macro Indicators
 │   ├── Correlation Regime
 │   └── Economic Calendar
 │
-├── 📈 Backtesting
+├──  Backtesting
 │   ├── List Strategies
 │   ├── Run Backtest
 │   ├── Strategy Performance
 │   └── Compare Strategies
 │
-├── 🔬 Advanced Analytics
+├──  Advanced Analytics
 │   ├── Correlation Analysis
 │   ├── PCA Analysis
 │   ├── Factor Analysis
 │   └── Return Attribution
 │
-├── 💾 Data Management
+├──  Data Management
 │   ├── Market Status (GET)
 │   ├── Stock Quote (GET)
 │   ├── Historical Data
 │   └── Data Quality Check
 │
-├── 📊 Market Analysis
+├──  Market Analysis
 │   ├── Technical Analysis
 │   ├── Volatility Comparison
 │   ├── Trend Analysis
 │   ├── Market Screener
 │   └── Price Levels (GET)
 │
-├── 🔔 Trading Signals
+├──  Trading Signals
 │   ├── Generate Signals
 │   ├── Backtest Signal
 │   ├── Screen Universe
 │   └── Current Signals (GET)
 │
-├── 💧 Liquidity
+├──  Liquidity
 │   ├── Order Book Simulation
 │   ├── Liquidity Metrics
 │   ├── Market Impact
 │   ├── Flash Crash Simulation
 │   └── Intraday Heatmap (GET)
 │
-├── 🌐 Systemic Risk
+├──  Systemic Risk
 │   ├── Network Analysis
 │   ├── CoVaR & SRISK
 │   ├── Fragility Index
 │   ├── Contagion Cascade
 │   └── Too-Big-to-Fail (GET)
 │
-├── ⚡ Execution
+├──  Execution
 │   ├── Market Impact Models
 │   ├── VWAP Schedule
 │   ├── TWAP Schedule
 │   ├── Optimal Trajectory
 │   └── Cost Analysis
 │
-├── ✅ Compliance
+├──  Compliance
 │   ├── Trade Check
 │   ├── Audit Log (GET)
 │   ├── Policy Evaluate
@@ -677,7 +677,7 @@ QuantLib Pro API.postman_collection.json
 │   ├── GDPR Status (GET)
 │   └── Position Limits (GET)
 │
-└── 🧪 UAT & Testing
+└──  UAT & Testing
     ├── Run UAT Scenarios
     ├── Bug Reports (GET)
     ├── Submit Feedback
@@ -856,42 +856,42 @@ advanced quant/
 
 ```
 ┌───────────────────────────────────────────────────────────────────────┐
-│  🔌 QuantLib Pro — API Explorer                              v1.0.0   │
+│   QuantLib Pro — API Explorer                              v1.0.0   │
 ├─────────────────────┬─────────────────────────────────────────────────┤
 │  SIDEBAR            │  MAIN AREA                                      │
 │                     │                                                  │
-│  🔑 Authentication  │  ┌────────────────────────────────────────────┐ │
+│   Authentication  │  ┌────────────────────────────────────────────┐ │
 │  ┌───────────────┐  │  │  [POST]  /api/v1/portfolio/optimize        │ │
 │  │ user: demo    │  │  │  Compute optimal portfolio weights (MPT)   │ │
 │  │ pass: ••••••• │  │  └────────────────────────────────────────────┘ │
-│  │ [Login 🔓]    │  │                                                  │
-│  │ 🟢 Logged In  │  │  ⚙️ REQUEST CONFIGURATION                       │
+│  │ [Login ]    │  │                                                  │
+│  │  Logged In  │  │   REQUEST CONFIGURATION                       │
 │  └───────────────┘  │  ──────────────────────────────────────────────  │
 │                     │  Tickers:  [AAPL] [GOOGL] [MSFT] [+ Add]       │
-│  🌐 API: 🟢 Online  │  Budget:   $  100,000                           │
+│   API:  Online  │  Budget:   $  100,000                           │
 │                     │  Target:   [Sharpe ▾]                           │
-│  🔍 [Search...]     │  Risk-free Rate: 0.045                          │
+│   [Search...]     │  Risk-free Rate: 0.045                          │
 │                     │                                                  │
-│  📁 Portfolio  ▶    │              [ 🚀 Send Request ]                │
-│  📁 Risk       ▶    │                                                  │
-│  📁 Options    ▶    │  ✅ 200 OK  •  143ms                             │
-│  📁 Regime     ▶    │  ──────────────────────────────────────────────  │
-│  📁 Volatility ▶    │  📊 Portfolio Weights                            │
-│  📁 Macro      ▶    │  ┌──────────────────────────────────┐           │
-│  📁 Backtesting▶    │  │  🍰 Pie Chart: AAPL 45%          │           │
-│  📁 Analytics  ▶    │  │               GOOGL 30%          │           │
-│  📁 Data       ▶    │  │               MSFT  25%          │           │
-│  📁 Mkt Anal.  ▶    │  └──────────────────────────────────┘           │
-│  📁 Signals    ▶    │                                                  │
-│  📁 Liquidity  ▶    │  📋 Raw JSON                                     │
-│  📁 Sys. Risk  ▶    │  { "optimal_weights": {"AAPL": 0.45, ...}       │
-│  📁 Execution  ▶    │    "sharpe_ratio": 1.82,                         │
-│  📁 Compliance ▶    │    "expected_return": 0.156,                     │
-│  📁 UAT        ▶    │    "volatility": 0.189 }                         │
-│  📁 Health     ▶    │                                                  │
+│   Portfolio  ▶    │              [  Send Request ]                │
+│   Risk       ▶    │                                                  │
+│   Options    ▶    │   200 OK  •  143ms                             │
+│   Regime     ▶    │  ──────────────────────────────────────────────  │
+│   Volatility ▶    │   Portfolio Weights                            │
+│   Macro      ▶    │  ┌──────────────────────────────────┐           │
+│   Backtesting▶    │  │   Pie Chart: AAPL 45%          │           │
+│   Analytics  ▶    │  │               GOOGL 30%          │           │
+│   Data       ▶    │  │               MSFT  25%          │           │
+│   Mkt Anal.  ▶    │  └──────────────────────────────────┘           │
+│   Signals    ▶    │                                                  │
+│   Liquidity  ▶    │   Raw JSON                                     │
+│   Sys. Risk  ▶    │  { "optimal_weights": {"AAPL": 0.45, ...}       │
+│   Execution  ▶    │    "sharpe_ratio": 1.82,                         │
+│   Compliance ▶    │    "expected_return": 0.156,                     │
+│   UAT        ▶    │    "volatility": 0.189 }                         │
+│   Health     ▶    │                                                  │
 │                     │  </> CODE GENERATOR                              │
-│  ⭐ Favorites   ▶   │  [🐍 Python SDK] [⚡ curl] [📋 Copy]            │
-│  🕐 History    ▶    │  ┌──────────────────────────────────────────┐   │
+│  ⭐ Favorites   ▶   │  [ Python SDK] [ curl] [ Copy]            │
+│   History    ▶    │  ┌──────────────────────────────────────────┐   │
 │                     │  │ from quantlib_api import QuantLibClient   │   │
 │                     │  │ client = QuantLibClient(auto_login=True)  │   │
 │                     │  │ result = client.portfolio.optimize(       │   │
@@ -908,10 +908,10 @@ advanced quant/
 
 | HTTP Method | Badge Color | Streamlit CSS |
 |------------|-------------|---------------|
-| `GET` | 🟢 Green `#2ECC71` | Success |
-| `POST` | 🔵 Blue `#3498DB` | Info |
-| `PUT` | 🟠 Orange `#E67E22` | Warning |
-| `DELETE` | 🔴 Red `#E74C3C` | Error |
+| `GET` |  Green `#2ECC71` | Success |
+| `POST` |  Blue `#3498DB` | Info |
+| `PUT` |  Orange `#E67E22` | Warning |
+| `DELETE` |  Red `#E74C3C` | Error |
 
 ### **4.3 FIELD TYPE → STREAMLIT WIDGET MAPPING**
 
@@ -1269,23 +1269,23 @@ def tax_harvest(client, portfolio_id, threshold):
 
 | Domain | Base Path | Endpoints | Explorer | SDK | CLI | Postman |
 |--------|-----------|-----------|----------|-----|-----|---------|
-| Portfolio | `/api/v1/portfolio` | 5 | ✅ | ✅ | ✅ | ✅ |
-| Options | `/api/v1/options` | 4 | ✅ | ✅ | ✅ | ✅ |
-| Risk | `/api/v1/risk` | 5 | ✅ | ✅ | ✅ | ✅ |
-| Market Regime | `/api/v1/regime` | 4 | ✅ | ✅ | ✅ | ✅ |
-| Volatility | `/api/v1/volatility` | 4 | ✅ | ✅ | ✅ | ✅ |
-| Macro | `/api/v1/macro` | 3 | ✅ | ✅ | ✅ | ✅ |
-| Backtesting | `/api/v1/backtesting` | 4 | ✅ | ✅ | ✅ | ✅ |
-| Analytics | `/api/v1/analytics` | 4 | ✅ | ✅ | ✅ | ✅ |
-| Data | `/api/v1/data` | 4 | ✅ | ✅ | ✅ | ✅ |
-| Market Analysis | `/api/v1/market-analysis` | 5 | ✅ | ✅ | ✅ | ✅ |
-| Trading Signals | `/api/v1/signals` | 4 | ✅ | ✅ | ✅ | ✅ |
-| Liquidity | `/api/v1/liquidity` | 5 | ✅ | ✅ | ✅ | ✅ |
-| Systemic Risk | `/api/v1/systemic-risk` | 5 | ✅ | ✅ | ✅ | ✅ |
-| Execution | `/api/v1/execution` | 5 | ✅ | ✅ | ✅ | ✅ |
-| Compliance | `/api/v1/compliance` | 6 | ✅ | ✅ | ✅ | ✅ |
-| UAT / Stress | `/api/v1/uat` | 6 | ✅ | ✅ | ✅ | ✅ |
-| Health | `/health` | 2 | ✅ | ✅ | ✅ | ✅ |
+| Portfolio | `/api/v1/portfolio` | 5 |  |  |  |  |
+| Options | `/api/v1/options` | 4 |  |  |  |  |
+| Risk | `/api/v1/risk` | 5 |  |  |  |  |
+| Market Regime | `/api/v1/regime` | 4 |  |  |  |  |
+| Volatility | `/api/v1/volatility` | 4 |  |  |  |  |
+| Macro | `/api/v1/macro` | 3 |  |  |  |  |
+| Backtesting | `/api/v1/backtesting` | 4 |  |  |  |  |
+| Analytics | `/api/v1/analytics` | 4 |  |  |  |  |
+| Data | `/api/v1/data` | 4 |  |  |  |  |
+| Market Analysis | `/api/v1/market-analysis` | 5 |  |  |  |  |
+| Trading Signals | `/api/v1/signals` | 4 |  |  |  |  |
+| Liquidity | `/api/v1/liquidity` | 5 |  |  |  |  |
+| Systemic Risk | `/api/v1/systemic-risk` | 5 |  |  |  |  |
+| Execution | `/api/v1/execution` | 5 |  |  |  |  |
+| Compliance | `/api/v1/compliance` | 6 |  |  |  |  |
+| UAT / Stress | `/api/v1/uat` | 6 |  |  |  |  |
+| Health | `/health` | 2 |  |  |  |  |
 | **TOTAL** | | **75** | **75** | **75** | **75** | **75** |
 
 ---
@@ -1309,10 +1309,10 @@ def tax_harvest(client, portfolio_id, threshold):
 
 | Component | Files | Lines of Code (Est.) | Priority | Status |
 |-----------|-------|---------------------|----------|--------|
-| Streamlit API Explorer | 1 (`pages/17_API_Explorer.py`) | ~900 | P0 | 🔲 To Build |
-| Python SDK | 20 files in `quantlib_api/` | ~2,500 | P1 | 🔲 To Build |
-| CLI Tool | 5 files in `quantlib_cli/` | ~800 | P1 | 🔲 To Build |
-| Postman Collection | 4 JSON files in `postman/` | ~3,000 (JSON) | P2 | 🔲 To Build |
+| Streamlit API Explorer | 1 (`pages/17_API_Explorer.py`) | ~900 | P0 |  To Build |
+| Python SDK | 20 files in `quantlib_api/` | ~2,500 | P1 |  To Build |
+| CLI Tool | 5 files in `quantlib_cli/` | ~800 | P1 |  To Build |
+| Postman Collection | 4 JSON files in `postman/` | ~3,000 (JSON) | P2 |  To Build |
 | **Total** | **30 files** | **~7,200** | | |
 
 **Parent Project:** QuantLib Pro Unified Quantitative Finance Suite  

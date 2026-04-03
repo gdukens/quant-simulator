@@ -45,15 +45,15 @@ Streamlit-based user interface with multiple specialized pages.
 
 **Components:**
 - `Home.py` - Landing page and overview
-- `1_📊_Portfolio_Optimizer.py` - Portfolio optimization UI
-- `2_⚠️_Risk_Analytics.py` - Risk analysis dashboard
-- `3_📈_Options_Pricing.py` - Derivatives pricing
-- `4_🔄_Backtesting.py` - Strategy backtesting
-- `5_🎯_Regime_Detection.py` - Market regime analysis
-- `6_📉_Monte_Carlo.py` - Monte Carlo simulations
-- `7_🔍_Data_Explorer.py` - Data visualization
-- `8_📊_Advanced_Analytics.py` - Performance & stress testing
-- `9_🧪_Testing.py` - Testing & validation dashboard
+- `1__Portfolio_Optimizer.py` - Portfolio optimization UI
+- `2__Risk_Analytics.py` - Risk analysis dashboard
+- `3__Options_Pricing.py` - Derivatives pricing
+- `4__Backtesting.py` - Strategy backtesting
+- `5__Regime_Detection.py` - Market regime analysis
+- `6__Monte_Carlo.py` - Monte Carlo simulations
+- `7__Data_Explorer.py` - Data visualization
+- `8__Advanced_Analytics.py` - Performance & stress testing
+- `9__Testing.py` - Testing & validation dashboard
 
 **Responsibilities:**
 - User input validation

@@ -57,14 +57,14 @@ def run_config(name, aud, scope):
         print(f"Response: {response.text}")
         
         if response.status_code == 200:
-            print("✅ SUCCESS!")
+            print(" SUCCESS!")
             return True
         else:
-            print("❌ FAILED")
+            print(" FAILED")
             return False
             
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f" Error: {e}")
         return False
 
 # Test different configurations
@@ -85,14 +85,14 @@ for name, aud, scope in configs:
 
 if success:
     print(f"\n{'='*70}")
-    print(f"✅ FOUND WORKING CONFIGURATION")
+    print(f" FOUND WORKING CONFIGURATION")
     print(f"{'='*70}")
     print(f"Name: {success[0]}")
     print(f"Audience: {success[1]}")
     print(f"Scope: {success[2]}")
 else:
     print(f"\n{'='*70}")
-    print(f"❌ NO WORKING CONFIGURATION FOUND")
+    print(f" NO WORKING CONFIGURATION FOUND")
     print(f"{'='*70}")
     print("\nPossible issues:")
     print("1. The JWK might not be properly registered with FactSet")

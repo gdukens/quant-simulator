@@ -7,7 +7,7 @@ param(
     [int]$Concurrent = 3
 )
 
-Write-Host "📊 QuantLib Pro API Performance Benchmark" -ForegroundColor Cyan
+Write-Host " QuantLib Pro API Performance Benchmark" -ForegroundColor Cyan
 Write-Host "═══════════════════════════════════════════" -ForegroundColor Gray
 
 # Test endpoints with expected performance targets
@@ -21,7 +21,7 @@ $endpoints = @(
 $results = @()
 
 foreach ($endpoint in $endpoints) {
-    Write-Host "🔍 Testing: $($endpoint.Description)" -ForegroundColor Blue
+    Write-Host " Testing: $($endpoint.Description)" -ForegroundColor Blue
     Write-Host "   URL: $BaseUrl$($endpoint.Path)" -ForegroundColor Gray
     Write-Host "   Target: <$($endpoint.Target)ms" -ForegroundColor Gray
     
@@ -39,7 +39,7 @@ foreach ($endpoint in $endpoints) {
             $times += $responseTime
             $successful++
             
-            $status = if ($responseTime -le $endpoint.Target) { "✅" } else { "❌" }
+            $status = if ($responseTime -le $endpoint.Target) { "" } else { "" }
             Write-Host "   Request $i`: ${responseTime}ms $status" -ForegroundColor $(if ($responseTime -le $endpoint.Target) { "Green" } else { "Red" })
             
         } catch {
@@ -59,7 +59,7 @@ foreach ($endpoint in $endpoints) {
             $maxTime = ($validTimes | Measure-Object -Maximum).Maximum
             $successRate = [math]::Round(($successful / $Requests) * 100, 1)
             
-            $performance = if ($avgTime -le $endpoint.Target) { "✅ PASS" } else { "❌ FAIL" }
+            $performance = if ($avgTime -le $endpoint.Target) { " PASS" } else { " FAIL" }
             
             Write-Host "   Results:" -ForegroundColor Yellow
             Write-Host "     Average: ${avgTime}ms" -ForegroundColor White
@@ -84,7 +84,7 @@ foreach ($endpoint in $endpoints) {
 }
 
 # Overall Performance Summary
-Write-Host "📈 PERFORMANCE SUMMARY" -ForegroundColor Cyan
+Write-Host " PERFORMANCE SUMMARY" -ForegroundColor Cyan
 Write-Host "══════════════════════" -ForegroundColor Gray
 
 $passCount = ($results | Where-Object { $_.Status -eq "PASS" }).Count
@@ -97,14 +97,14 @@ Write-Host "  Average Response Time: ${overallAvg}ms" -ForegroundColor $(if ($ov
 Write-Host "  Production Target: <500ms" -ForegroundColor Gray
 
 $productionReady = ($passCount -eq $totalCount) -and ($overallAvg -lt 500)
-$status = if ($productionReady) { "✅ PRODUCTION READY" } else { "❌ NEEDS OPTIMIZATION" }
+$status = if ($productionReady) { " PRODUCTION READY" } else { " NEEDS OPTIMIZATION" }
 
 Write-Host ""
 Write-Host "Production Status: $status" -ForegroundColor $(if ($productionReady) { "Green" } else { "Red" })
 
 if (-not $productionReady) {
     Write-Host ""
-    Write-Host "🔧 Optimization Recommendations:" -ForegroundColor Yellow
+    Write-Host " Optimization Recommendations:" -ForegroundColor Yellow
     Write-Host "  • Enable Redis caching for data endpoints" -ForegroundColor White
     Write-Host "  • Increase Uvicorn worker processes" -ForegroundColor White  
     Write-Host "  • Optimize database connection pooling" -ForegroundColor White
@@ -113,7 +113,7 @@ if (-not $productionReady) {
 
 # Detailed Results Table
 Write-Host ""
-Write-Host "📊 DETAILED RESULTS" -ForegroundColor Cyan
+Write-Host " DETAILED RESULTS" -ForegroundColor Cyan
 Write-Host "═══════════════════" -ForegroundColor Gray
 
 $results | ForEach-Object {

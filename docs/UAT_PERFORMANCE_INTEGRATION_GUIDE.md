@@ -6,7 +6,7 @@ This guide explains how the **UAT Dashboard** and **Performance Profiling** syst
 
 ---
 
-# 🧪 UAT Dashboard - Complete Integration
+#  UAT Dashboard - Complete Integration
 
 ## Architecture
 
@@ -308,7 +308,7 @@ print(f"Pass Rate: {summary['pass_rate']:.1f}%")
 # Check for regressions
 regressions = validator.get_regressions()
 if regressions:
-    print(f"⚠️ {len(regressions)} performance regressions detected!")
+    print(f" {len(regressions)} performance regressions detected!")
     for reg in regressions:
         print(f"  {reg.benchmark_name}: {reg.regression_pct:.1f}% slower")
         print(f"    Current: {reg.mean_ms:.2f}ms vs Baseline: {reg.baseline_ms:.2f}ms")
@@ -466,7 +466,7 @@ tracker.export_bug_report("bugs_20260224.json")
 
 ---
 
-# 🎯 Performance Profiling - Complete Integration
+#  Performance Profiling - Complete Integration
 
 ## Architecture
 
@@ -665,7 +665,7 @@ generate_volatility_surface          12    2,345.67     195.47     45.23    123.
 ### Navigation Flow
 
 ```
-streamlit_app.py → pages/8_📊_Advanced_Analytics.py
+streamlit_app.py → pages/8__Advanced_Analytics.py
                    │
                    └── Tab 1: Performance Profiling
                        ├── Overview metrics (total time, calls, avg time)
@@ -753,12 +753,12 @@ st.plotly_chart(fig2, use_container_width=True)
 ### Workflow for Users
 
 1. **Navigate to any dashboard and perform operations:**
-   - 📈 Portfolio: Load portfolio, optimize, rebalance
-   - ⚠️ Risk: Calculate VaR, run stress tests
-   - 📊 Options: Price options, calculate Greeks
-   - 🎯 Market Regime: Detect regimes, estimate volatility
-   - 🌊 Volatility Surface: Generate surfaces
-   - 📊 Backtesting: Run strategy backtests
+   -  Portfolio: Load portfolio, optimize, rebalance
+   -  Risk: Calculate VaR, run stress tests
+   -  Options: Price options, calculate Greeks
+   -  Market Regime: Detect regimes, estimate volatility
+   -  Volatility Surface: Generate surfaces
+   -  Backtesting: Run strategy backtests
 
 2. **Operations are automatically profiled:**
    - Function calls are intercepted by `@profile` decorator
@@ -1145,14 +1145,14 @@ class MarketDataCache:
 
 ### UAT Dashboard Integration
 
-✅ **Fully Connected**:
+ **Fully Connected**:
 - `quantlib_pro.uat` module with 4 submodules
 - 30+ pre-defined test scenarios across all features
 - Complete feedback collection and analysis system
 - Comprehensive bug tracking with metrics
 - Automated performance validation with benchmarks
 
-✅ **Usage**:
+ **Usage**:
 - Navigate to 9_UAT_Dashboard.py in Streamlit
 - Execute test scenarios
 - Submit feedback on any page
@@ -1162,14 +1162,14 @@ class MarketDataCache:
 
 ### Performance Profiling Integration
 
-✅ **Fully Connected**:
+ **Fully Connected**:
 - `quantlib_pro.observability.profiler` module
 - Automatic instrumentation of major operations
 - Real-time performance tracking
 - Statistical analysis (mean, median, P95, P99)
 - Bottleneck identification
 
-✅ **Usage**:
+ **Usage**:
 - Use any feature in QuantLib Pro
 - Navigate to Advanced Analytics → Performance Profiling
 - View aggregated metrics

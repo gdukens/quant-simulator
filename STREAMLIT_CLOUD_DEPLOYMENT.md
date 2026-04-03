@@ -1,8 +1,8 @@
-# 🚀 QuantLib Pro - Streamlit Community Cloud Deployment
+#  QuantLib Pro - Streamlit Community Cloud Deployment
 
 Deploy your QuantLib Pro quantitative finance platform to **Streamlit Community Cloud** for free!
 
-## 📋 Prerequisites
+##  Prerequisites
 
 1. **GitHub Account** - Your code needs to be in a GitHub repository
 2. **Streamlit Community Cloud Account** - Sign up at [share.streamlit.io](https://share.streamlit.io)
@@ -10,7 +10,7 @@ Deploy your QuantLib Pro quantitative finance platform to **Streamlit Community 
    - **FRED API Key** - Get from [Federal Reserve](https://fred.stlouisfed.org/docs/api/api_key.html) (FREE)
    - **Alpha Vantage API Key** - Get from [Alpha Vantage](https://www.alphavantage.co/support/#api-key) (FREE tier available)
 
-## 🛠️ Deployment Steps
+##  Deployment Steps
 
 ### 1. Push to GitHub
 
@@ -34,7 +34,7 @@ git push origin main
 
 In your Streamlit app dashboard:
 
-1. Click the **⚙️ Settings** button
+1. Click the ** Settings** button
 2. Go to **"Secrets"** tab
 3. Add your API keys in TOML format:
 
@@ -47,9 +47,9 @@ APP_ENV = "production"
 DEBUG = "false"
 ```
 
-## 🎯 What Works in Cloud Mode
+##  What Works in Cloud Mode
 
-✅ **Core Features Available:**
+ **Core Features Available:**
 - Portfolio optimization & risk analysis
 - Market regime detection
 - Volatility surface modeling  
@@ -59,26 +59,26 @@ DEBUG = "false"
 - FRED economic data (with API key)
 - Alpha Vantage market data (with API key)
 
-✅ **All 30+ Quantitative Tools:**
+ **All 30+ Quantitative Tools:**
 - No database required for core functionality
 - Graceful degradation when services unavailable
 - Professional UI with Material Design icons
 
-## 🌐 Your Deployed App
+##  Your Deployed App
 
 Once deployed, your app will be available at:
 ```
 https://your-app-name.streamlit.app
 ```
 
-## 📊 Custom Domain (Optional)
+##  Custom Domain (Optional)
 
 For a custom domain:
 1. Upgrade to Streamlit for Teams
 2. Configure DNS settings
 3. Add SSL certificate
 
-## 🔧 Local Development
+##  Local Development
 
 To run locally:
 ```bash
@@ -100,7 +100,7 @@ streamlit run streamlit_app.py
 - Streamlit Community Cloud has resource limits
 - Consider optimizing data loading and caching
 
-## 📞 Support
+##  Support
 
 - **Documentation**: Check individual page documentation
 - **Issues**: Create GitHub issue in your repository
@@ -108,4 +108,4 @@ streamlit run streamlit_app.py
 
 ---
 
-**🎊 Congratulations! Your QuantLib Pro platform is now deployed and accessible worldwide!**
+** Congratulations! Your QuantLib Pro platform is now deployed and accessible worldwide!**

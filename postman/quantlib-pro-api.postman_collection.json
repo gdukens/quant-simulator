@@ -62,7 +62,7 @@
     ],
     "item": [
         {
-            "name": "🔑 Authentication",
+            "name": " Authentication",
             "item": [
                 {
                     "name": "Login",
@@ -97,7 +97,7 @@
             ]
         },
         {
-            "name": "❤️ Health",
+            "name": " Health",
             "item": [
                 {
                     "name": "Health Check",
@@ -117,7 +117,7 @@
             ]
         },
         {
-            "name": "📊 Portfolio",
+            "name": " Portfolio",
             "item": [
                 {
                     "name": "Optimize Portfolio",
@@ -166,7 +166,7 @@
             ]
         },
         {
-            "name": "⚙️ Options",
+            "name": " Options",
             "item": [
                 {
                     "name": "Price Option (Black-Scholes)",
@@ -208,7 +208,7 @@
             ]
         },
         {
-            "name": "🛡️ Risk",
+            "name": " Risk",
             "item": [
                 {
                     "name": "Value at Risk (VaR)",
@@ -259,7 +259,7 @@
             ]
         },
         {
-            "name": "🎯 Market Regime",
+            "name": " Market Regime",
             "item": [
                 {
                     "name": "Detect Regime",
@@ -299,7 +299,7 @@
             ]
         },
         {
-            "name": "📉 Volatility",
+            "name": " Volatility",
             "item": [
                 {
                     "name": "Volatility Surface",
@@ -339,7 +339,7 @@
             ]
         },
         {
-            "name": "🌍 Macro",
+            "name": " Macro",
             "item": [
                 {
                     "name": "Macro Indicators",
@@ -368,7 +368,7 @@
             ]
         },
         {
-            "name": "📈 Backtesting",
+            "name": " Backtesting",
             "item": [
                 {
                     "name": "List Strategies",
@@ -406,7 +406,7 @@
             ]
         },
         {
-            "name": "🔬 Analytics",
+            "name": " Analytics",
             "item": [
                 {
                     "name": "Correlation Matrix",
@@ -448,7 +448,7 @@
             ]
         },
         {
-            "name": "💾 Data",
+            "name": " Data",
             "item": [
                 {
                     "name": "Market Status",
@@ -486,7 +486,7 @@
             ]
         },
         {
-            "name": "📊 Market Analysis",
+            "name": " Market Analysis",
             "item": [
                 {
                     "name": "Technical Analysis",
@@ -533,7 +533,7 @@
             ]
         },
         {
-            "name": "🔔 Trading Signals",
+            "name": " Trading Signals",
             "item": [
                 {
                     "name": "Generate Signals",
@@ -573,7 +573,7 @@
             ]
         },
         {
-            "name": "💧 Liquidity",
+            "name": " Liquidity",
             "item": [
                 {
                     "name": "Order Book Simulation",
@@ -622,7 +622,7 @@
             ]
         },
         {
-            "name": "🌐 Systemic Risk",
+            "name": " Systemic Risk",
             "item": [
                 {
                     "name": "Network Analysis",
@@ -671,7 +671,7 @@
             ]
         },
         {
-            "name": "⚡ Execution",
+            "name": " Execution",
             "item": [
                 {
                     "name": "Market Impact Models",
@@ -722,7 +722,7 @@
             ]
         },
         {
-            "name": "✅ Compliance",
+            "name": " Compliance",
             "item": [
                 {
                     "name": "Trade Compliance Check",
@@ -776,7 +776,7 @@
             ]
         },
         {
-            "name": "🧪 UAT & Testing",
+            "name": " UAT & Testing",
             "item": [
                 {
                     "name": "Run UAT Scenarios",

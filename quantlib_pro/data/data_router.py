@@ -68,7 +68,7 @@ class DataProviderRouter:
                 tier=alpha_vantage_tier,
                 timeout=timeout
             )
-            logger.info("✓ Alpha Vantage client initialized")
+            logger.info(" Alpha Vantage client initialized")
         except ValueError as e:
             logger.warning(f"Alpha Vantage not available: {e}")
             self.alpha_vantage = None
@@ -125,12 +125,12 @@ class DataProviderRouter:
                 result["_provider"] = provider_name
                 result["_timestamp"] = result.get("timestamp", "")
                 
-                logger.info(f"✓ {provider_name} {operation} succeeded")
+                logger.info(f" {provider_name} {operation} succeeded")
                 return result
             
             except Exception as e:
                 error_msg = str(e)
-                logger.warning(f"✗ {provider_name} {operation} failed: {error_msg}")
+                logger.warning(f" {provider_name} {operation} failed: {error_msg}")
                 errors.append((provider_name, error_msg))
                 
                 # Update provider status

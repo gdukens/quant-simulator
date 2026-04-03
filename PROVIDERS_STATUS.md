@@ -1,10 +1,10 @@
 # Data Providers Integration Status
 
-## ✅ Alpha Vantage - WORKING!
+##  Alpha Vantage - WORKING!
 
 **Status**: Fully configured and tested  
 **API Key**: `***DL3V` (configured in .env)  
-**Test Result**: ✅ Successfully fetched AAPL quote at $266.18
+**Test Result**:  Successfully fetched AAPL quote at $266.18
 
 **Limits**:
 - Free tier: 5 calls/minute, 500 calls/day
@@ -58,22 +58,22 @@
 
 ---
 
-## ❌ Capital IQ - NOT PURSUING
+##  Capital IQ - NOT PURSUING
 
 **Status**: Not moving forward with this integration  
 **Provider**: S&P Global Market Intelligence  
 **Decision**: Enterprise subscription not available
 
 The integration skeleton remains in codebase but won't be actively developed. Focus is on:
-- ✅ Yahoo Finance (free, unlimited)
-- ✅ Alpha Vantage (working!)
+-  Yahoo Finance (free, unlimited)
+-  Alpha Vantage (working!)
 - ⏳ FactSet (needs correct serial key)
 
 ---
 
-## 🎯 Testing Your Providers
+##  Testing Your Providers
 
-### Test Alpha Vantage (✅ working):
+### Test Alpha Vantage ( working):
 ```powershell
 python test_alpha_vantage.py
 ```
@@ -98,8 +98,8 @@ Your data pipeline uses this fallback chain:
 1. L1 Cache (Memory) - <1ms
 2. L2 Cache (Redis) - <10ms  
 3. L3 Cache (File) - <100ms
-4. Yahoo Finance (yfinance) - Free, unlimited ✅
-5. Alpha Vantage - 500 calls/day ✅
+4. Yahoo Finance (yfinance) - Free, unlimited 
+5. Alpha Vantage - 500 calls/day 
 6. FactSet - Enterprise data ⏳ (optional)
 7. Synthetic Data (GBM) - Fallback for offline testing
 ```
@@ -110,27 +110,27 @@ Your data pipeline uses this fallback chain:
 
 ---
 
-## 📊 Testing Results
+##  Testing Results
 
 | Provider | Status | Test Result |
 |----------|--------|-------------|
-| **Yahoo Finance** | ✅ Working | Default provider |
-| **Alpha Vantage** | ✅ Configured | Quote: $266.18 for AAPL |
+| **Yahoo Finance** |  Working | Default provider |
+| **Alpha Vantage** |  Configured | Quote: $266.18 for AAPL |
 | **FactSet** | ⏳ Needs correct key | HTTP 500 (username used instead of serial) |
-| **Capital IQ** | ❌ Not pursuing | Decision: Not needed |
+| **Capital IQ** |  Not pursuing | Decision: Not needed |
 
 ---
 
-## 📖 Documentation
+##  Documentation
 
-- **Alpha Vantage Setup**: Already done! ✅
+- **Alpha Vantage Setup**: Already done! 
 - **FactSet Setup**: See [FACTSET_SETUP.md](FACTSET_SETUP.md)
 - **Complete Guide**: See [docs/DATA_PROVIDERS_GUIDE.md](docs/DATA_PROVIDERS_GUIDE.md)
 - **Data Architecture**: See [DATA_ARCHITECTURE_SPECIFICATION.md](DATA_ARCHITECTURE_SPECIFICATION.md)
 
 ---
 
-## 🚀 Next Steps
+##  Next Steps
 
 1. **For FactSet**:
    - Get your serial key from FactSet Developer Portal
@@ -149,12 +149,12 @@ Your data pipeline uses this fallback chain:
 
 ---
 
-## 🔧 Configuration Files
+##  Configuration Files
 
 - **Active config**: [.env](.env) (contains your keys - never commit to git!)
 - **Template**: [.env.example](.env.example) (for reference)
 - **Test scripts**:
-  - [test_alpha_vantage.py](test_alpha_vantage.py) ✅
+  - [test_alpha_vantage.py](test_alpha_vantage.py) 
   - [test_factset.py](test_factset.py) ⏳
   - [test_providers.py](test_providers.py) (full suite)
 

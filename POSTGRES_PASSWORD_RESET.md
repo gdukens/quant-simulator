@@ -1,13 +1,13 @@
-# 🔐 PostgreSQL Password Reset & Management Guide
+#  PostgreSQL Password Reset & Management Guide
 
-## 🎯 **Current Configuration**
+##  **Current Configuration**
 ```env
 POSTGRES_PASSWORD=changeme
 POSTGRES_USER=quantlib
 DATABASE_PASSWORD=changeme
 ```
 
-## 🔧 **Method 1: Simple Password Change (Recommended)**
+##  **Method 1: Simple Password Change (Recommended)**
 
 ### Step 1: Update Environment Variables
 ```powershell
@@ -22,14 +22,14 @@ DATABASE_PASSWORD=your_new_secure_password
 docker stop quantlib-postgres quantlib-timescaledb
 docker rm quantlib-postgres quantlib-timescaledb
 
-# Remove old volumes (⚠️ This will delete data!)
+# Remove old volumes ( This will delete data!)
 docker volume rm advancedquant_postgres-data advancedquant_timescale-data
 
 # Start fresh with new password
 docker-compose -f docker-compose.prod.yml up -d postgres timescaledb
 ```
 
-## 🔧 **Method 2: Reset Password in Running Container**
+##  **Method 2: Reset Password in Running Container**
 
 ### Step 1: Connect to Running Container
 ```powershell
@@ -53,7 +53,7 @@ POSTGRES_PASSWORD=your_new_secure_password
 DATABASE_PASSWORD=your_new_secure_password
 ```
 
-## 🔧 **Method 3: Password Reset Script (Automated)**
+##  **Method 3: Password Reset Script (Automated)**
 
 ### Create Password Reset Script
 ```powershell
@@ -63,7 +63,7 @@ param(
     [string]$NewPassword
 )
 
-Write-Host "🔐 Resetting PostgreSQL Password..." -ForegroundColor Cyan
+Write-Host " Resetting PostgreSQL Password..." -ForegroundColor Cyan
 
 # Update .env file
 $envPath = ".env"
@@ -72,19 +72,19 @@ $content = $content -replace "POSTGRES_PASSWORD=.*", "POSTGRES_PASSWORD=$NewPass
 $content = $content -replace "DATABASE_PASSWORD=.*", "DATABASE_PASSWORD=$NewPassword"
 Set-Content -Path $envPath -Value $content
 
-Write-Host "✅ Updated .env file" -ForegroundColor Green
+Write-Host " Updated .env file" -ForegroundColor Green
 
 # Reset container
-Write-Host "🔄 Recreating PostgreSQL container..." -ForegroundColor Yellow
+Write-Host " Recreating PostgreSQL container..." -ForegroundColor Yellow
 docker-compose -f docker-compose.prod.yml down postgres timescaledb
 docker volume rm advancedquant_postgres-data advancedquant_timescale-data -f 2>$null
 docker-compose -f docker-compose.prod.yml up -d postgres timescaledb
 
-Write-Host "✅ PostgreSQL password reset complete!" -ForegroundColor Green
+Write-Host " PostgreSQL password reset complete!" -ForegroundColor Green
 Write-Host "New password: $NewPassword" -ForegroundColor White
 ```
 
-## 🔧 **Method 4: Preserve Data During Password Change**
+##  **Method 4: Preserve Data During Password Change**
 
 ### Step 1: Backup Data First
 ```powershell
@@ -110,7 +110,7 @@ docker-compose -f docker-compose.prod.yml up -d postgres
 docker exec -i quantlib-postgres psql -U quantlib quantlib_db < backup.sql
 ```
 
-## 🚀 **Quick Commands**
+##  **Quick Commands**
 
 ```powershell
 # Test current connection
@@ -121,7 +121,7 @@ conn = psycopg2.connect(
     database='quantlib_db', user='quantlib', 
     password='changeme'
 )
-print('✅ Connection successful!')
+print(' Connection successful!')
 conn.close()
 "
 
@@ -136,20 +136,20 @@ conn = psycopg2.connect(
     database='quantlib_db', user='quantlib',
     password='SecurePass123!'
 )
-print('✅ New password works!')
+print(' New password works!')
 conn.close()
 "
 ```
 
-## ⚠️ **Important Notes**
+##  **Important Notes**
 
-1. **⚠️ Data Loss Warning**: Methods that remove Docker volumes will delete all data
-2. **🔒 Security**: Never use 'changeme' or simple passwords in production
-3. **📝 Documentation**: Update all connection strings after password change
-4. **🔄 Restart Required**: Applications need restart to use new passwords
-5. **🧪 Test First**: Always test the new password before deploying
+1. ** Data Loss Warning**: Methods that remove Docker volumes will delete all data
+2. ** Security**: Never use 'changeme' or simple passwords in production
+3. ** Documentation**: Update all connection strings after password change
+4. ** Restart Required**: Applications need restart to use new passwords
+5. ** Test First**: Always test the new password before deploying
 
-## 🎯 **Recommended Production Password**
+##  **Recommended Production Password**
 
 ```env
 # Generate secure password

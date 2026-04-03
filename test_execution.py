@@ -37,7 +37,7 @@ def test_order_book_simulator():
     print(f"Ask depth: {snapshot.depth[1]:,} shares")
     assert snapshot.mid_price == 100.0
     assert snapshot.spread > 0
-    print("✓ Order book initialized\n")
+    print(" Order book initialized\n")
     
     # Test 2: Submit market buy order
     print("2. Submit Market Buy Order (500 shares)")
@@ -49,7 +49,7 @@ def test_order_book_simulator():
     print(f"VWAP: ${vwap:.4f}")
     assert len(trades) > 0
     assert sum(t.size for t in trades) == 500
-    print("✓ Market order executed\n")
+    print(" Market order executed\n")
     
     # Test 3: Submit limit orders
     print("3. Submit Limit Order")
@@ -57,7 +57,7 @@ def test_order_book_simulator():
     ob.submit_limit_order('buy', 99.95, 100)
     snapshot_after = ob.get_snapshot()
     assert snapshot_after.depth[0] > snapshot_before.depth[0]
-    print("✓ Limit order added to book\n")
+    print(" Limit order added to book\n")
     
     # Test 4: Step simulation (liquidity replenishment)
     print("4. Step Simulation (10 steps)")
@@ -67,7 +67,7 @@ def test_order_book_simulator():
     print(f"Final mid price: ${final_snapshot.mid_price:.2f}")
     print(f"Final spread: ${final_snapshot.spread:.4f}")
     assert ob.time == 10.0
-    print("✓ Simulation stepped\n")
+    print(" Simulation stepped\n")
 
 
 def test_market_impact_models():
@@ -92,7 +92,7 @@ def test_market_impact_models():
     print(f"Permanent impact: {ac_result.permanent_impact:.2f} bps")
     print(f"Total impact: {ac_result.total_impact:.2f} bps")
     assert ac_result.total_impact > 0
-    print("✓ Almgren-Chriss model computed\n")
+    print(" Almgren-Chriss model computed\n")
     
     # Test 2: Kyle's lambda
     print("2. Kyle's Lambda Impact Model")
@@ -104,7 +104,7 @@ def test_market_impact_models():
     print(f"Permanent impact: {kyle_result.permanent_impact:.2f} bps")
     print(f"Execution cost: ${kyle_result.execution_cost:,.2f}")
     assert kyle_result.permanent_impact > 0
-    print("✓ Kyle's lambda model computed\n")
+    print(" Kyle's lambda model computed\n")
     
     # Test 3: JPM model
     print("3. JPM Impact Model")
@@ -118,7 +118,7 @@ def test_market_impact_models():
     print(f"Permanent impact: {jpm_result.permanent_impact:.2f} bps")
     print(f"Total impact: {jpm_result.total_impact:.2f} bps")
     assert jpm_result.total_impact > 0
-    print("✓ JPM model computed\n")
+    print(" JPM model computed\n")
     
     # Test 4: Square-root model
     print("4. Square-Root Impact Model")
@@ -132,7 +132,7 @@ def test_market_impact_models():
     print(f"Total impact: {sqrt_result.total_impact:.2f} bps")
     print(f"Average price: ${sqrt_result.average_price:.4f}")
     assert sqrt_result.total_impact > 0
-    print("✓ Square-root model computed\n")
+    print(" Square-root model computed\n")
     
     # Test 5: Slippage estimation
     print("5. Slippage Estimation")
@@ -143,7 +143,7 @@ def test_market_impact_models():
     )
     print(f"Slippage cost: ${slippage:,.2f}")
     assert slippage > 0
-    print("✓ Slippage estimated\n")
+    print(" Slippage estimated\n")
 
 
 def test_execution_strategies():
@@ -164,7 +164,7 @@ def test_execution_strategies():
     assert len(twap.sizes) == 10
     # Check roughly equal slices
     assert np.std(twap.sizes) < 2  # Low variance for TWAP
-    print("✓ TWAP schedule generated\n")
+    print(" TWAP schedule generated\n")
     
     # Test 2: VWAP schedule
     print("2. VWAP Schedule (U-shaped volume)")
@@ -185,7 +185,7 @@ def test_execution_strategies():
     mid_avg = vwap.sizes[mid_point-1:mid_point+2].mean()
     print(f"Edge average: {edge_avg:.1f}, Mid average: {mid_avg:.1f}")
     assert edge_avg > mid_avg * 0.8  # Allow some tolerance
-    print("✓ VWAP schedule generated\n")
+    print(" VWAP schedule generated\n")
     
     # Test 3: POV schedule
     print("3. POV Schedule (10% participation)")
@@ -199,7 +199,7 @@ def test_execution_strategies():
     print(f"Strategy: {pov.strategy}")
     print(f"Total size: {pov.sizes.sum()}")
     assert pov.sizes.sum() == order_size
-    print("✓ POV schedule generated\n")
+    print(" POV schedule generated\n")
     
     # Test 4: Simulate execution
     print("4. Simulate TWAP Execution")
@@ -215,7 +215,7 @@ def test_execution_strategies():
     print(f"Total cost: ${result.total_cost:,.2f}")
     assert result.vwap > 0
     assert result.total_cost >= 0
-    print("✓ Execution simulated\n")
+    print(" Execution simulated\n")
     
     # Test 5: Intraday volume profile
     print("5. Intraday Volume Profile")
@@ -225,7 +225,7 @@ def test_execution_strategies():
     print(f"Flat profile sum: {profile_flat.sum():.4f}")
     assert np.isclose(profile_u.sum(), 1.0)
     assert np.isclose(profile_flat.sum(), 1.0)
-    print("✓ Volume profiles generated\n")
+    print(" Volume profiles generated\n")
 
 
 def test_integration():
@@ -267,7 +267,7 @@ def test_integration():
     # Slippage includes random price movement + impact, so can be large
     assert abs(result.slippage_bps) < 2000  # Sanity check
     assert result.vwap > 0
-    print("\n✓ Full execution workflow completed\n")
+    print("\n Full execution workflow completed\n")
 
 
 def main():
@@ -283,11 +283,11 @@ def main():
         test_integration()
         
         print("\n" + "="*60)
-        print("ALL TESTS PASSED ✓")
+        print("ALL TESTS PASSED ")
         print("="*60 + "\n")
         
     except Exception as e:
-        print(f"\n❌ TEST FAILED: {e}\n")
+        print(f"\n TEST FAILED: {e}\n")
         import traceback
         traceback.print_exc()
         raise

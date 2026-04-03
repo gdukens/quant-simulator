@@ -12,12 +12,12 @@ param(
 )
 
 function Write-MonitorLog {
-    param([string]$Message, [string]$Color = "White", [string]$Icon = "📊")
+    param([string]$Message, [string]$Color = "White", [string]$Icon = "")
     Write-Host "$Icon $Message" -ForegroundColor $Color
 }
 
 function Test-MonitoringDependencies {
-    Write-MonitorLog "Checking monitoring dependencies..." "Blue" "🔍"
+    Write-MonitorLog "Checking monitoring dependencies..." "Blue" ""
     
     $requirements = @(
         @{Path = "../monitoring/prometheus/prometheus.yml"; Name = "Prometheus Config"}
@@ -31,9 +31,9 @@ function Test-MonitoringDependencies {
     $allExist = $true
     foreach ($req in $requirements) {
         if (Test-Path $req.Path) {
-            Write-MonitorLog "✅ $($req.Name) found" "Green" "✅"
+            Write-MonitorLog " $($req.Name) found" "Green" ""
         } else {
-            Write-MonitorLog "❌ Missing: $($req.Name) at $($req.Path)" "Red" "❌"
+            Write-MonitorLog " Missing: $($req.Name) at $($req.Path)" "Red" ""
             $allExist = $false
         }
     }
@@ -42,10 +42,10 @@ function Test-MonitoringDependencies {
 }
 
 function Deploy-MonitoringStack {
-    Write-MonitorLog "Deploying QuantLib Pro monitoring stack..." "Cyan" "🚀"
+    Write-MonitorLog "Deploying QuantLib Pro monitoring stack..." "Cyan" ""
     
     if (!(Test-MonitoringDependencies)) {
-        Write-MonitorLog "❌ Missing dependencies. Cannot deploy." "Red" "❌"
+        Write-MonitorLog " Missing dependencies. Cannot deploy." "Red" ""
         return $false
     }
     
@@ -60,12 +60,12 @@ function Deploy-MonitoringStack {
     foreach ($dir in $directories) {
         if (!(Test-Path $dir)) {
             New-Item -ItemType Directory -Path $dir -Force | Out-Null
-            Write-MonitorLog "📁 Created directory: $dir" "Yellow" "📁"
+            Write-MonitorLog " Created directory: $dir" "Yellow" ""
         }
     }
     
     # Deploy monitoring services
-    Write-MonitorLog "🚀 Starting monitoring services..." "Blue" "🚀"
+    Write-MonitorLog " Starting monitoring services..." "Blue" ""
     
     $monitoringServices = @(
         "prometheus",
@@ -78,12 +78,12 @@ function Deploy-MonitoringStack {
     )
     
     foreach ($service in $monitoringServices) {
-        Write-MonitorLog "Starting $service..." "Yellow" "⚡"
+        Write-MonitorLog "Starting $service..." "Yellow" ""
         docker-compose -f "../docker-compose.prod.yml" up -d $service 2>$null
         if ($LASTEXITCODE -eq 0) {
-            Write-MonitorLog "✅ $service started successfully" "Green" "✅"
+            Write-MonitorLog " $service started successfully" "Green" ""
         } else {
-            Write-MonitorLog "❌ Failed to start $service" "Red" "❌"
+            Write-MonitorLog " Failed to start $service" "Red" ""
         }
         Start-Sleep -Seconds 2
     }
@@ -102,48 +102,48 @@ function Deploy-MonitoringStack {
     }
     
     Write-MonitorLog "" 
-    Write-MonitorLog "📊 Service Health Check:" "Cyan" "📊"
+    Write-MonitorLog " Service Health Check:" "Cyan" ""
     foreach ($service in $healthChecks.Keys) {
         try {
             $response = Invoke-WebRequest -Uri $healthChecks[$service] -TimeoutSec 5 -UseBasicParsing 2>$null
             if ($response.StatusCode -eq 200) {
-                Write-MonitorLog "✅ $service is healthy" "Green" "✅"
+                Write-MonitorLog " $service is healthy" "Green" ""
             } else {
-                Write-MonitorLog "⚠️  $service responded with status: $($response.StatusCode)" "Yellow" "⚠️"
+                Write-MonitorLog "  $service responded with status: $($response.StatusCode)" "Yellow" ""
             }
         } catch {
-            Write-MonitorLog "❌ $service is not responding" "Red" "❌"
+            Write-MonitorLog " $service is not responding" "Red" ""
         }
     }
     
     Write-MonitorLog "" 
-    Write-MonitorLog "🎉 Monitoring stack deployment completed!" "Green" "🎉"
-    Write-MonitorLog "📊 Prometheus: http://localhost:9090" "White" "📊"
-    Write-MonitorLog "📈 Grafana: http://localhost:3000 (admin/admin)" "White" "📈"
-    Write-MonitorLog "🚨 AlertManager: http://localhost:9093" "White" "🚨"
+    Write-MonitorLog " Monitoring stack deployment completed!" "Green" ""
+    Write-MonitorLog " Prometheus: http://localhost:9090" "White" ""
+    Write-MonitorLog " Grafana: http://localhost:3000 (admin/admin)" "White" ""
+    Write-MonitorLog " AlertManager: http://localhost:9093" "White" ""
     
     return $true
 }
 
 function Get-MonitoringStatus {
-    Write-MonitorLog "QuantLib Pro Monitoring Status" "Cyan" "📊"
+    Write-MonitorLog "QuantLib Pro Monitoring Status" "Cyan" ""
     Write-MonitorLog "════════════════════════════════" "Gray"
     
     # Check running containers
     $containers = docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" --filter "name=quantlib-"
     if ($containers) {
         Write-MonitorLog "" 
-        Write-MonitorLog "🔧 Running Services:" "Yellow" "🔧"
+        Write-MonitorLog " Running Services:" "Yellow" ""
         $containers | ForEach-Object {
             if ($_ -match "quantlib-(prometheus|grafana|alertmanager|node-exporter|cadvisor|redis-exporter|postgres-exporter)") {
-                Write-MonitorLog "  ✅ $_" "Green" "✅"
+                Write-MonitorLog "   $_" "Green" ""
             }
         }
     }
     
     # Check metrics endpoints
     Write-MonitorLog "" 
-    Write-MonitorLog "📡 Metrics Endpoints:" "Yellow" "📡"
+    Write-MonitorLog " Metrics Endpoints:" "Yellow" ""
     
     $endpoints = @{
         "QuantLib App" = "http://localhost:8503/metrics"
@@ -157,9 +157,9 @@ function Get-MonitoringStatus {
         try {
             $response = Invoke-WebRequest -Uri $endpoints[$endpoint] -TimeoutSec 3 -UseBasicParsing 2>$null
             $responseSize = $response.Content.Length
-            Write-MonitorLog "  ✅ $endpoint ($responseSize bytes)" "Green" "✅"
+            Write-MonitorLog "   $endpoint ($responseSize bytes)" "Green" ""
         } catch {
-            Write-MonitorLog "  ❌ $endpoint (not responding)" "Red" "❌"
+            Write-MonitorLog "   $endpoint (not responding)" "Red" ""
         }
     }
     
@@ -169,18 +169,18 @@ function Get-MonitoringStatus {
         $activeAlerts = $alerts.data | Where-Object { $_.state -eq "firing" }
         
         Write-MonitorLog ""
-        Write-MonitorLog "Active Alerts" "Yellow" "🚨"
+        Write-MonitorLog "Active Alerts" "Yellow" ""
         if ($activeAlerts) {
             $activeAlerts | ForEach-Object {
                 $alertName = $_.labels.alertname
                 $severity = $_.labels.severity
-                Write-MonitorLog "  🔥 $alertName ($severity)" "Red" "🔥"
+                Write-MonitorLog "   $alertName ($severity)" "Red" ""
             }
         } else {
-            Write-MonitorLog "  ✅ No active alerts" "Green" "✅"
+            Write-MonitorLog "   No active alerts" "Green" ""
         }
     } catch {
-        Write-MonitorLog "  ⚠️  Could not fetch alert status" "Yellow" "⚠️"
+        Write-MonitorLog "    Could not fetch alert status" "Yellow" ""
     }
 }
 
@@ -188,22 +188,22 @@ function Get-ServiceLogs {
     param([string]$ServiceName)
     
     if ($ServiceName) {
-        Write-MonitorLog "Logs for quantlib-$ServiceName" "Cyan" "📋"
+        Write-MonitorLog "Logs for quantlib-$ServiceName" "Cyan" ""
         docker logs --tail 50 "quantlib-$ServiceName" 2>$null
     } else {
-        Write-MonitorLog "Recent logs from all monitoring services" "Cyan" "📋"
+        Write-MonitorLog "Recent logs from all monitoring services" "Cyan" ""
         
         $services = @("prometheus", "grafana", "alertmanager")
         foreach ($service in $services) {
             Write-MonitorLog "" 
-            Write-MonitorLog "─── $service ───" "Yellow" "📋"
+            Write-MonitorLog "─── $service ───" "Yellow" ""
             docker logs --tail 10 "quantlib-$service" 2>$null
         }
     }
 }
 
 function Reset-MonitoringStack {
-    Write-MonitorLog "🔄 Resetting monitoring stack..." "Yellow" "🔄"
+    Write-MonitorLog " Resetting monitoring stack..." "Yellow" ""
     
     $services = @(
         "quantlib-prometheus",
@@ -217,7 +217,7 @@ function Reset-MonitoringStack {
     
     # Stop services
     foreach ($service in $services) {
-        Write-MonitorLog "Stopping $service..." "Gray" "⏹️"
+        Write-MonitorLog "Stopping $service..." "Gray" "⏹"
         docker stop $service 2>$null
         docker rm $service 2>$null
     }
@@ -226,31 +226,31 @@ function Reset-MonitoringStack {
     Write-Host "Do you want to remove monitoring data volumes? (y/N): " -NoNewline -ForegroundColor Yellow
     $response = Read-Host
     if ($response -eq "y" -or $response -eq "Y") {
-        Write-MonitorLog "🗑️  Removing monitoring volumes..." "Red" "🗑️"
+        Write-MonitorLog "  Removing monitoring volumes..." "Red" ""
         docker volume rm `
             advancedquant_prometheus-data `
             advancedquant_grafana-data `
             advancedquant_alertmanager-data 2>$null
     }
     
-    Write-MonitorLog "✅ Monitoring stack reset completed" "Green" "✅"
+    Write-MonitorLog " Monitoring stack reset completed" "Green" ""
 }
 
 function Configure-Monitoring {
-    Write-MonitorLog "⚙️  Configuring monitoring settings..." "Cyan" "⚙️"
+    Write-MonitorLog "  Configuring monitoring settings..." "Cyan" ""
     
     # Check if secrets are configured
     if (Test-Path "../.env.production") {
-        Write-MonitorLog "✅ Production secrets found" "Green" "✅"
+        Write-MonitorLog " Production secrets found" "Green" ""
         
         # Extract Grafana password from production secrets
         $envContent = Get-Content "../.env.production"
         $grafanaPassword = ($envContent | Where-Object { $_ -match "^GRAFANA_PASSWORD=" }) -replace "GRAFANA_PASSWORD=", ""
         
         if ($grafanaPassword) {
-            Write-MonitorLog "✅ Grafana admin password configured" "Green" "✅"
+            Write-MonitorLog " Grafana admin password configured" "Green" ""
         } else {
-            Write-MonitorLog "⚠️  No Grafana password found in production secrets" "Yellow" "⚠️"
+            Write-MonitorLog "  No Grafana password found in production secrets" "Yellow" ""
         }
     }
     
@@ -272,9 +272,9 @@ providers:
     
     $configPath = "../monitoring/grafana/dashboards/dashboard-config.yml"
     Set-Content -Path $configPath -Value $dashboardConfig
-    Write-MonitorLog "✅ Dashboard provisioning configured" "Green" "✅"
+    Write-MonitorLog " Dashboard provisioning configured" "Green" ""
     
-    Write-MonitorLog "⚙️  Configuration completed!" "Green" "⚙️"
+    Write-MonitorLog "  Configuration completed!" "Green" ""
 }
 
 # Main execution
@@ -300,27 +300,27 @@ switch ($Action.ToLower()) {
     }
     
     default {
-        Write-MonitorLog "📊 QuantLib Pro - Production Monitoring Manager" "Cyan" "📊"
+        Write-MonitorLog " QuantLib Pro - Production Monitoring Manager" "Cyan" ""
         Write-MonitorLog "═══════════════════════════════════════════════" "Gray"
         Write-MonitorLog ""
-        Write-MonitorLog "Commands:" "Yellow" "📖"
+        Write-MonitorLog "Commands:" "Yellow" ""
         Write-MonitorLog "  -Action deploy      Deploy full monitoring stack" "White"
         Write-MonitorLog "  -Action status      Show monitoring system status" "White"
         Write-MonitorLog "  -Action logs        Show logs (-Service <name> for specific service)" "White"
         Write-MonitorLog "  -Action reset       Reset/remove monitoring stack" "White"
         Write-MonitorLog "  -Action configure   Configure monitoring settings" "White"
         Write-MonitorLog ""
-        Write-MonitorLog "Examples:" "Green" "💡"
+        Write-MonitorLog "Examples:" "Green" ""
         Write-MonitorLog "  .\monitoring-manager.ps1 -Action deploy" "White"
         Write-MonitorLog "  .\monitoring-manager.ps1 -Action status" "White" 
         Write-MonitorLog "  .\monitoring-manager.ps1 -Action logs -Service prometheus" "White"
         Write-MonitorLog ""
-        Write-MonitorLog "Monitoring Stack:" "Green" "🛡️"
-        Write-MonitorLog "  • Prometheus - Metrics collection & alerting" "White" "📊"
-        Write-MonitorLog "  • Grafana - Dashboards & visualization" "White" "📈"
-        Write-MonitorLog "  • AlertManager - Alert routing & notifications" "White" "🚨"
-        Write-MonitorLog "  • Node Exporter - System metrics" "White" "🖥️"
-        Write-MonitorLog "  • cAdvisor - Container metrics" "White" "🐳"
-        Write-MonitorLog "  • Database & Redis exporters" "White" "🗄️"
+        Write-MonitorLog "Monitoring Stack:" "Green" ""
+        Write-MonitorLog "  • Prometheus - Metrics collection & alerting" "White" ""
+        Write-MonitorLog "  • Grafana - Dashboards & visualization" "White" ""
+        Write-MonitorLog "  • AlertManager - Alert routing & notifications" "White" ""
+        Write-MonitorLog "  • Node Exporter - System metrics" "White" ""
+        Write-MonitorLog "  • cAdvisor - Container metrics" "White" ""
+        Write-MonitorLog "  • Database & Redis exporters" "White" ""
     }
 }

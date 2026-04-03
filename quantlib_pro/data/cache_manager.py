@@ -79,7 +79,7 @@ class CacheManager:
                 )
                 # Test connection
                 self.redis_client.ping()
-                logger.info(f"✓ Redis cache connected: {redis_url}")
+                logger.info(f" Redis cache connected: {redis_url}")
             except Exception as e:
                 logger.warning(f"Redis cache unavailable: {e}. Caching disabled.")
                 self.redis_client = None
@@ -349,7 +349,7 @@ class CacheManager:
             except Exception as e:
                 logger.warning(f"Failed to warm cache for {symbol}: {e}")
         
-        logger.info(f"✓ Cache warming complete")
+        logger.info(f" Cache warming complete")
     
     def close(self):
         """Close Redis connection."""

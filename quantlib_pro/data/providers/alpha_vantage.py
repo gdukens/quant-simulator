@@ -169,7 +169,7 @@ class AlphaVantageProvider:
                 # Keep only OHLCV columns (match yfinance format)
                 df = df[["Open", "High", "Low", "Close", "Volume"]]
                 
-                log.info(f"✅ Alpha Vantage: Retrieved {len(df)} rows for {ticker}")
+                log.info(f" Alpha Vantage: Retrieved {len(df)} rows for {ticker}")
                 return df
             
             except requests.exceptions.RequestException as e:
@@ -255,7 +255,7 @@ class AlphaVantageProvider:
         for col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
         
-        log.info(f"✅ Alpha Vantage intraday: {len(df)} rows for {ticker}")
+        log.info(f" Alpha Vantage intraday: {len(df)} rows for {ticker}")
         return df
     
     def get_quote(self, ticker: str) -> dict:

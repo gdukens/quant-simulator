@@ -87,7 +87,7 @@ class CapitalIQProvider:
         
         if not self.client_id or not self.client_secret:
             log.warning(
-                "⚠️  Capital IQ credentials not configured. "
+                "  Capital IQ credentials not configured. "
                 "Set CAPITAL_IQ_CLIENT_ID and CAPITAL_IQ_CLIENT_SECRET environment variables."
             )
             # Don't raise error - allow initialization for testing/placeholder use
@@ -149,7 +149,7 @@ class CapitalIQProvider:
             if not self._access_token:
                 raise CapitalIQError("No access token in authentication response")
             
-            log.info("✅ Capital IQ: Authentication successful")
+            log.info(" Capital IQ: Authentication successful")
             return self._access_token
         
         except requests.exceptions.RequestException as e:

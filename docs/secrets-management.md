@@ -317,12 +317,12 @@ jobs:
 ## Best Practices
 
 ### 1. Never Hardcode Secrets
-❌ **Bad:**
+ **Bad:**
 ```python
 API_KEY = "abc123xyz789"
 ```
 
-✅ **Good:**
+ **Good:**
 ```python
 import os
 API_KEY = os.getenv('ALPHA_VANTAGE_API_KEY')

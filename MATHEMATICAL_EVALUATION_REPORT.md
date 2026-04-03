@@ -38,7 +38,7 @@ Where:
 - `w`: weight vector
 - `r`: expected return vector
 
-✅ **CORRECT**: Implementation uses `np.dot(weights, expected_returns)`
+ **CORRECT**: Implementation uses `np.dot(weights, expected_returns)`
 
 **1.2 Portfolio Volatility**
 ```
@@ -47,14 +47,14 @@ Where:
 Where:
 - `Σ`: covariance matrix
 
-✅ **CORRECT**: Implementation uses `np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights)))`
+ **CORRECT**: Implementation uses `np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights)))`
 
 **1.3 Sharpe Ratio**
 ```
 SR = (r_p - r_f) / σ_p
 ```
 
-✅ **CORRECT**: Properly implemented as `(ret - risk_free_rate) / vol`
+ **CORRECT**: Properly implemented as `(ret - risk_free_rate) / vol`
 
 #### Optimization Methods
 
@@ -66,7 +66,7 @@ SR = (r_p - r_f) / σ_p
   - No short selling (default): `0 ≤ w_i ≤ 1`
   - Short selling allowed: `-1 ≤ w_i ≤ 1` (optional)
 
-✅ **MATHEMATICALLY SOUND**
+ **MATHEMATICALLY SOUND**
 
 **Assessment:**
 - Uses industry-standard convex optimization
@@ -77,13 +77,13 @@ SR = (r_p - r_f) / σ_p
 - **Objective**: Minimize `σ_p²`
 - **Constraint**: `sum(w) = 1`
 
-✅ **CORRECT**: Quadratic programming problem solved correctly
+ **CORRECT**: Quadratic programming problem solved correctly
 
 **1.6 Efficient Frontier**
 - **Method**: Parametric sweep across target returns
 - **Implementation**: Generates n_points portfolios between min and max feasible returns
 
-✅ **THEORETICALLY SOUND**
+ **THEORETICALLY SOUND**
 
 **Strength:** Proper handling of the two-fund separation theorem
 
@@ -93,7 +93,7 @@ SR = (r_p - r_f) / σ_p
 
 ### Mathematical Foundation
 **Theory:** Black-Scholes-Merton (1973)  
-**Implementation:** `quantlib_pro/options/black_scholes.py` + inline in `pages/3_📊_Options.py`
+**Implementation:** `quantlib_pro/options/black_scholes.py` + inline in `pages/3__Options.py`
 
 #### Core Formulas Evaluated
 
@@ -103,7 +103,7 @@ d₁ = [ln(S/K) + (r + σ²/2)T] / (σ√T)
 d₂ = d₁ - σ√T
 ```
 
-✅ **CORRECT**: Both implementations match the formula exactly
+ **CORRECT**: Both implementations match the formula exactly
 ```python
 d1 = (np.log(S / K) + (r + 0.5 * sigma ** 2) * T) / (sigma * np.sqrt(T))
 d2 = d1 - sigma * np.sqrt(T)
@@ -114,14 +114,14 @@ d2 = d1 - sigma * np.sqrt(T)
 C = S×N(d₁) - K×e^(-rT)×N(d₂)
 ```
 
-✅ **CORRECT**: Uses `scipy.stats.norm.cdf` for cumulative normal distribution
+ **CORRECT**: Uses `scipy.stats.norm.cdf` for cumulative normal distribution
 
 **2.3 Put Option Price**
 ```
 P = K×e^(-rT)×N(-d₂) - S×N(-d₁)
 ```
 
-✅ **CORRECT**: Implementation matches theoretical formula
+ **CORRECT**: Implementation matches theoretical formula
 
 #### Greeks Evaluation
 
@@ -131,7 +131,7 @@ P = K×e^(-rT)×N(-d₂) - S×N(-d₁)
 Δ_put = N(d₁) - 1
 ```
 
-✅ **CORRECT**: Proper sign convention for calls and puts
+ **CORRECT**: Proper sign convention for calls and puts
 
 **2.5 Gamma (Γ)**
 ```
@@ -140,14 +140,14 @@ P = K×e^(-rT)×N(-d₂) - S×N(-d₁)
 
 Where `N'(x)` is the standard normal PDF
 
-✅ **CORRECT**: Uses `norm.pdf(d1) / (S * sigma * np.sqrt(T))`
+ **CORRECT**: Uses `norm.pdf(d1) / (S * sigma * np.sqrt(T))`
 
 **2.6 Vega (ν)**
 ```
 ν = S × N'(d₁) × √T
 ```
 
-⚠️ **MINOR ISSUE**: Implementation divides by 100 (scaling factor)
+ **MINOR ISSUE**: Implementation divides by 100 (scaling factor)
 ```python
 vega = S * norm.pdf(D1) * np.sqrt(T) / 100
 ```
@@ -162,7 +162,7 @@ vega = S * norm.pdf(D1) * np.sqrt(T) / 100
 Θ_put = -[S×N'(d₁)×σ / (2√T)] + r×K×e^(-rT)×N(-d₂)
 ```
 
-✅ **CORRECT**: Implementation divides by 365 to express theta per day (industry standard)
+ **CORRECT**: Implementation divides by 365 to express theta per day (industry standard)
 
 **2.8 Rho (ρ)**
 ```
@@ -170,7 +170,7 @@ vega = S * norm.pdf(D1) * np.sqrt(T) / 100
 ρ_put = -K×T×e^(-rT)×N(-d₂)
 ```
 
-✅ **CORRECT**: Scaled by /100 for 1% change in interest rate (conventional)
+ **CORRECT**: Scaled by /100 for 1% change in interest rate (conventional)
 
 #### Monte Carlo Options Pricing
 
@@ -182,7 +182,7 @@ S_T = S_0 × exp[(r - σ²/2)T + σ√T×Z]
 ```
 Where `Z ~ N(0,1)`
 
-✅ **THEORETICALLY SOUND**: Correct drift and diffusion terms
+ **THEORETICALLY SOUND**: Correct drift and diffusion terms
 
 **Assessment:**
 - Proper risk-neutral valuation
@@ -204,7 +204,7 @@ Where `Z ~ N(0,1)`
 VaR_α = -Percentile(returns, α)
 ```
 
-✅ **CORRECT**: Non-parametric method, no distributional assumptions
+ **CORRECT**: Non-parametric method, no distributional assumptions
 
 **Strength:** Captures actual historical tail events
 
@@ -219,7 +219,7 @@ Where:
 - `z_α`: α-quantile of standard normal
 - `T`: time horizon
 
-✅ **CORRECT**: Properly implements normal VaR with horizon scaling
+ **CORRECT**: Properly implements normal VaR with horizon scaling
 
 **3.3 Cornish-Fisher VaR**
 ```
@@ -231,7 +231,7 @@ Where:
 - `S`: skewness
 - `K`: kurtosis
 
-✅ **CORRECT**: Accounts for non-normality through higher moments
+ **CORRECT**: Accounts for non-normality through higher moments
 
 **Excellent choice** for fat-tailed distributions common in finance
 
@@ -239,7 +239,7 @@ Where:
 - **Method**: Simulate returns from estimated distribution
 - **Implementation**: Uses bootstrapping from historical returns
 
-✅ **VALID APPROACH**
+ **VALID APPROACH**
 
 #### Conditional VaR (CVaR / Expected Shortfall)
 
@@ -248,7 +248,7 @@ Where:
 CVaR_α = E[L | L > VaR_α]
 ```
 
-✅ **CORRECT**: Average of tail losses beyond VaR
+ **CORRECT**: Average of tail losses beyond VaR
 
 **3.6 Parametric CVaR (Normal)**
 ```
@@ -257,14 +257,14 @@ CVaR = VaR + σ × φ(z_α) / α
 
 Where `φ` is the standard normal PDF
 
-✅ **MATHEMATICALLY CORRECT**: Closed-form solution for normal distribution
+ **MATHEMATICALLY CORRECT**: Closed-form solution for normal distribution
 
 **Assessment:**
 - Comprehensive VaR methods covering multiple distributional assumptions
 - CVaR provides coherent risk measure (sub-additive)
 - Time horizon scaling uses √T (appropriate for i.i.d. returns)
 
-⚠️ **Consideration**: Real returns exhibit serial correlation and volatility clustering (GARCH effects not modeled)
+ **Consideration**: Real returns exhibit serial correlation and volatility clustering (GARCH effects not modeled)
 
 **Recommendation**: Add GARCH-based VaR for more realistic volatility dynamics
 
@@ -274,14 +274,14 @@ Where `φ` is the standard normal PDF
 
 ### Mathematical Foundation
 **Theory:** Stochastic volatility, volatility surfaces  
-**Implementation:** Multiple files across `pages/6_🌊_Volatility_Surface.py`
+**Implementation:** Multiple files across `pages/6__Volatility_Surface.py`
 
 #### 4.1 Historical Volatility
 ```
 σ_hist = std(returns) × √252
 ```
 
-✅ **CORRECT**: Annualization factor assumes 252 trading days
+ **CORRECT**: Annualization factor assumes 252 trading days
 
 #### 4.2 EWMA Volatility
 ```
@@ -290,7 +290,7 @@ Where `φ` is the standard normal PDF
 
 Where `λ` is decay factor (typically 0.94 for daily data per RiskMetrics)
 
-✅ **CORRECT**: Exponentially weighted moving average
+ **CORRECT**: Exponentially weighted moving average
 
 **Strength:** Gives more weight to recent observations
 
@@ -299,7 +299,7 @@ Where `λ` is decay factor (typically 0.94 for daily data per RiskMetrics)
 σ_P = √[(1/(4ln2) × Σ(ln(H_i/L_i))²] × √252
 ```
 
-✅ **THEORETICALLY SOUND**: More efficient than close-to-close volatility
+ **THEORETICALLY SOUND**: More efficient than close-to-close volatility
 
 **Strength:** Uses intraday price range information
 
@@ -307,7 +307,7 @@ Where `λ` is decay factor (typically 0.94 for daily data per RiskMetrics)
 - **Method**: Interpolation of implied volatilities across strikes and maturities
 - **Implementation**: Uses grid-based approach
 
-✅ **INDUSTRY STANDARD APPROACH**
+ **INDUSTRY STANDARD APPROACH**
 
 **Assessment:**
 - Multiple volatility
@@ -320,7 +320,7 @@ Where `λ` is decay factor (typically 0.94 for daily data per RiskMetrics)
 ## 5. Trading Strategies & Technical Analysis
 
 ### Mathematical Foundation
-**Implementations:** `pages/11_📡_Trading_Signals.py`
+**Implementations:** `pages/11__Trading_Signals.py`
 
 #### 5.1 Moving Average Crossover
 ```
@@ -328,7 +328,7 @@ Signal: long when SMA_short > SMA_long
         short when SMA_short < SMA_long
 ```
 
-✅ **CLASSIC MOMENTUM STRATEGY**: Theoretically valid
+ **CLASSIC MOMENTUM STRATEGY**: Theoretically valid
 
 **Academic Support:** Faber (2007) shows momentum strategies work across asset classes
 
@@ -340,7 +340,7 @@ Lower = SMA(n) - k × σ(n)
 
 Where `k` typically = 2
 
-✅ **STATISTICALLY SOUND**: Based on standard deviations (95% confidence for k=2)
+ **STATISTICALLY SOUND**: Based on standard deviations (95% confidence for k=2)
 
 #### 5.3 RSI (Relative Strength Index)
 ```
@@ -348,22 +348,22 @@ RS = Avg(up_moves) / Avg(down_moves)
 RSI = 100 - 100/(1 + RS)
 ```
 
-✅ **CORRECT IMPLEMENTATION**: Matches Wilder's (1978) original formula
+ **CORRECT IMPLEMENTATION**: Matches Wilder's (1978) original formula
 
 #### 5.4 Backtesting Framework
 - **Returns calculation**: Proper handling of transaction costs
 - **Performance metrics**: Sharpe ratio, max drawdown, win rate
 
-✅ **COMPREHENSIVE BACKTESTING**
+ **COMPREHENSIVE BACKTESTING**
 
-⚠️ **Lookback Bias Check**: Ensure indicators don't use future data ✅ **VERIFIED CLEAN**
+ **Lookback Bias Check**: Ensure indicators don't use future data  **VERIFIED CLEAN**
 
 ---
 
 ## 6. Market Regime Detection
 
 ### Mathematical Foundation
-**Implementation:** `pages/4_🎯_Market_Regime.py`
+**Implementation:** `pages/4__Market_Regime.py`
 
 #### 6.1 Hidden Markov Model (HMM)
 ```
@@ -371,7 +371,7 @@ P(S_t | S_(t-1)) = Transition matrix A
 P(O_t | S_t) = Emission probability B
 ```
 
-✅ **THEORETICALLY SOUND**: Assumes Markovian dynamics
+ **THEORETICALLY SOUND**: Assumes Markovian dynamics
 
 **Strength:** Captures structural breaks in markets
 
@@ -380,7 +380,7 @@ P(O_t | S_t) = Emission probability B
 Minimize: Σ_i Σ_(x∈C_i) ||x - μ_i||²
 ```
 
-✅ **VALID UNSUPERVISED LEARNING APPROACH**
+ **VALID UNSUPERVISED LEARNING APPROACH**
 
 **Note:** Assumes spherical clusters (may not capture regime complexity)
 
@@ -389,7 +389,7 @@ Minimize: Σ_i Σ_(x∈C_i) ||x - μ_i||²
 p(x) = Σ_k π_k × N(x | μ_k, Σ_k)
 ```
 
-✅ **MORE FLEXIBLE THAN K-MEANS**: Allows elliptical clusters
+ **MORE FLEXIBLE THAN K-MEANS**: Allows elliptical clusters
 
 **Assessment:**
 - Multiple regime detection methods provide robustness
@@ -401,7 +401,7 @@ p(x) = Σ_k π_k × N(x | μ_k, Σ_k)
 ## 7. Systemic Risk & Contagion
 
 ### Mathematical Foundation
-**Implementation:** `pages/13_🕸️_Systemic_Risk.py`
+**Implementation:** `pages/13__Systemic_Risk.py`
 
 #### 7.1 Network Contagion Model
 ```
@@ -410,9 +410,9 @@ Impact_t+1(i) = Impact_t(i) × (1-decay) + Σ_j w_ij × Impact_t(j)
 
 Where `w_ij` is correlation strength
 
-✅ **SIMPLIFIED EPIDEMIOLOGICAL MODEL**: Captures basic contagion dynamics
+ **SIMPLIFIED EPIDEMIOLOGICAL MODEL**: Captures basic contagion dynamics
 
-⚠️ **Limitation**: Assumes linear propagation (real contagion may be non-linear)
+ **Limitation**: Assumes linear propagation (real contagion may be non-linear)
 
 **Recommendation**: Consider threshold effects or power-law propagation
 
@@ -420,7 +420,7 @@ Where `w_ij` is correlation strength
 - **Method**: Creates edges when |correlation| > threshold
 - **Centrality measures**: Degree, betweenness, eigenvector centrality
 
-✅ **STANDARD NETWORK ANALYSIS**
+ **STANDARD NETWORK ANALYSIS**
 
 **Strength:** Identifies systemically important nodes
 
@@ -429,7 +429,7 @@ Where `w_ij` is correlation strength
 Stress_new(j) = Stress_old(j) + Σ_i Corr(i,j) × Stress(i) × (1-decay)
 ```
 
-✅ **INTUITIVE PROPAGATION RULE**
+ **INTUITIVE PROPAGATION RULE**
 
 **Assessment:**
 - Correlation ≠ causation (limitation acknowledged)
@@ -449,21 +449,21 @@ dS/S = μdt + σdW
 S_t = S_0 × exp[(μ - σ²/2)t + σW_t]
 ```
 
-✅ **CORRECT DISCRETIZATION**: Includes drift correction term
+ **CORRECT DISCRETIZATION**: Includes drift correction term
 
 #### 8.2 Portfolio Simulation (Dirichlet Distribution)
 ```
 Weights ~ Dirichlet(α)
 ```
 
-✅ **EXCELLENT CHOICE**: Ensures weights sum to 1 and are positive
+ **EXCELLENT CHOICE**: Ensures weights sum to 1 and are positive
 
 **Strength:** Unbiased sampling of portfolio space
 
 #### 8.3 Random Number Generation
 - Uses `numpy.random` with proper seeding for reproducibility
 
-✅ **BEST PRACTICE**: Enables reproducible research
+ **BEST PRACTICE**: Enables reproducible research
 
 **Assessment:**
 - Monte Carlo implementations are mathematically sound
@@ -482,20 +482,20 @@ Weights ~ Dirichlet(α)
 ρ = Cov(X,Y) / (σ_X × σ_Y)
 ```
 
-✅ **STANDARD METRIC**: Measures linear dependence
+ **STANDARD METRIC**: Measures linear dependence
 
 #### 9.2 Rolling Correlation
 ```
 ρ_t = Corr(r_(t-window:t))
 ```
 
-✅ **TIME-VARYING CORRELATION**: Captures regime changes
+ **TIME-VARYING CORRELATION**: Captures regime changes
 
 #### 9.3 Correlation Matrix Eigenvalue Analysis
 - Checks for positive semi-definiteness
 - Regularization when needed
 
-✅ **NUMERICALLY ROBUST**
+ **NUMERICALLY ROBUST**
 
 **Concern:** Correlation ≠ tail dependence
 
@@ -506,21 +506,21 @@ Weights ~ Dirichlet(α)
 ## 10. Liquidity Metrics
 
 ### Mathematical Foundation
-**Implementation:** `pages/12_🌊_Liquidity.py`
+**Implementation:** `pages/12__Liquidity.py`
 
 #### 10.1 Amihud Illiquidity Ratio
 ```
 ILLIQ = (1/Days) × Σ |r_t| / Volume_t
 ```
 
-✅ **ACADEMICALLY VALIDATED** (Amihud, 2002)
+ **ACADEMICALLY VALIDATED** (Amihud, 2002)
 
 #### 10.2 Bid-Ask Spread
 ```
 Spread = (Ask - Bid) / Mid
 ```
 
-✅ **STANDARD MARKET MICROSTRUCTURE METRIC**
+ **STANDARD MARKET MICROSTRUCTURE METRIC**
 
 #### 10.3 Kyle's Lambda (Price Impact)
 ```
@@ -529,7 +529,7 @@ Spread = (Ask - Bid) / Mid
 
 Where Q is signed order flow
 
-✅ **THEORETICAL FOUNDATION** (Kyle, 1985)
+ **THEORETICAL FOUNDATION** (Kyle, 1985)
 
 **Assessment:**
 - Comprehensive liquidity measures
@@ -554,14 +554,14 @@ Hidden States: S_t ∈ {1, 2, ..., N}
 Observations: O_t = [r_t, σ_t, momentum_t]
 ```
 
-✅ **CORRECT FORMULATION**: Markov property P(S_t | S_(t-1))
+ **CORRECT FORMULATION**: Markov property P(S_t | S_(t-1))
 
 **11.2 Transition Matrix**
 ```
 A_{ij} = P(S_t = j | S_(t-1) = i)
 ```
 
-✅ **PROPERLY ESTIMATED**: Uses Baum-Welch algorithm (EM) via `hmmlearn`
+ **PROPERLY ESTIMATED**: Uses Baum-Welch algorithm (EM) via `hmmlearn`
 
 **Constraint**: Σ_j A_{ij} = 1 (each row sums to 1)
 
@@ -574,9 +574,9 @@ Where:
 - `μ_k`: Mean vector for regime k
 - `Σ_k`: Covariance matrix (diagonal assumed)
 
-✅ **GAUSSIAN ASSUMPTION**: Reasonable for short-term returns
+ **GAUSSIAN ASSUMPTION**: Reasonable for short-term returns
 
-⚠️ **Limitation**: Fat tails not captured (t-distribution would be better)
+ **Limitation**: Fat tails not captured (t-distribution would be better)
 
 **11.4 Feature Engineering**
 ```python
@@ -585,7 +585,7 @@ volatility = std(returns_rolling_21) × √252
 momentum = (P_t - P_(t-21)) / P_(t-21)
 ```
 
-✅ **WELL-DESIGNED FEATURES**: Capture return, risk, and trend dynamics
+ **WELL-DESIGNED FEATURES**: Capture return, risk, and trend dynamics
 
 **11.5 Viterbi Algorithm**
 Used to find most likely state sequence:
@@ -593,7 +593,7 @@ Used to find most likely state sequence:
 S* = argmax P(S_1...S_T | O_1...O_T)
 ```
 
-✅ **STANDARD DECODING**: Dynamic programming solution
+ **STANDARD DECODING**: Dynamic programming solution
 
 **Assessment:**
 - HMM is gold standard for regime detection (Hamilton, 1989)
@@ -626,7 +626,7 @@ Where:
 - `ν`: Volatility of volatility (vol-of-vol)
 - `ρ`: Correlation between forward and volatility
 
-✅ **THEORETICALLY SOUND**: Captures volatility smile dynamics
+ **THEORETICALLY SOUND**: Captures volatility smile dynamics
 
 **12.2 Hagan's Approximation Formula**
 ```python
@@ -643,19 +643,19 @@ Where:
 z = (ν/α) × FK^((1-β)/2) × ln(F/K)
 ```
 
-✅ **CORRECTLY IMPLEMENTED**: Matches Hagan et al. (2002) formula exactly
+ **CORRECTLY IMPLEMENTED**: Matches Hagan et al. (2002) formula exactly
 
 **Code Verification:**
 ```python
 # Line 185-245 in smile_models.py
-z = (nu / alpha) * (FK ** ((1 - beta) / 2)) * log_FK  ✓
-x_z = z / np.log((np.sqrt(1 - 2*rho*z + z²) + z - rho) / (1 - rho))  ✓
+z = (nu / alpha) * (FK ** ((1 - beta) / 2)) * log_FK  
+x_z = z / np.log((np.sqrt(1 - 2*rho*z + z²) + z - rho) / (1 - rho))  
 ```
 
 **12.3 No-Arbitrage Constraints**
-- `0 ≤ β ≤ 1`: ✅ Validated in `__post_init__`
-- `-1 ≤ ρ ≤ 1`: ✅ Validated
-- `ν ≥ 0`: ✅ Validated
+- `0 ≤ β ≤ 1`:  Validated in `__post_init__`
+- `-1 ≤ ρ ≤ 1`:  Validated
+- `ν ≥ 0`:  Validated
 
 **12.4 Calibration**
 Uses scipy.optimize to minimize:
@@ -663,7 +663,7 @@ Uses scipy.optimize to minimize:
 min Σ_i [σ_market(K_i) - σ_SABR(K_i)]²
 ```
 
-✅ **STANDARD LEAST-SQUARES CALIBRATION**
+ **STANDARD LEAST-SQUARES CALIBRATION**
 
 **Assessment:**
 - SABR is industry standard for FX and interest rate options
@@ -692,7 +692,7 @@ Where:
 - `r_f`: Risk-free rate (annualized)
 - `252`: Trading days per year
 
-✅ **CORRECTLY ANNUALIZED**: Line 364
+ **CORRECTLY ANNUALIZED**: Line 364
 
 **13.2 Sortino Ratio**
 ```
@@ -704,7 +704,7 @@ Where:
 σ_downside = std(returns | returns < 0) × √252
 ```
 
-✅ **CORRECT IMPLEMENTATION**: Lines 366-368
+ **CORRECT IMPLEMENTATION**: Lines 366-368
 
 **Strength:** Penalizes only downside volatility (asymmetric risk)
 
@@ -713,7 +713,7 @@ Where:
 Calmar = R_annual / |MaxDrawdown|
 ```
 
-✅ **CORRECT FORMULA**: Line 377
+ **CORRECT FORMULA**: Line 377
 
 **Usage:** Higher is better; >1.0 indicates return exceeds worst drawdown
 
@@ -723,21 +723,21 @@ DD_t = (Equity_t - MaxEquity_(0:t)) / MaxEquity_(0:t)
 MaxDD = min(DD_t)
 ```
 
-✅ **CORRECT IMPLEMENTATION**: Lines 373-376
+ **CORRECT IMPLEMENTATION**: Lines 373-376
 
 **13.5 Win Rate**
 ```
 WinRate = N_winners / N_total_trades
 ```
 
-✅ **SIMPLE BUT CORRECT**: Line 386
+ **SIMPLE BUT CORRECT**: Line 386
 
 **13.6 Profit Factor**
 ```
 PF = Σ(winning_trades) / |Σ(losing_trades)|
 ```
 
-✅ **INDUSTRY STANDARD**: Lines 390-391
+ **INDUSTRY STANDARD**: Lines 390-391
 
 **Important:** PF > 1 means profitable, PF > 2 is excellent
 
@@ -746,7 +746,7 @@ PF = Σ(winning_trades) / |Σ(losing_trades)|
 TotalCost = Commission + Slippage × |TradeValue|
 ```
 
-✅ **REALISTIC MODELING**: Lines 62-64
+ **REALISTIC MODELING**: Lines 62-64
 
 **Assessment:**
 - Comprehensive performance metrics covering returns, risk, and trade quality
@@ -761,14 +761,14 @@ TotalCost = Commission + Slippage × |TradeValue|
 ## 14. Liquidity Metrics (Market Microstructure)
 
 ### Mathematical Foundation
-**Implementation:** `pages/12_🌊_Liquidity.py`
+**Implementation:** `pages/12__Liquidity.py`
 
 #### 14.1 Amihud Illiquidity Ratio
 ```
 ILLIQ = (1/Days) × Σ_t |r_t| / Volume_t
 ```
 
-✅ **ACADEMICALLY VALIDATED**: Amihud (2002) - measures price impact per dollar volume
+ **ACADEMICALLY VALIDATED**: Amihud (2002) - measures price impact per dollar volume
 
 **14.2 Order Book Simulator**
 ```python
@@ -778,7 +778,7 @@ Volume(level) = BaseVolume × exp(-λ × level)
 
 Where `λ ≈ 0.05` for realistic order books
 
-✅ **REALISTIC MICROSTRUCTURE**: Matches empirical LOB studies
+ **REALISTIC MICROSTRUCTURE**: Matches empirical LOB studies
 
 **14.3 Square-Root Market Impact**
 ```
@@ -791,7 +791,7 @@ Where:
 - `σ`: Volatility
 - `η`: Impact coefficient (≈0.5)
 
-✅ **ALMGREN-CHRISS MODEL**: Industry benchmark for execution cost
+ **ALMGREN-CHRISS MODEL**: Industry benchmark for execution cost
 
 **Theoretical Basis:** Square-root law from statistical mechanics
 
@@ -801,7 +801,7 @@ Temporary: decays after trade
 Permanent: price moves permanently
 ```
 
-✅ **PROPERLY DISTINGUISHED**: Lines 145-151
+ **PROPERLY DISTINGUISHED**: Lines 145-151
 
 **Assessment:**
 - State-of-the-art market microstructure modeling
@@ -822,7 +822,7 @@ w(k) = a + b × (ρ(k-m) + √[(k-m)² + σ²])
 
 Where `k = log(K/F)` is log-moneyness
 
-✅ **NO-ARBITRAGE CONDITIONS ENFORCED**:
+ **NO-ARBITRAGE CONDITIONS ENFORCED**:
 - `b ≥ 0`
 - `|ρ| ≤ 1`
 - `σ > 0`
@@ -834,7 +834,7 @@ Where `k = log(K/F)` is log-moneyness
 σ_P = √[(1/(4ln2) × Σ ln²(H_i/L_i))] × √252
 ```
 
-✅ **CORRECT FORMULA**: Uses high-low range (more efficient than close-close)
+ **CORRECT FORMULA**: Uses high-low range (more efficient than close-close)
 
 **Efficiency:** 5-10× more efficient than standard volatility (Parkinson, 1980)
 
@@ -849,7 +849,7 @@ Where `k = log(K/F)` is log-moneyness
 **Analysis Date:** February 24, 2026  
 **Status:** Deep scan completed with automated verification
 
-#### Overall Assessment: ⚠️ **2.0/5.0** - Significant issues found
+#### Overall Assessment:  **2.0/5.0** - Significant issues found
 
 **Executive Summary:** Q-Fin contains critical bugs making most components unusable for production. However, the Arithmetic Brownian Motion (Bachelier model) implementation is mathematically correct and represents unique value.
 
@@ -862,20 +862,20 @@ d2 = d1 - σ√T
 C = S×N(d1) - K×e^(-rT)×N(d2)
 ```
 
-✅ **CORRECT**: Implementation matches theoretical formula
+ **CORRECT**: Implementation matches theoretical formula
 
 **Greeks:**
-- Delta: ✅ Correct
-- Gamma: ❌ **BUG FOUND** - Both Call/Put have 42.6% error
-- Vega: ✅ Correct
-- Theta: ✅ Correct
-- Rho: ✅ Correct
+- Delta:  Correct
+- Gamma:  **BUG FOUND** - Both Call/Put have 42.6% error
+- Vega:  Correct
+- Theta:  Correct
+- Rho:  Correct
 
 **Verdict:** Redundant with existing implementations (use existing Black-Scholes modules)
 
 **Rating:** 3.5/5.0
 
-#### 16.2 Arithmetic Brownian Motion (Bachelier Model) ✅
+#### 16.2 Arithmetic Brownian Motion (Bachelier Model) 
 
 **Theory:** Bachelier (1900) - First mathematical model of derivatives  
 **Implementation:** `Q-Fin-main/QFin/stochastics.py`
@@ -897,23 +897,23 @@ d = (F - K) / (σ√T)
 Φ(d) = standard normal CDF
 ```
 
-✅ **MATHEMATICALLY CORRECT**: Verified by automated testing
+ **MATHEMATICALLY CORRECT**: Verified by automated testing
 
 **Test Results:**
 ```
 Parameters: F0=100, K=100, T=1, σ=20
 Expected Call Price: 7.978846
-ABM Call Price:      7.978846  ✅ EXACT MATCH
-Put-Call Parity:     ✅ VERIFIED
-Simulation Mean:     100.95 (Expected: 100.00) ✅
-Simulation Std Dev:  20.17 (Expected: 20.00)   ✅
+ABM Call Price:      7.978846   EXACT MATCH
+Put-Call Parity:      VERIFIED
+Simulation Mean:     100.95 (Expected: 100.00) 
+Simulation Std Dev:  20.17 (Expected: 20.00)   
 ```
 
 **Strengths:**
-- ✅ Only Bachelier implementation found in project
-- ✅ Clean abstract `StochasticModel` interface
-- ✅ Correct simulation discretization
-- ✅ Proper put-call parity implementation
+-  Only Bachelier implementation found in project
+-  Clean abstract `StochasticModel` interface
+-  Correct simulation discretization
+-  Proper put-call parity implementation
 
 **Use Cases:**
 - Futures/forwards pricing (constant strike)
@@ -925,7 +925,7 @@ Simulation Std Dev:  20.17 (Expected: 20.00)   ✅
 
 **Recommendation:** **EXTRACT THIS COMPONENT** - Integrate into quantlib_pro/
 
-#### 16.3 Monte Carlo Barrier Options ❌
+#### 16.3 Monte Carlo Barrier Options 
 
 **Expected Behavior:** Variable prices across runs due to randomness  
 **Actual Behavior:** Returns 0.0000 on ALL runs
@@ -936,8 +936,8 @@ Simulation Std Dev:  20.17 (Expected: 20.00)   ✅
 def simulate_price_gbm(self, strike, n, barrier, ...):
     payouts = []
     for i in range(0, n):
-        payouts = []  # ❌ Resets list - only last iteration kept!
-        for i in range(0, n):  # ❌ Overwrites loop variable
+        payouts = []  #  Resets list - only last iteration kept!
+        for i in range(0, n):  #  Overwrites loop variable
 ```
 
 **Test Results:**
@@ -947,7 +947,7 @@ Standard Deviation: 0.0000
 Expected: Variable results
 ```
 
-✅ **BUG CONFIRMED** by automated testing
+ **BUG CONFIRMED** by automated testing
 
 **Verdict:** UNUSABLE - Complete implementation failure
 
@@ -965,10 +965,10 @@ Monte Carlo (n=10,000):     4,858ms   (7,905x slower)
 ```
 
 **Issues:**
-- ❌ Object creation inside loops (GBM instantiated n times)
-- ❌ No NumPy vectorization
-- ❌ Python loops instead of compiled code
-- ❌ Sub-linear scaling (overhead dominates)
+-  Object creation inside loops (GBM instantiated n times)
+-  No NumPy vectorization
+-  Python loops instead of compiled code
+-  Sub-linear scaling (overhead dominates)
 
 **Verdict:** Performance unacceptable for production use
 
@@ -979,24 +979,24 @@ Monte Carlo (n=10,000):     4,858ms   (7,905x slower)
 **Original Issue:**
 ```python
 # __init__.py used wrong case
-from qfin.options import ...  # ❌ Module name is QFin, not qfin
+from qfin.options import ...  #  Module name is QFin, not qfin
 ```
 
 **Impact:** Package couldn't be imported after installation
 
-✅ **FIXED:** Changed to `from QFin.options import ...`
+ **FIXED:** Changed to `from QFin.options import ...`
 
 #### Summary: Q-Fin Component Ratings
 
 | Component | Correctness | Performance | Usefulness | Rating |
 |-----------|------------|-------------|------------|--------|
-| Black-Scholes | ⚠️ Gamma bug | ✅ Fast | 🔴 Redundant | 3.5/5.0 |
-| **Bachelier (ABM)** | ✅ Perfect | ✅ Good | ✅ **Unique** | **5.0/5.0** |
-| Monte Carlo Vanilla | ⚠️ Works | 🔴 7900x slow | 🔴 Redundant | 2.0/5.0 |
-| Barrier Options | 🔴 Broken | 🔴 Slow | 🔴 Unusable | 0.0/5.0 |
-| Asian Options | ❓ Untested | 🔴 Slow | 🔴 Redundant | 2.0/5.0 |
-| GBM Simulation | ✅ Correct | 🔴 Slow | 🔴 Redundant | 2.5/5.0 |
-| Heston SVM | ⚠️ Init bug | 🔴 Slow | 🔴 Redundant | 2.0/5.0 |
+| Black-Scholes |  Gamma bug |  Fast |  Redundant | 3.5/5.0 |
+| **Bachelier (ABM)** |  Perfect |  Good |  **Unique** | **5.0/5.0** |
+| Monte Carlo Vanilla |  Works |  7900x slow |  Redundant | 2.0/5.0 |
+| Barrier Options |  Broken |  Slow |  Unusable | 0.0/5.0 |
+| Asian Options |  Untested |  Slow |  Redundant | 2.0/5.0 |
+| GBM Simulation |  Correct |  Slow |  Redundant | 2.5/5.0 |
+| Heston SVM |  Init bug |  Slow |  Redundant | 2.0/5.0 |
 
 **Overall Q-Fin Rating:** 2.0/5.0
 
@@ -1005,14 +1005,14 @@ from qfin.options import ...  # ❌ Module name is QFin, not qfin
 #### Recommendations for Q-Fin
 
 **DO:**
-- ✅ Extract Arithmetic Brownian Motion → integrate into quantlib_pro/
-- ✅ Extract StochasticModel abstract interface (good design pattern)
-- ✅ Archive Q-Fin-main/ for reference
+-  Extract Arithmetic Brownian Motion → integrate into quantlib_pro/
+-  Extract StochasticModel abstract interface (good design pattern)
+-  Archive Q-Fin-main/ for reference
 
 **DO NOT:**
-- ❌ Use barrier options (completely broken)
-- ❌ Use Monte Carlo for production (7900x too slow)
-- ❌ Rely on any component without thorough testing
+-  Use barrier options (completely broken)
+-  Use Monte Carlo for production (7900x too slow)
+-  Rely on any component without thorough testing
 
 **Integration Plan:**
 1. Create `quantlib_pro/models/bachelier.py`
@@ -1058,23 +1058,23 @@ from qfin.options import ...  # ❌ Module name is QFin, not qfin
 
 | Component | Mathematical Correctness | Implementation Quality | Rating |
 |-----------|-------------------------|----------------------|--------|
-| Portfolio Optimization | ✅ Excellent | ✅ Excellent | 5.0/5.0 |
-| Black-Scholes | ✅ Excellent | ✅ Excellent | 5.0/5.0 |
-| Greeks | ✅ Correct | ✅ Very Good | 4.5/5.0 |
-| VaR/CVaR | ✅ Excellent | ✅ Excellent | 5.0/5.0 |
-| SABR Model | ✅ Excellent | ✅ Very Good | 4.5/5.0 |
-| SVI Model | ✅ Excellent | ✅ Excellent | 5.0/5.0 |
-| HMM Regime Detection | ✅ Very Good | ✅ Very Good | 4.5/5.0 |
-| Volatility Estimators | ✅ Excellent | ✅ Excellent | 5.0/5.0 |
-| Backtesting Metrics | ✅ Excellent | ✅ Very Good | 4.5/5.0 |
-| Trading Strategies | ✅ Correct | ✅ Good | 4.0/5.0 |
-| Systemic Risk | ✅ Good | ✅ Good | 4.0/5.0 |
-| Monte Carlo | ✅ Excellent | ✅ Very Good | 4.5/5.0 |
-| Liquidity Metrics | ✅ Excellent | ✅ Excellent | 5.0/5.0 |
-| **Q-Fin (Bachelier only)** | ✅ **Excellent** | ✅ **Excellent** | **5.0/5.0** |
-| Q-Fin (Other components) | 🔴 Poor | 🔴 Poor | 2.0/5.0 |
+| Portfolio Optimization |  Excellent |  Excellent | 5.0/5.0 |
+| Black-Scholes |  Excellent |  Excellent | 5.0/5.0 |
+| Greeks |  Correct |  Very Good | 4.5/5.0 |
+| VaR/CVaR |  Excellent |  Excellent | 5.0/5.0 |
+| SABR Model |  Excellent |  Very Good | 4.5/5.0 |
+| SVI Model |  Excellent |  Excellent | 5.0/5.0 |
+| HMM Regime Detection |  Very Good |  Very Good | 4.5/5.0 |
+| Volatility Estimators |  Excellent |  Excellent | 5.0/5.0 |
+| Backtesting Metrics |  Excellent |  Very Good | 4.5/5.0 |
+| Trading Strategies |  Correct |  Good | 4.0/5.0 |
+| Systemic Risk |  Good |  Good | 4.0/5.0 |
+| Monte Carlo |  Excellent |  Very Good | 4.5/5.0 |
+| Liquidity Metrics |  Excellent |  Excellent | 5.0/5.0 |
+| **Q-Fin (Bachelier only)** |  **Excellent** |  **Excellent** | **5.0/5.0** |
+| Q-Fin (Other components) |  Poor |  Poor | 2.0/5.0 |
 
-### Overall Assessment: **4.6 / 5.0** ⭐⭐⭐⭐★
+### Overall Assessment: **4.6 / 5.0** ⭐⭐⭐⭐
 
 **Note:** Q-Fin's Bachelier model (5.0/5.0) recommended for extraction and integration. Other Q-Fin components not recommended due to critical bugs and performance issues.
 

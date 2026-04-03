@@ -22,7 +22,7 @@ $PRESERVE_NETWORKS = @(
 )
 
 function Write-SafeLog {
-    param([string]$Message, [string]$Color = "White", [string]$Icon = "🛡️")
+    param([string]$Message, [string]$Color = "White", [string]$Icon = "")
     Write-Host "$Icon $Message" -ForegroundColor $Color
 }
 
@@ -37,7 +37,7 @@ function Safe-NetworkCleanup {
     $candidateNetworks = $allNetworks | Where-Object { $_ -notin $PRESERVE_NETWORKS }
     
     if ($candidateNetworks.Count -eq 0) {
-        Write-SafeLog "✅ No networks to clean up" "Green"
+        Write-SafeLog " No networks to clean up" "Green"
         return
     }
     
@@ -47,26 +47,26 @@ function Safe-NetworkCleanup {
         
         if (-not $containers -or $containers.Trim() -eq "") {
             if ($DryRun) {
-                Write-SafeLog "🔍 Would remove unused network: $network" "Yellow" "🔍"
+                Write-SafeLog " Would remove unused network: $network" "Yellow" ""
             } else {
-                Write-SafeLog "🗑️  Removing unused network: $network" "Gray" "🗑️"
+                Write-SafeLog "  Removing unused network: $network" "Gray" ""
                 docker network rm $network 2>$null
                 if ($LASTEXITCODE -eq 0) {
-                    Write-SafeLog "✅ Successfully removed: $network" "Green"
+                    Write-SafeLog " Successfully removed: $network" "Green"
                 } else {
-                    Write-SafeLog "❌ Failed to remove: $network" "Red"
+                    Write-SafeLog " Failed to remove: $network" "Red"
                 }
             }
         } else {
-            Write-SafeLog "⚠️  Skipping in-use network: $network (containers: $($containers.Trim()))" "Yellow" "⚠️"
+            Write-SafeLog "  Skipping in-use network: $network (containers: $($containers.Trim()))" "Yellow" ""
         }
     }
     
-    Write-SafeLog "`nPRESERVED Networks (never touched):" "Green" "🛡️"
+    Write-SafeLog "`nPRESERVED Networks (never touched):" "Green" ""
     foreach ($preserved in $PRESERVE_NETWORKS) {
         $exists = docker network ls --filter "name=$preserved" --format "{{.Name}}" 2>$null
         if ($exists) {
-            Write-SafeLog "✅ $preserved" "Green" "🔒"
+            Write-SafeLog " $preserved" "Green" ""
         }
     }
 }
@@ -78,12 +78,12 @@ function Safe-ContainerCleanup {
     Write-SafeLog "═════════════════════" "Gray"
     
     if ($DryRun) {
-        Write-SafeLog "🔍 Dry run - would remove stopped containers:" "Yellow" "🔍"
+        Write-SafeLog " Dry run - would remove stopped containers:" "Yellow" ""
         docker container ls -a --filter "status=exited" --format "table {{.Names}}\t{{.Status}}"
     } else {
-        Write-SafeLog "🗑️  Removing stopped containers..." "Gray" "🗑️"
+        Write-SafeLog "  Removing stopped containers..." "Gray" ""
         docker container prune -f
-        Write-SafeLog "✅ Stopped containers cleaned up" "Green"
+        Write-SafeLog " Stopped containers cleaned up" "Green"
     }
 }
 
@@ -94,12 +94,12 @@ function Safe-ImageCleanup {
     Write-SafeLog "═════════════════" "Gray"
     
     if ($DryRun) {
-        Write-SafeLog "🔍 Dry run - would remove dangling images:" "Yellow" "🔍"
+        Write-SafeLog " Dry run - would remove dangling images:" "Yellow" ""
         docker images --filter "dangling=true" --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}"
     } else {
-        Write-SafeLog "🗑️  Removing dangling images..." "Gray" "🗑️"
+        Write-SafeLog "  Removing dangling images..." "Gray" ""
         docker image prune -f
-        Write-SafeLog "✅ Dangling images cleaned up" "Green"
+        Write-SafeLog " Dangling images cleaned up" "Green"
     }
 }
 
@@ -110,12 +110,12 @@ function Safe-VolumeCleanup {
     Write-SafeLog "══════════════════" "Gray"
     
     if ($DryRun) {
-        Write-SafeLog "🔍 Dry run - would remove unused volumes:" "Yellow" "🔍"
+        Write-SafeLog " Dry run - would remove unused volumes:" "Yellow" ""
         docker volume ls --filter "dangling=true" --format "table {{.Name}}\t{{.Driver}}"
     } else {
-        Write-SafeLog "🗑️  Removing unused volumes..." "Gray" "🗑️"
+        Write-SafeLog "  Removing unused volumes..." "Gray" ""
         docker volume prune -f
-        Write-SafeLog "✅ Unused volumes cleaned up" "Green"
+        Write-SafeLog " Unused volumes cleaned up" "Green"
     }
 }
 
@@ -123,7 +123,7 @@ function Safe-VolumeCleanup {
 $isDryRun = $DryRun.IsPresent
 
 if ($isDryRun) {
-    Write-SafeLog "🔍 DRY RUN MODE - No actual changes will be made" "Yellow" "🔍"
+    Write-SafeLog " DRY RUN MODE - No actual changes will be made" "Yellow" ""
     Write-SafeLog "═══════════════════════════════════════════════" "Gray"
 }
 
@@ -139,13 +139,13 @@ switch ($true) {
         Safe-VolumeCleanup -DryRun $isDryRun
     }
     default {
-        Write-SafeLog "🛡️  SAFE Docker Cleanup - Protects Critical Networks" "Cyan" "🛡️"
+        Write-SafeLog "  SAFE Docker Cleanup - Protects Critical Networks" "Cyan" ""
         Write-SafeLog "═══════════════════════════════════════════════════════" "Gray"
         Write-SafeLog ""
-        Write-SafeLog "⚠️  NEVER USE: docker network prune -f" "Red" "❌"
-        Write-SafeLog "✅ INSTEAD USE: This safe cleanup script" "Green" "✅"
+        Write-SafeLog "  NEVER USE: docker network prune -f" "Red" ""
+        Write-SafeLog " INSTEAD USE: This safe cleanup script" "Green" ""
         Write-SafeLog ""
-        Write-SafeLog "Usage:" "Yellow" "📖"
+        Write-SafeLog "Usage:" "Yellow" ""
         Write-SafeLog "  -Networks     Clean unused networks (preserves critical ones)"
         Write-SafeLog "  -Containers   Clean stopped containers"
         Write-SafeLog "  -Images       Clean dangling images"
@@ -153,14 +153,14 @@ switch ($true) {
         Write-SafeLog "  -All          Clean everything safely"
         Write-SafeLog "  -DryRun       Show what would be cleaned (no changes)"
         Write-SafeLog ""
-        Write-SafeLog "Examples:" "Green" "💡"
+        Write-SafeLog "Examples:" "Green" ""
         Write-SafeLog "  .\safe-docker-cleanup.ps1 -All -DryRun    # Preview all cleanup"
         Write-SafeLog "  .\safe-docker-cleanup.ps1 -Networks       # Safe network cleanup"
         Write-SafeLog "  .\safe-docker-cleanup.ps1 -All            # Full safe cleanup"
         Write-SafeLog ""
-        Write-SafeLog "Protected Networks:" "Green" "🔒"
+        Write-SafeLog "Protected Networks:" "Green" ""
         foreach ($network in $PRESERVE_NETWORKS) {
-            Write-SafeLog "  🛡️  $network" "Green" "🔒"
+            Write-SafeLog "    $network" "Green" ""
         }
     }
 }

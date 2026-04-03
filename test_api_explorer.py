@@ -36,18 +36,18 @@ def test(name: str):
                 elapsed = time.time() - start
                 
                 if result:
-                    print(f"✅ PASSED ({elapsed:.2f}s)")
+                    print(f" PASSED ({elapsed:.2f}s)")
                     results["passed"] += 1
                     results["tests"].append({"name": name, "status": "PASS", "time": elapsed})
                 else:
-                    print(f"❌ FAILED ({elapsed:.2f}s)")
+                    print(f" FAILED ({elapsed:.2f}s)")
                     results["failed"] += 1
                     results["tests"].append({"name": name, "status": "FAIL", "time": elapsed})
                 
                 return result
             except Exception as e:
                 elapsed = time.time() - start
-                print(f"❌ ERROR: {str(e)} ({elapsed:.2f}s)")
+                print(f" ERROR: {str(e)} ({elapsed:.2f}s)")
                 results["failed"] += 1
                 results["tests"].append({"name": name, "status": "ERROR", "time": elapsed, "error": str(e)})
                 return False
@@ -201,11 +201,11 @@ response = requests.get(API_URL, timeout=30)
 
 # ===== HANDLE RESPONSE =====
 if response.status_code == 200:
-    print('✓ Success!')
+    print(' Success!')
     data = response.json()
     print(json.dumps(data, indent=2))
 else:
-    print(f'✗ Error: {response.status_code}')
+    print(f' Error: {response.status_code}')
 """
     
     print("Generated code:")
@@ -214,7 +214,7 @@ else:
     # Test syntax is valid
     try:
         compile(code, '<string>', 'exec')
-        print("\n✓ Code compiles successfully")
+        print("\n Code compiles successfully")
         
         # Test execution
         print("\n--- Executing generated code ---")
@@ -257,7 +257,7 @@ print(json.dumps(data, indent=2))
         print(f"Output:\n{result}")
         
         has_output = len(result) > 0
-        print(f"\n✓ Code executed, output captured: {has_output}")
+        print(f"\n Code executed, output captured: {has_output}")
         
         return has_output
     except Exception as e:
@@ -274,10 +274,10 @@ def test_connection_error_handling():
         print(f"Unexpected success: {r.status_code}")
         return False
     except requests.exceptions.ConnectionError:
-        print("✓ Connection error caught correctly")
+        print(" Connection error caught correctly")
         return True
     except requests.exceptions.Timeout:
-        print("✓ Timeout error caught correctly")
+        print(" Timeout error caught correctly")
         return True
     except Exception as e:
         print(f"Unexpected error: {type(e).__name__}: {e}")
@@ -293,7 +293,7 @@ def test_invalid_json_handling():
         print("Should have raised JSONDecodeError")
         return False
     except json.JSONDecodeError as e:
-        print(f"✓ JSON error caught: {e}")
+        print(f" JSON error caught: {e}")
         print(f"  - Message: {e.msg}")
         print(f"  - Line: {e.lineno}, Column: {e.colno}")
         return True
@@ -310,13 +310,13 @@ def test_response_time():
         print(f"Response time: {elapsed_ms:.0f} ms")
         
         if elapsed_ms < 100:
-            print("✓ Excellent (<100ms)")
+            print(" Excellent (<100ms)")
             threshold_met = True
         elif elapsed_ms < 1000:
-            print("✓ Good (<1000ms)")
+            print(" Good (<1000ms)")
             threshold_met = True
         else:
-            print("⚠️ Slow (>1000ms)")
+            print(" Slow (>1000ms)")
             threshold_met = False
         
         return r.status_code == 200 and threshold_met
@@ -331,13 +331,13 @@ def print_summary():
     print("TEST SUMMARY")
     print("="*70)
     print(f"\nTotal Tests: {results['total']}")
-    print(f"✅ Passed: {results['passed']}")
-    print(f"❌ Failed: {results['failed']}")
+    print(f" Passed: {results['passed']}")
+    print(f" Failed: {results['failed']}")
     
     if results['failed'] == 0:
-        print("\n🎉 ALL TESTS PASSED! 🎉")
+        print("\n ALL TESTS PASSED! ")
     else:
-        print(f"\n⚠️ {results['failed']} TEST(S) FAILED")
+        print(f"\n {results['failed']} TEST(S) FAILED")
         print("\nFailed tests:")
         for test in results['tests']:
             if test['status'] in ['FAIL', 'ERROR']:

@@ -40,7 +40,7 @@ try:
         algorithm="RS256",
         headers={"kid": jwk_data.get("kid"), "typ": "JWT"}
     )
-    print(f"\n✓ JWT generated successfully")
+    print(f"\n JWT generated successfully")
     print(f"  Length: {len(token)} chars")
     print(f"  First 50: {token[:50]}...")
     
@@ -58,11 +58,11 @@ try:
         algorithms=["RS256"],
         options={"verify_aud": False}
     )
-    print(f"\n✓ JWT verified successfully")
+    print(f"\n JWT verified successfully")
     print(f"  Decoded claims: {decoded}")
     
 except Exception as e:
-    print(f"\n❌ Error: {e}")
+    print(f"\n Error: {e}")
     import traceback
     traceback.print_exc()
 
@@ -101,14 +101,14 @@ try:
     
     if response.status_code == 200:
         token_data = response.json()
-        print(f"\n✅ SUCCESS!")
+        print(f"\n SUCCESS!")
         print(f"  Access token: {token_data.get('access_token', '')[:50]}...")
         print(f"  Token type: {token_data.get('token_type')}")
         print(f"  Expires in: {token_data.get('expires_in')}s")
     else:
-        print(f"\n❌ FAILED")
+        print(f"\n FAILED")
         
 except Exception as e:
-    print(f"\n❌ Error: {e}")
+    print(f"\n Error: {e}")
     import traceback
     traceback.print_exc()

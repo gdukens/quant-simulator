@@ -297,11 +297,11 @@ with tab1:
     # Info about FRED
     st.info("""
     **FRED API Benefits:**
-    - ✅ **Completely FREE** - No rate limits for reasonable use
-    - 📈 Access to 800,000+ economic data series
-    - 🏛️ Official data from the Federal Reserve
-    - 🌍 US and international economic indicators
-    - 📊 GDP, inflation, unemployment, interest rates, and more
+    -  **Completely FREE** - No rate limits for reasonable use
+    -  Access to 800,000+ economic data series
+    -  Official data from the Federal Reserve
+    -  US and international economic indicators
+    -  GDP, inflation, unemployment, interest rates, and more
     
     **Use Cases:**
     - Macro analysis and regime detection
@@ -382,7 +382,7 @@ with tab1:
                             data = response.json()
                             
                             if "observations" in data:
-                                st.success("🎉 Connection successful! FRED API key is valid.")
+                                st.success(" Connection successful! FRED API key is valid.")
                                 latest = data["observations"][-1]
                                 st.info(f"**Latest GDP data:** {latest['date']} = ${latest['value']} billion")
                             elif "error_message" in data:
@@ -422,30 +422,30 @@ with tab2:
     The system automatically tries providers in this order:
     
     **For Market Data (Stocks, ETFs):**
-    1. 🟢 **Alpha Vantage** (if configured & enabled)
+    1.  **Alpha Vantage** (if configured & enabled)
        - Premium data quality
        - Rate limited (5 calls/min free tier)
     
-    2. 🟡 **Yahoo Finance** (always available)
+    2.  **Yahoo Finance** (always available)
        - Free and unlimited
        - Good data quality
        - No API key required
     
-    3. 🔵 **FactSet** (if configured & enabled)
+    3.  **FactSet** (if configured & enabled)
        - Enterprise-grade data
        - Requires paid subscription
     
-    4. 🟣 **Simulated Data** (final fallback)
+    4.  **Simulated Data** (final fallback)
        - Synthetic data for testing
        - Always available
     
     **For Macroeconomic Data:**
-    1. 🏛️ **FRED - Federal Reserve** (if configured & enabled)
+    1.  **FRED - Federal Reserve** (if configured & enabled)
        - Official US economic data
        - 800,000+ time series
        - Free and unlimited
     
-    2. 🟣 **Simulated Data** (final fallback)
+    2.  **Simulated Data** (final fallback)
        - Synthetic macro data for testing
     """)
     

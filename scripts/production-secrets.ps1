@@ -1,4 +1,4 @@
-# 🔐 Production Secrets Management
+#  Production Secrets Management
 # Generates and manages production-grade secrets for QuantLib Pro
 
 param(
@@ -9,7 +9,7 @@ param(
 )
 
 function Write-Security {
-    param([string]$Message, [string]$Color = "White", [string]$Icon = "🔐")
+    param([string]$Message, [string]$Color = "White", [string]$Icon = "")
     Write-Host "$Icon $Message" -ForegroundColor $Color
 }
 
@@ -25,17 +25,17 @@ function Generate-ProductionSecrets {
     # Generate strong database password
     $dbPassword = -join ((1..24) | ForEach {Get-Random -Input ([char[]]([char]'A'..[char]'Z') + ([char]'a'..[char]'z') + ([char]'0'..[char]'9') + '!@#$%^&*')})
     
-    Write-Security "✅ JWT Secret Generated (512-bit)" "Green"
-    Write-Security "✅ Encryption Key Generated (256-bit)" "Green"
-    Write-Security "✅ API Secret Generated (256-bit)" "Green" 
-    Write-Security "✅ Database Password Generated (192-bit)" "Green"
+    Write-Security " JWT Secret Generated (512-bit)" "Green"
+    Write-Security " Encryption Key Generated (256-bit)" "Green"
+    Write-Security " API Secret Generated (256-bit)" "Green" 
+    Write-Security " Database Password Generated (192-bit)" "Green"
     
     # Create production environment file
     $productionEnv = @"
 # ═══════════════════════════════════════════════════════════════════════════════
 # PRODUCTION ENVIRONMENT - QUANTLIB PRO v2.1.0
 # ═══════════════════════════════════════════════════════════════════════════════
-# 🚨 CRITICAL: This file contains production secrets - NEVER commit to git!
+#  CRITICAL: This file contains production secrets - NEVER commit to git!
 # Generated: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss UTC")
 
 # ─── Application (Production) ────────────────────────────────────────────────
@@ -132,26 +132,26 @@ USE_MOCK_DATA=false
 
     # Write to production environment file
     $productionEnv | Out-File -FilePath ".env.production" -Encoding UTF8
-    Write-Security "✅ Production environment file created: .env.production" "Green"
+    Write-Security " Production environment file created: .env.production" "Green"
     
     # Create secrets summary
     $secretsSummary = @"
-🔐 PRODUCTION SECRETS GENERATED - QuantLib Pro v2.1.0
+ PRODUCTION SECRETS GENERATED - QuantLib Pro v2.1.0
 ═══════════════════════════════════════════════════════════
 
-📅 Generated: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss UTC")
-🔑 Security Level: Enterprise (256-bit encryption)
-🛡️ Compliance: GDPR/SOC2 Ready
+ Generated: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss UTC")
+ Security Level: Enterprise (256-bit encryption)
+ Compliance: GDPR/SOC2 Ready
 
-🔐 SECRETS SUMMARY:
+ SECRETS SUMMARY:
 ─────────────────────
-✅ JWT Secret: 512-bit cryptographic key 
-✅ Encryption Key: 256-bit AES encryption
-✅ API Secret: 256-bit application secret
-✅ Database Password: 192-bit secure password
-✅ Redis Password: High-entropy authentication
+ JWT Secret: 512-bit cryptographic key 
+ Encryption Key: 256-bit AES encryption
+ API Secret: 256-bit application secret
+ Database Password: 192-bit secure password
+ Redis Password: High-entropy authentication
 
-🚨 SECURITY REQUIREMENTS:
+ SECURITY REQUIREMENTS:
 ─────────────────────────
 • NEVER commit .env.production to version control
 • Store secrets in secure vault (Azure Key Vault/AWS Secrets Manager)
@@ -159,21 +159,21 @@ USE_MOCK_DATA=false
 • Use different secrets per environment (dev/staging/prod)
 • Enable audit logging for all secret access
 
-🔄 ROTATION SCHEDULE:
+ ROTATION SCHEDULE:
 ────────────────────
 • JWT Secrets: Every 30 days
 • Database Passwords: Every 90 days  
 • API Keys: Every 180 days
 • Encryption Keys: Every 365 days
 
-📞 EMERGENCY CONTACT: enterprise@quantlibpro.com
+ EMERGENCY CONTACT: enterprise@quantlibpro.com
 "@
 
     $secretsSummary | Out-File -FilePath "PRODUCTION_SECRETS_README.md" -Encoding UTF8
-    Write-Security "✅ Secrets documentation created: PRODUCTION_SECRETS_README.md" "Green"
+    Write-Security " Secrets documentation created: PRODUCTION_SECRETS_README.md" "Green"
     
     Write-Security "" 
-    Write-Security "🔐 NEXT STEPS:" "Yellow"
+    Write-Security " NEXT STEPS:" "Yellow"
     Write-Security "1. Copy .env.production to .env for production deployment" "White"
     Write-Security "2. Store secrets in secure vault (recommended)" "White" 
     Write-Security "3. Test database connection with new credentials" "White"
@@ -184,7 +184,7 @@ function Validate-ProductionSecrets {
     Write-Security "Validating Production Secrets..." "Yellow"
     
     if (-not (Test-Path ".env.production")) {
-        Write-Security "❌ .env.production not found. Run -Generate first." "Red"
+        Write-Security " .env.production not found. Run -Generate first." "Red"
         return
     }
     
@@ -205,20 +205,20 @@ function Validate-ProductionSecrets {
     foreach ($secret in $secrets.Keys) {
         $value = $secrets[$secret]
         if ($value.Length -lt 20) {
-            Write-Security "❌ $secret is too short (< 20 chars)" "Red"
+            Write-Security " $secret is too short (< 20 chars)" "Red"
         } else {
-            Write-Security "✅ $secret meets security requirements" "Green"
+            Write-Security " $secret meets security requirements" "Green"
         }
     }
     
-    Write-Security "✅ Production secrets validation completed" "Cyan"
+    Write-Security " Production secrets validation completed" "Cyan"
 }
 
 function Backup-ProductionSecrets {
     Write-Security "Creating Encrypted Secrets Backup..." "Yellow"
     
     if (-not (Test-Path ".env.production")) {
-        Write-Security "❌ .env.production not found" "Red"
+        Write-Security " .env.production not found" "Red"
         return
     }
     
@@ -230,7 +230,7 @@ function Backup-ProductionSecrets {
     $encrypted = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($content))
     
     $encrypted | Out-File -FilePath "backups/$backupName" -Encoding UTF8
-    Write-Security "✅ Encrypted backup created: backups/$backupName" "Green"
+    Write-Security " Encrypted backup created: backups/$backupName" "Green"
 }
 
 # Main execution

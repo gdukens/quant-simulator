@@ -13,11 +13,11 @@ The integration expects the **FactSet Prices API** (also called FactSet Content 
 **API Documentation**: https://developer.factset.com/api-catalog/factset-prices-api
 
 ### What this API provides:
-- ✅ Historical end-of-day pricing (OHLCV)
-- ✅ Intraday pricing data
-- ✅ Corporate actions (splits, dividends)
-- ✅ Multi-exchange coverage (200+ exchanges globally)
-- ✅ Multiple currencies
+-  Historical end-of-day pricing (OHLCV)
+-  Intraday pricing data
+-  Corporate actions (splits, dividends)
+-  Multi-exchange coverage (200+ exchanges globally)
+-  Multiple currencies
 
 ## How to Get Your API Serial Key
 
@@ -113,18 +113,18 @@ Once you have the serial key:
 ## Troubleshooting
 
 ### Error: HTTP 401 (Unauthorized)
-- ❌ Serial key is incorrect
-- ❌ Username format is wrong (should be: UOTTAWA_CA-2235705)
-- ✅ **Fix**: Double-check the serial key from FactSet portal
+-  Serial key is incorrect
+-  Username format is wrong (should be: UOTTAWA_CA-2235705)
+-  **Fix**: Double-check the serial key from FactSet portal
 
 ### Error: HTTP 403 (Forbidden)
-- ❌ Your IP address is not whitelisted
-- ✅ **Fix**: Check your IP with `(Invoke-WebRequest -Uri "https://api.ipify.org").Content`
-- ✅ Contact FactSet to add your current IP to the whitelist
+-  Your IP address is not whitelisted
+-  **Fix**: Check your IP with `(Invoke-WebRequest -Uri "https://api.ipify.org").Content`
+-  Contact FactSet to add your current IP to the whitelist
 
 ### Error: HTTP 500 (Internal Server Error)
-- ❌ API key is still set to placeholder value
-- ✅ **Fix**: Replace `REPLACE_WITH_YOUR_FACTSET_SERIAL_KEY` with actual key
+-  API key is still set to placeholder value
+-  **Fix**: Replace `REPLACE_WITH_YOUR_FACTSET_SERIAL_KEY` with actual key
 
 ### Error: "Rate limit exceeded"
 - FactSet rate limits depend on your subscription tier
@@ -141,9 +141,9 @@ FactSet is an **enterprise subscription service**. Your rate limits and access d
 
 ## Next Steps
 
-✅ **Alpha Vantage**: Already working!  
+ **Alpha Vantage**: Already working!  
 ⏳ **FactSet**: Get the serial key and update .env  
-❌ **Capital IQ**: Not yet implemented (coming soon)
+ **Capital IQ**: Not yet implemented (coming soon)
 
 Once FactSet is configured, you'll have enterprise-grade multi-provider failover:
 ```

@@ -46,10 +46,10 @@ class MarketMicrostructureData:
                 self.liquidity_tier = "Low"  # Small cap
             
             self.is_calibrated = True
-            log.info(f"✅ Calibrated {self.ticker}: Spread={self.spread:.4f}, ADV={self.avg_volume:,.0f}")
+            log.info(f" Calibrated {self.ticker}: Spread={self.spread:.4f}, ADV={self.avg_volume:,.0f}")
             
         except Exception as e:
-            log.warning(f"⚠️ Could not fetch real data for {self.ticker}: {e}")
+            log.warning(f" Could not fetch real data for {self.ticker}: {e}")
             # Fallback to defaults
             self.current_price = 100.0
             self.bid = 99.99
@@ -115,7 +115,7 @@ class CalibratedOrderBookSimulator:
         Depth(level) = base_depth * exp(-decay_rate * level) * noise
         """
         if self.market_data and self.market_data.is_calibrated:
-            # ✅ Calibrated to real market
+            #  Calibrated to real market
             # Average 5-minute volume (ADV / 78 trading periods per day)
             base_depth = self.market_data.avg_volume / (252 * 78)
             
@@ -132,7 +132,7 @@ class CalibratedOrderBookSimulator:
             best_ask = self.market_data.ask
             
         else:
-            # ⚠️ Fallback to simulation
+            #  Fallback to simulation
             base_depth = 1000
             decay_rate = 0.05
             best_bid = self.mid_price - self.tick_size

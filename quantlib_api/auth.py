@@ -116,7 +116,7 @@ class AuthManager:
             if not token:
                 raise QuantLibAuthError("Login succeeded but no token in response.")
             self._token = token
-            logger.info("✅ Successfully authenticated with QuantLib Pro API")
+            logger.info(" Successfully authenticated with QuantLib Pro API")
             return token
         elif response.status_code in (401, 403):
             raise QuantLibAuthError(f"Invalid credentials: {response.json().get('detail', '')}")

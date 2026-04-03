@@ -42,7 +42,7 @@ def test_portfolio_optimization():
     print(max_sharpe.summary())
     assert max_sharpe.weights.sum() == 1.0, "Weights must sum to 1"
     assert np.all(max_sharpe.weights >= 0), "No short selling by default"
-    print("✓ Max Sharpe portfolio computed\n")
+    print(" Max Sharpe portfolio computed\n")
     
     # Test 2: Min Volatility portfolio
     print("2. Min Volatility Portfolio")
@@ -50,14 +50,14 @@ def test_portfolio_optimization():
     print(min_vol.summary())
     assert min_vol.weights.sum() == 1.0
     assert min_vol.volatility <= max_sharpe.volatility, "Min vol should have lower volatility"
-    print("✓ Min volatility portfolio computed\n")
+    print(" Min volatility portfolio computed\n")
     
     # Test 3: Target return portfolio
     print("3. Target Return Portfolio (11%)")
     target = target_return_portfolio(expected_returns, cov_matrix, target_return=0.11)
     print(target.summary())
     assert np.isclose(target.expected_return, 0.11, atol=1e-3)
-    print("✓ Target return portfolio computed\n")
+    print(" Target return portfolio computed\n")
     
     # Test 4: Efficient frontier
     print("4. Efficient Frontier (20 portfolios)")
@@ -67,7 +67,7 @@ def test_portfolio_optimization():
     # Verify frontier is sorted by return
     returns = [p.expected_return for p in frontier]
     assert returns == sorted(returns), "Frontier should be sorted by return"
-    print("✓ Efficient frontier constructed\n")
+    print(" Efficient frontier constructed\n")
 
 
 def test_risk_parity():
@@ -92,7 +92,7 @@ def test_risk_parity():
     print(f"Volatility: {rp.volatility:.4f}")
     assert rp.weights.sum() == 1.0
     assert np.all(rp.weights > 0), "All weights should be positive"
-    print("✓ Risk parity portfolio computed\n")
+    print(" Risk parity portfolio computed\n")
     
     # Test 2: Custom risk budgeting (60/30/10)
     print("2. Risk Budgeting Portfolio (60/30/10)")
@@ -101,7 +101,7 @@ def test_risk_parity():
     print(f"Risk Budget Weights: {rb.to_dict()}")
     print(f"Volatility: {rb.volatility:.4f}")
     assert rb.weights.sum() == 1.0
-    print("✓ Risk budgeting portfolio computed\n")
+    print(" Risk budgeting portfolio computed\n")
 
 
 def test_black_litterman():
@@ -129,7 +129,7 @@ def test_black_litterman():
     )
     print(f"Implied equilibrium returns: {posterior_ret}")
     assert len(posterior_ret) == 3
-    print("✓ Equilibrium returns computed\n")
+    print(" Equilibrium returns computed\n")
     
     # Test 2: Absolute view on AAPL
     print("2. Black-Litterman with Absolute View (AAPL = 15%)")
@@ -139,7 +139,7 @@ def test_black_litterman():
     )
     print(f"Posterior returns with view: {posterior_ret_v1}")
     assert posterior_ret_v1[0] > posterior_ret[0], "AAPL return should increase"
-    print("✓ Absolute view incorporated\n")
+    print(" Absolute view incorporated\n")
     
     # Test 3: Relative view (AAPL outperforms MSFT by 5%)
     print("3. Black-Litterman with Relative View (AAPL > MSFT by 5%)")
@@ -149,7 +149,7 @@ def test_black_litterman():
     )
     print(f"Posterior returns with relative view: {posterior_ret_v2}")
     assert (posterior_ret_v2[0] - posterior_ret_v2[1]) > (posterior_ret[0] - posterior_ret[1])
-    print("✓ Relative view incorporated\n")
+    print(" Relative view incorporated\n")
 
 
 def main():
@@ -164,11 +164,11 @@ def main():
         test_black_litterman()
         
         print("\n" + "="*60)
-        print("ALL TESTS PASSED ✓")
+        print("ALL TESTS PASSED ")
         print("="*60 + "\n")
         
     except Exception as e:
-        print(f"\n❌ TEST FAILED: {e}\n")
+        print(f"\n TEST FAILED: {e}\n")
         raise
 
 

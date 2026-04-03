@@ -395,14 +395,14 @@ from locust import events
 def on_request(request_type, name, response_time, response_length, exception, **kwargs):
     """Log slow requests."""
     if response_time > 3000:  # 3 seconds
-        print(f"⚠️  SLOW REQUEST: {name} took {response_time}ms")
+        print(f"  SLOW REQUEST: {name} took {response_time}ms")
 
 
 @events.test_start.add_listener
 def on_test_start(environment, **kwargs):
     """Log test start."""
     print("=" * 60)
-    print("🚀 Load Test Started")
+    print(" Load Test Started")
     print(f"   Target: {environment.host}")
     print(f"   Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 60)
@@ -412,7 +412,7 @@ def on_test_start(environment, **kwargs):
 def on_test_stop(environment, **kwargs):
     """Log test completion."""
     print("=" * 60)
-    print("✅ Load Test Completed")
+    print(" Load Test Completed")
     print(f"   Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 60)
 

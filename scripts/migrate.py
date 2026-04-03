@@ -43,7 +43,7 @@ def main():
     
     if action == "timescale":
         # Run migrations against TimescaleDB
-        print("🔄 Running TimescaleDB migrations...")
+        print(" Running TimescaleDB migrations...")
         timescale_url = os.getenv(
             "TIMESCALE_URL",
             "postgresql://quantlib:changeme@localhost:5433/timeseries_db"
@@ -55,13 +55,13 @@ def main():
     
     elif action == "upgrade":
         # Run migrations against PostgreSQL
-        print("🔄 Running PostgreSQL migrations...")
+        print(" Running PostgreSQL migrations...")
         return run_command(["alembic", "upgrade", "head"])
     
     elif action == "downgrade":
         # Rollback migrations
         target = sys.argv[2] if len(sys.argv) > 2 else "-1"
-        print(f"🔄 Rolling back to {target}...")
+        print(f" Rolling back to {target}...")
         return run_command(["alembic", "downgrade", target])
     
     elif action == "current":
@@ -75,11 +75,11 @@ def main():
     elif action == "stamp":
         # Stamp database with current version (without running migrations)
         revision = sys.argv[2] if len(sys.argv) > 2 else "head"
-        print(f"📌 Stamping database at {revision}...")
+        print(f" Stamping database at {revision}...")
         return run_command(["alembic", "stamp", revision])
     
     else:
-        print(f"❌ Unknown action: {action}")
+        print(f" Unknown action: {action}")
         print(__doc__)
         return 1
 

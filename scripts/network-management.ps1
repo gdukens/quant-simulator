@@ -20,7 +20,7 @@ $PRESERVE_NETWORKS = @(
 
 function Write-Status {
     param([string]$Message, [string]$Color = "White")
-    Write-Host "🔧 $Message" -ForegroundColor $Color
+    Write-Host " $Message" -ForegroundColor $Color
 }
 
 function Get-NetworkStatus {
@@ -34,9 +34,9 @@ function Get-NetworkStatus {
     foreach ($network in $PRESERVE_NETWORKS) {
         $exists = docker network ls --filter "name=$network" --format "{{.Name}}" 2>$null
         if ($exists) {
-            Write-Status "✅ $network (exists)" "Green"
+            Write-Status " $network (exists)" "Green"
         } else {
-            Write-Status "❌ $network (missing)" "Red"
+            Write-Status " $network (missing)" "Red"
         }
     }
 }
@@ -53,7 +53,7 @@ function Restore-Networks {
             --subnet 172.22.0.0/16 `
             --gateway 172.22.0.1 `
             supabase_network_sxdwyjyydsnvcbcrsyml
-        Write-Status "✅ Supabase network created" "Green"
+        Write-Status " Supabase network created" "Green"
     }
     
     # Restore A/B testing network  
@@ -65,7 +65,7 @@ function Restore-Networks {
             --subnet 172.23.0.0/16 `
             --gateway 172.23.0.1 `
             abtesting_default
-        Write-Status "✅ A/B testing network created" "Green"
+        Write-Status " A/B testing network created" "Green"
     }
 }
 
@@ -85,10 +85,10 @@ function Safe-NetworkCleanup {
         # Check if network is in use
         $containers = docker network inspect $network --format "{{range .Containers}}{{.Name}} {{end}}" 2>$null
         if (-not $containers -or $containers.Trim() -eq "") {
-            Write-Status "🗑️  $network (unused)" "Gray"
+            Write-Status "  $network (unused)" "Gray"
             docker network rm $network 2>$null
         } else {
-            Write-Status "⚠️  $network (in use by: $containers)" "Yellow"
+            Write-Status "  $network (in use by: $containers)" "Yellow"
         }
     }
 }

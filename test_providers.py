@@ -20,35 +20,35 @@ def test_alpha_vantage():
     api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
     
     if not api_key:
-        print("❌ ALPHA_VANTAGE_API_KEY not set in environment")
+        print(" ALPHA_VANTAGE_API_KEY not set in environment")
         print("   Set it in .env file or export it:")
         print("   export ALPHA_VANTAGE_API_KEY=your_key_here")
         return False
     
-    print(f"✓ API Key found: ***{api_key[-4:]}")
+    print(f" API Key found: ***{api_key[-4:]}")
     
     try:
         from quantlib_pro.data.providers import AlphaVantageProvider
         
         provider = AlphaVantageProvider(api_key=api_key)
-        print("✓ Provider initialized")
+        print(" Provider initialized")
         
         # Test quote fetch
         print("\nFetching real-time quote for AAPL...")
         quote = provider.get_quote("AAPL")
-        print(f"✅ Quote: ${quote['price']:.2f} ({quote['change_percent']})")
+        print(f" Quote: ${quote['price']:.2f} ({quote['change_percent']})")
         
         # Test historical data fetch (compact to save API calls)
         print("\nFetching historical data (compact)...")
         data = provider.fetch("AAPL", output_size="compact")
-        print(f"✅ Retrieved {len(data)} rows")
+        print(f" Retrieved {len(data)} rows")
         print(f"   Date range: {data.index[0]} to {data.index[-1]}")
         print(f"   Latest close: ${data['Close'].iloc[-1]:.2f}")
         
         return True
     
     except Exception as e:
-        print(f"❌ Alpha Vantage test failed: {e}")
+        print(f" Alpha Vantage test failed: {e}")
         return False
 
 
@@ -62,21 +62,21 @@ def test_factset():
     api_key = os.getenv("FACTSET_API_KEY")
     
     if not username or not api_key:
-        print("❌ FactSet credentials not set")
+        print(" FactSet credentials not set")
         print("   Required environment variables:")
         print("   - FACTSET_USERNAME")
         print("   - FACTSET_API_KEY")
         print("\n   This is expected if you don't have FactSet subscription.")
         return None  # Not an error, just not configured
     
-    print(f"✓ Username: {username}")
-    print(f"✓ API Key: ***{api_key[-4:]}")
+    print(f" Username: {username}")
+    print(f" API Key: ***{api_key[-4:]}")
     
     try:
         from quantlib_pro.data.providers import FactsetProvider
         
         provider = FactsetProvider(username=username, api_key=api_key)
-        print("✓ Provider initialized")
+        print(" Provider initialized")
         
         # Test data fetch
         print("\nFetching historical data for AAPL-US...")
@@ -84,14 +84,14 @@ def test_factset():
         start_date = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
         
         data = provider.fetch("AAPL-US", start=start_date, end=end_date)
-        print(f"✅ Retrieved {len(data)} rows")
+        print(f" Retrieved {len(data)} rows")
         print(f"   Date range: {data.index[0]} to {data.index[-1]}")
         print(f"   Latest close: ${data['Close'].iloc[-1]:.2f}")
         
         return True
     
     except Exception as e:
-        print(f"❌ FactSet test failed: {e}")
+        print(f" FactSet test failed: {e}")
         if "401" in str(e):
             print("   → Authentication failed - check credentials")
         elif "403" in str(e):
@@ -117,7 +117,7 @@ def test_multi_provider():
             enable_factset=fs_enabled,
         )
         
-        print(f"✓ Multi-provider fetcher initialized")
+        print(f" Multi-provider fetcher initialized")
         
         status = fetcher.get_provider_status()
         print(f"\nConfigured providers: {status['configured_providers']}")
@@ -131,13 +131,13 @@ def test_multi_provider():
         # Test fetch
         print("\nTesting failover with AAPL...")
         result = fetcher.fetch("AAPL", period="5d")
-        print(f"✅ Data fetched from: {result.source.value}")
+        print(f" Data fetched from: {result.source.value}")
         print(f"   Rows: {len(result.df)}")
         
         return True
     
     except Exception as e:
-        print(f"❌ Multi-provider test failed: {e}")
+        print(f" Multi-provider test failed: {e}")
         return False
 
 
@@ -151,12 +151,12 @@ def test_resilient_fetcher():
         from quantlib_pro.data.fetcher import ResilientDataFetcher
         
         fetcher = ResilientDataFetcher()
-        print("✓ Fetcher initialized")
+        print(" Fetcher initialized")
         
         print("\nFetching AAPL from Yahoo Finance...")
         result = fetcher.fetch("AAPL", period="5d")
         
-        print(f"✅ Data source: {result.source.value}")
+        print(f" Data source: {result.source.value}")
         print(f"   Rows: {len(result.df)}")
         print(f"   Date range: {result.df.index[0]} to {result.df.index[-1]}")
         print(f"   Latest close: ${result.df['Close'].iloc[-1]:.2f}")
@@ -164,7 +164,7 @@ def test_resilient_fetcher():
         return True
     
     except Exception as e:
-        print(f"❌ Basic fetcher test failed: {e}")
+        print(f" Basic fetcher test failed: {e}")
         return False
 
 
@@ -178,11 +178,11 @@ def main():
     try:
         from dotenv import load_dotenv
         if load_dotenv():
-            print("✓ Loaded environment variables from .env file")
+            print(" Loaded environment variables from .env file")
         else:
-            print("⚠ No .env file found - using system environment variables")
+            print(" No .env file found - using system environment variables")
     except ImportError:
-        print("⚠ python-dotenv not installed - using system environment variables")
+        print(" python-dotenv not installed - using system environment variables")
     
     results = {}
     
@@ -206,7 +206,7 @@ def main():
     print("="*70)
     
     for test_name, passed in results.items():
-        status = "✅ PASSED" if passed else "❌ FAILED"
+        status = " PASSED" if passed else " FAILED"
         print(f"{test_name:.<50} {status}")
     
     total = len(results)
@@ -217,7 +217,7 @@ def main():
     print("="*70)
     
     if passed < total:
-        print("\n⚠️  Some tests failed. Check error messages above.")
+        print("\n  Some tests failed. Check error messages above.")
         print("   Common issues:")
         print("   - API keys not set in .env file")
         print("   - Rate limits exceeded (wait 60 seconds for Alpha Vantage)")
@@ -225,7 +225,7 @@ def main():
         print("   - Network connectivity issues")
         sys.exit(1)
     else:
-        print("\n✅ All configured providers are working!")
+        print("\n All configured providers are working!")
         sys.exit(0)
 
 

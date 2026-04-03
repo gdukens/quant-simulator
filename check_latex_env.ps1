@@ -8,9 +8,9 @@ Write-Host "=" * 60 -ForegroundColor Green
 Write-Host "`nChecking LaTeX installation..." -ForegroundColor Yellow
 try {
     $pdflatexVersion = pdflatex --version | Select-Object -First 1
-    Write-Host "✓ pdflatex found: $pdflatexVersion" -ForegroundColor Green
+    Write-Host " pdflatex found: $pdflatexVersion" -ForegroundColor Green
 } catch {
-    Write-Host "✗ pdflatex not found. Please install a LaTeX distribution." -ForegroundColor Red
+    Write-Host " pdflatex not found. Please install a LaTeX distribution." -ForegroundColor Red
     Write-Host "  Recommended: TeX Live, MiKTeX, or MacTeX" -ForegroundColor Yellow
 }
 
@@ -18,9 +18,9 @@ try {
 Write-Host "`nChecking BibTeX..." -ForegroundColor Yellow
 try {
     $bibtexVersion = bibtex --version | Select-Object -First 1
-    Write-Host "✓ bibtex found: $bibtexVersion" -ForegroundColor Green
+    Write-Host " bibtex found: $bibtexVersion" -ForegroundColor Green
 } catch {
-    Write-Host "✗ bibtex not found. Usually included with LaTeX distributions." -ForegroundColor Red
+    Write-Host " bibtex not found. Usually included with LaTeX distributions." -ForegroundColor Red
 }
 
 # Check if required files exist
@@ -33,9 +33,9 @@ $requiredFiles = @(
 
 foreach ($file in $requiredFiles) {
     if (Test-Path $file) {
-        Write-Host "✓ Found: $file" -ForegroundColor Green
+        Write-Host " Found: $file" -ForegroundColor Green
     } else {
-        Write-Host "✗ Missing: $file" -ForegroundColor Red
+        Write-Host " Missing: $file" -ForegroundColor Red
     }
 }
 
@@ -61,9 +61,9 @@ $canCompile = (Get-Command pdflatex -ErrorAction SilentlyContinue) -and
               (Test-Path "references.bib")
 
 if ($canCompile) {
-    Write-Host "✓ Ready to compile! Run .\compile_paper.ps1" -ForegroundColor Green
+    Write-Host " Ready to compile! Run .\compile_paper.ps1" -ForegroundColor Green
 } else {
-    Write-Host "✗ Missing requirements. See above for details." -ForegroundColor Red
+    Write-Host " Missing requirements. See above for details." -ForegroundColor Red
 }
 
 Write-Host "`nPaper Statistics:" -ForegroundColor Yellow

@@ -71,7 +71,7 @@ def test_hmm_regime_detection():
     assert len(result.regimes) > 0, "Should detect regimes"
     assert len(result.regime_names) == 3, "Should have 3 regime names"
     assert result.transition_matrix.shape == (3, 3), "3x3 transition matrix"
-    print("✓ HMM regime detection successful\n")
+    print(" HMM regime detection successful\n")
     
     # Test 2: Fast regime detection (threshold-based)
     print("2. Fast Regime Detection (3 regimes)")
@@ -80,7 +80,7 @@ def test_hmm_regime_detection():
     print(f"Current regime: {result_fast.get_current_regime()}")
     print(f"Number of observations: {len(result_fast.regimes)}")
     assert len(result_fast.regimes) > 0
-    print("✓ Fast regime detection successful\n")
+    print(" Fast regime detection successful\n")
     
     # Test 3: Convert to DataFrame
     print("3. Convert to DataFrame")
@@ -89,7 +89,7 @@ def test_hmm_regime_detection():
     print(f"Columns: {df.columns.tolist()}")
     assert 'regime' in df.columns
     assert 'regime_id' in df.columns
-    print("✓ DataFrame conversion successful\n")
+    print(" DataFrame conversion successful\n")
 
 
 def test_volatility_regime_detection():
@@ -107,14 +107,14 @@ def test_volatility_regime_detection():
     print(f"Mean realized vol: {result.realized_vol.mean():.4f}")
     assert len(result.regimes) > 0
     assert len(result.regime_names) == 3
-    print("✓ Percentile-based detection successful\n")
+    print(" Percentile-based detection successful\n")
     
     # Test 2: EWMA method
     print("2. EWMA Volatility Regimes")
     result_ewma = detect_volatility_regimes_percentile(prices, n_regimes=3, method='ewma')
     print(f"Current regime: {result_ewma.get_current_regime()}")
     assert len(result_ewma.regimes) > 0
-    print("✓ EWMA-based detection successful\n")
+    print(" EWMA-based detection successful\n")
     
     # Test 3: Adaptive (z-score based)
     print("3. Adaptive Volatility Regimes (z-score)")
@@ -123,7 +123,7 @@ def test_volatility_regime_detection():
     print(f"Current regime: {result_adaptive.get_current_regime()}")
     print(f"Thresholds: {result_adaptive.thresholds}")
     assert len(result_adaptive.regimes) > 0
-    print("✓ Adaptive detection successful\n")
+    print(" Adaptive detection successful\n")
     
     # Test 4: Volatility breakout
     print("4. Volatility Breakout Detection")
@@ -132,7 +132,7 @@ def test_volatility_regime_detection():
     print(f"Number of breakouts: {n_breakouts}")
     print(f"Breakout percentage: {100 * n_breakouts / len(breakout):.2f}%")
     assert len(breakout) > 0
-    print("✓ Breakout detection successful\n")
+    print(" Breakout detection successful\n")
 
 
 def test_trend_regime_detection():
@@ -151,7 +151,7 @@ def test_trend_regime_detection():
     regime_counts = pd.Series(result_ma.regimes).value_counts()
     print(f"Regime distribution:\n{regime_counts}")
     assert len(result_ma.regimes) > 0
-    print("✓ MA-based detection successful\n")
+    print(" MA-based detection successful\n")
     
     # Test 2: ADX-based
     print("2. ADX-Based Trend Detection")
@@ -160,7 +160,7 @@ def test_trend_regime_detection():
     print(f"Indicators: {result_adx.indicators.columns.tolist()}")
     assert len(result_adx.regimes) > 0
     assert 'adx' in result_adx.indicators.columns
-    print("✓ ADX-based detection successful\n")
+    print(" ADX-based detection successful\n")
     
     # Test 3: Momentum-based
     print("3. Momentum-Based Trend Detection")
@@ -169,7 +169,7 @@ def test_trend_regime_detection():
     regime_counts = pd.Series(result_momentum.regimes).value_counts()
     print(f"Regime distribution:\n{regime_counts}")
     assert len(result_momentum.regimes) > 0
-    print("✓ Momentum-based detection successful\n")
+    print(" Momentum-based detection successful\n")
 
 
 def main():
@@ -184,11 +184,11 @@ def main():
         test_trend_regime_detection()
         
         print("\n" + "="*60)
-        print("ALL TESTS PASSED ✓")
+        print("ALL TESTS PASSED ")
         print("="*60 + "\n")
         
     except Exception as e:
-        print(f"\n❌ TEST FAILED: {e}\n")
+        print(f"\n TEST FAILED: {e}\n")
         import traceback
         traceback.print_exc()
         raise

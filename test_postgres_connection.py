@@ -10,7 +10,7 @@ from psycopg2.extras import RealDictCursor
 def test_postgres_connection():
     """Test PostgreSQL connection and basic operations"""
     try:
-        print("🔗 Connecting to PostgreSQL...")
+        print(" Connecting to PostgreSQL...")
         conn = psycopg2.connect(
             host='127.0.0.1', 
             port=5433,  # External Docker port
@@ -19,7 +19,7 @@ def test_postgres_connection():
             # No password with trust method
         )
         
-        print("✅ SUCCESS! PostgreSQL connection established!")
+        print(" SUCCESS! PostgreSQL connection established!")
         
         # Test basic operations
         cur = conn.cursor(cursor_factory=RealDictCursor)
@@ -33,13 +33,13 @@ def test_postgres_connection():
         """)
         info = cur.fetchone()
         
-        print(f"📊 Connection Details:")
+        print(f" Connection Details:")
         print(f"   Database: {info['database']}")
         print(f"   User: {info['user']}")
         print(f"   Version: {info['pg_version'][:50]}...")
         
         # Test table creation and insertion
-        print("\n🧪 Testing table operations...")
+        print("\n Testing table operations...")
         cur.execute("""
             CREATE TABLE IF NOT EXISTS connection_test (
                 id SERIAL PRIMARY KEY,
@@ -72,15 +72,15 @@ def test_postgres_connection():
         
         conn.close()
         
-        print("\n🎉 POSTGRESQL AUTHENTICATION FIXED!")
-        print("   ✓ Connection successful")
-        print("   ✓ Database operations working")
-        print("   ✓ Ready for full application integration")
+        print("\n POSTGRESQL AUTHENTICATION FIXED!")
+        print("    Connection successful")
+        print("    Database operations working")
+        print("    Ready for full application integration")
         
         return True
         
     except Exception as e:
-        print(f"❌ Connection failed: {e}")
+        print(f" Connection failed: {e}")
         print("\nDebugging info:")
         print(f"  - Host: 127.0.0.1")
         print(f"  - Port: 5433") 

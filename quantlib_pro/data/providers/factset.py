@@ -319,7 +319,7 @@ class FactsetProvider:
             # Keep only OHLCV columns (drop Adj Close for consistency)
             df = df[["Open", "High", "Low", "Close", "Volume"]]
             
-            log.info(f"✅ FactSet: Retrieved {len(df)} rows for {ticker}")
+            log.info(f" FactSet: Retrieved {len(df)} rows for {ticker}")
             return df
         
         except requests.exceptions.HTTPError as e:
@@ -432,7 +432,7 @@ class FactsetProvider:
             raise FactSetError(f"No fundamentals data for {ticker}")
         
         df = pd.DataFrame(data["data"])
-        log.info(f"✅ FactSet fundamentals: {len(df)} rows for {ticker}")
+        log.info(f" FactSet fundamentals: {len(df)} rows for {ticker}")
         
         return df
     

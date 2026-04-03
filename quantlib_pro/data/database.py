@@ -128,11 +128,11 @@ def init_db() -> None:
         
     # Create PostgreSQL tables
     Base.metadata.create_all(bind=engine)
-    print("✓ PostgreSQL tables created")
+    print(" PostgreSQL tables created")
     
     # TimescaleDB tables will be created via Alembic migrations
     # (hypertables require special handling)
-    print("✓ Database initialization complete")
+    print(" Database initialization complete")
 
 
 def drop_db() -> None:
@@ -147,7 +147,7 @@ def drop_db() -> None:
         return
         
     Base.metadata.drop_all(bind=engine)
-    print("✓ PostgreSQL tables dropped")
+    print(" PostgreSQL tables dropped")
 
 
 @contextmanager

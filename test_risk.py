@@ -38,4 +38,4 @@ for r in results:
     loss = pv - r.stressed_value
     print(f"Stress {r.scenario_name}: Value=${r.stressed_value:,.0f}, Loss=${loss:,.0f}")
 
-print("\nAll Week 4 risk module tests passed ✓")
+print("\nAll Week 4 risk module tests passed ")

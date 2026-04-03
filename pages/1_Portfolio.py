@@ -370,7 +370,7 @@ with tab3:
             st.metric("Calendar Days", len(returns_df))
         
         # Context-aware Portfolio Analysis
-        st.subheader("📊 Portfolio Analysis")
+        st.subheader(" Portfolio Analysis")
         
         # Get top holdings for context
         top_holding = weights_dict[max(weights_dict, key=weights_dict.get)]
@@ -413,31 +413,31 @@ with tab3:
         
         # Dynamic Interpretation
         if risk_color == "success":
-            st.success(f"🎯 **Strong Performance**: This portfolio delivers {risk_assessment} with a Sharpe ratio of {sharpe:.2f}. The {top_ticker} position ({top_holding:.1%}) leads the allocation in this {concentration_msg}.")
+            st.success(f" **Strong Performance**: This portfolio delivers {risk_assessment} with a Sharpe ratio of {sharpe:.2f}. The {top_ticker} position ({top_holding:.1%}) leads the allocation in this {concentration_msg}.")
         elif risk_color == "info":
-            st.info(f"📈 **Balanced Portfolio**: Achieving {risk_assessment} with {vol_assessment}. The strategy shows {concentration_msg} with {num_significant_holdings} significant holdings.")
+            st.info(f" **Balanced Portfolio**: Achieving {risk_assessment} with {vol_assessment}. The strategy shows {concentration_msg} with {num_significant_holdings} significant holdings.")
         elif risk_color == "warning":
-            st.warning(f"⚠️ **Mixed Results**: The portfolio shows {risk_assessment} despite {vol_assessment}. Consider rebalancing the {concentration_msg} for better risk management.")
+            st.warning(f" **Mixed Results**: The portfolio shows {risk_assessment} despite {vol_assessment}. Consider rebalancing the {concentration_msg} for better risk management.")
         else:
-            st.error(f"🚨 **Underperforming**: Current allocation delivers {risk_assessment}. The {max_drawdown:.1f}% maximum drawdown and {concentration_msg} suggest need for strategy revision.")
+            st.error(f" **Underperforming**: Current allocation delivers {risk_assessment}. The {max_drawdown:.1f}% maximum drawdown and {concentration_msg} suggest need for strategy revision.")
         
         # Drawdown Context
         if abs(max_drawdown) > 20:
-            st.warning(f"🔻 **High Drawdown Alert**: Maximum drawdown of {max_drawdown:.1f}% indicates significant downside risk. This exceeds typical comfort levels for most investors.")
+            st.warning(f" **High Drawdown Alert**: Maximum drawdown of {max_drawdown:.1f}% indicates significant downside risk. This exceeds typical comfort levels for most investors.")
         elif abs(max_drawdown) > 10:
-            st.info(f"📉 **Moderate Drawdown**: The {max_drawdown:.1f}% maximum drawdown is within normal ranges but worth monitoring for risk management.")
+            st.info(f" **Moderate Drawdown**: The {max_drawdown:.1f}% maximum drawdown is within normal ranges but worth monitoring for risk management.")
         else:
-            st.success(f"✅ **Low Drawdown**: Excellent downside protection with only {max_drawdown:.1f}% maximum drawdown, indicating stable performance.")
+            st.success(f" **Low Drawdown**: Excellent downside protection with only {max_drawdown:.1f}% maximum drawdown, indicating stable performance.")
         
         # Return Context based on risk-free rate
         risk_free_rate = risk_free_rate * 100  # Convert to percentage
         excess_return = annualized_return - risk_free_rate
         if excess_return > 5:
-            st.success(f"💰 **Strong Alpha Generation**: Portfolio generates {excess_return:.1f}% excess return over the {risk_free_rate:.1f}% risk-free rate.")
+            st.success(f" **Strong Alpha Generation**: Portfolio generates {excess_return:.1f}% excess return over the {risk_free_rate:.1f}% risk-free rate.")
         elif excess_return > 0:
-            st.info(f"📊 **Positive Alpha**: Earning {excess_return:.1f}% above risk-free rate, indicating value creation.")
+            st.info(f" **Positive Alpha**: Earning {excess_return:.1f}% above risk-free rate, indicating value creation.")
         else:
-            st.warning(f"⚠️ **Underperforming Risk-Free Rate**: Returns lag the risk-free rate by {abs(excess_return):.1f}%.")
+            st.warning(f" **Underperforming Risk-Free Rate**: Returns lag the risk-free rate by {abs(excess_return):.1f}%.")
         
         # Correlation matrix
         st.subheader("Asset Correlation Matrix")

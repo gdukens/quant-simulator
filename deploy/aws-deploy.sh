@@ -4,7 +4,7 @@
 
 set -e
 
-echo "🚀 QuantLib Pro - AWS Deployment Script"
+echo " QuantLib Pro - AWS Deployment Script"
 echo "========================================"
 
 # Configuration
@@ -17,18 +17,18 @@ IMAGE_TAG="${IMAGE_TAG:-latest}"
 
 # Check AWS CLI
 if ! command -v aws &> /dev/null; then
-    echo "❌ AWS CLI not found. Please install it first."
+    echo " AWS CLI not found. Please install it first."
     exit 1
 fi
 
-echo "📋 Configuration:"
+echo " Configuration:"
 echo "  Region: $AWS_REGION"
 echo "  Cluster: $CLUSTER_NAME"
 echo "  Service: $SERVICE_NAME"
 echo ""
 
 # Step 1: Create ECR repository if it doesn't exist
-echo "📦 Step 1: Setting up ECR repository..."
+echo " Step 1: Setting up ECR repository..."
 aws ecr describe-repositories \
     --repository-names $ECR_REPO \
     --region $AWS_REGION 2>/dev/null || \
@@ -43,11 +43,11 @@ ECR_URI=$(aws ecr describe-repositories \
     --query 'repositories[0].repositoryUri' \
     --output text)
 
-echo "✅ ECR Repository: $ECR_URI"
+echo " ECR Repository: $ECR_URI"
 
 # Step 2: Build and push Docker image
 echo ""
-echo "🐳 Step 2: Building and pushing Docker image..."
+echo " Step 2: Building and pushing Docker image..."
 aws ecr get-login-password --region $AWS_REGION | \
     docker login --username AWS --password-stdin $ECR_URI
 
@@ -55,11 +55,11 @@ docker build -t $ECR_REPO:$IMAGE_TAG .
 docker tag $ECR_REPO:$IMAGE_TAG $ECR_URI:$IMAGE_TAG
 docker push $ECR_URI:$IMAGE_TAG
 
-echo "✅ Image pushed to ECR"
+echo " Image pushed to ECR"
 
 # Step 3: Create ECS Cluster
 echo ""
-echo "🏗️  Step 3: Creating ECS Cluster..."
+echo "  Step 3: Creating ECS Cluster..."
 aws ecs describe-clusters \
     --clusters $CLUSTER_NAME \
     --region $AWS_REGION 2>/dev/null || \
@@ -67,11 +67,11 @@ aws ecs create-cluster \
     --cluster-name $CLUSTER_NAME \
     --region $AWS_REGION
 
-echo "✅ Cluster ready"
+echo " Cluster ready"
 
 # Step 4: Create Task Execution Role
 echo ""
-echo "👤 Step 4: Setting up IAM roles..."
+echo " Step 4: Setting up IAM roles..."
 ROLE_NAME="ecsTaskExecutionRole"
 
 aws iam get-role --role-name $ROLE_NAME 2>/dev/null || \
@@ -92,11 +92,11 @@ aws iam attach-role-policy \
 
 ROLE_ARN=$(aws iam get-role --role-name $ROLE_NAME --query 'Role.Arn' --output text)
 
-echo "✅ IAM roles configured"
+echo " IAM roles configured"
 
 # Step 5: Register Task Definition
 echo ""
-echo "📝 Step 5: Registering task definition..."
+echo " Step 5: Registering task definition..."
 
 cat > task-definition.json <<EOF
 {
@@ -152,11 +152,11 @@ aws ecs register-task-definition \
     --cli-input-json file://task-definition.json \
     --region $AWS_REGION
 
-echo "✅ Task definition registered"
+echo " Task definition registered"
 
 # Step 6: Create or Update Service
 echo ""
-echo "🚢 Step 6: Creating/Updating ECS service..."
+echo " Step 6: Creating/Updating ECS service..."
 
 # Get default VPC and subnets
 VPC_ID=$(aws ec2 describe-vpcs \
@@ -226,7 +226,7 @@ else
         --region $AWS_REGION
 fi
 
-echo "✅ Service deployed"
+echo " Service deployed"
 
 # Step 7: Wait for service to stabilize
 echo ""
@@ -258,15 +258,15 @@ PUBLIC_IP=$(aws ec2 describe-network-interfaces \
     --output text)
 
 echo ""
-echo "✅ Deployment Complete!"
+echo " Deployment Complete!"
 echo "========================================"
-echo "🌐 Application URL: http://$PUBLIC_IP:8501"
+echo " Application URL: http://$PUBLIC_IP:8501"
 echo ""
-echo "📊 Monitoring:"
+echo " Monitoring:"
 echo "  CloudWatch Logs: /ecs/$TASK_FAMILY"
 echo "  ECS Console: https://console.aws.amazon.com/ecs/home?region=$AWS_REGION#/clusters/$CLUSTER_NAME/services/$SERVICE_NAME"
 echo ""
-echo "🔧 Useful Commands:"
+echo " Useful Commands:"
 echo "  View logs: aws logs tail /ecs/$TASK_FAMILY --follow --region $AWS_REGION"
 echo "  Scale service: aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --desired-count 2 --region $AWS_REGION"
 echo "  Delete service: aws ecs delete-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force --region $AWS_REGION"

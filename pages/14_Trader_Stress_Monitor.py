@@ -44,7 +44,7 @@ except ImportError as e:
     
     **Error Details:** {str(e)}
     """)
-    st.info("💡 **Alternative:** Use other QuantLib Pro features for quantitative analysis without video processing.")
+    st.info(" **Alternative:** Use other QuantLib Pro features for quantitative analysis without video processing.")
     st.stop()
 
 # ── Page config ──────────────────────────────────────────────────────────────

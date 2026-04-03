@@ -396,22 +396,22 @@ def data_table(
 
 def error_message(message: str):
     """Display an error message with consistent styling."""
-    st.error(f"❌ {message}")
+    st.error(f" {message}")
 
 
 def success_message(message: str):
     """Display a success message with consistent styling."""
-    st.success(f"✅ {message}")
+    st.success(f" {message}")
 
 
 def warning_message(message: str):
     """Display a warning message with consistent styling."""
-    st.warning(f"⚠️ {message}")
+    st.warning(f" {message}")
 
 
 def info_message(message: str):
     """Display an info message with consistent styling."""
-    st.info(f"ℹ️ {message}")
+    st.info(f"ℹ {message}")
 
 
 def loading_spinner(message: str = "Loading..."):

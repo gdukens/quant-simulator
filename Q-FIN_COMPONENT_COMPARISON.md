@@ -9,14 +9,14 @@
 
 | Feature | Q-Fin | Existing Projects | Verdict |
 |---------|-------|-------------------|---------|
-| **Black-Scholes Pricing** | ✅ options.py | `Black-Scholes-Visual-Explainer-main/` | 🔴 REDUNDANT - Keep existing |
-| **Monte Carlo Vanilla** | ✅ simulations.py | `Monte-Carlo-Option-Pricing-Simulator-main/` | 🔴 REDUNDANT - Keep existing |
-| **Monte Carlo Exotic** | ⚠️ simulations.py (buggy) | `Monte-Carlo-*-main/` (5+ projects) | 🔴 REDUNDANT - Keep existing |
-| **Geometric Brownian Motion** | ✅ simulations.py | `Monte-Carlo-Wealth-Simulator-main/` | 🔴 REDUNDANT - Keep existing |
-| **Stochastic Volatility (Heston)** | ⚠️ simulations.py | Possibly in `quantlib_pro/` | 🟡 CHECK - May have overlap |
-| **Arithmetic Brownian Motion** | ✅ stochastics.py | ❌ Not found | 🟢 UNIQUE - Extract this |
-| **Bachelier Pricing** | ✅ stochastics.py | ❌ Not found | 🟢 UNIQUE - Extract this |
-| **Stochastic Model Framework** | ✅ stochastics.py | ❌ Not found | 🟢 USEFUL - Consider extracting |
+| **Black-Scholes Pricing** |  options.py | `Black-Scholes-Visual-Explainer-main/` |  REDUNDANT - Keep existing |
+| **Monte Carlo Vanilla** |  simulations.py | `Monte-Carlo-Option-Pricing-Simulator-main/` |  REDUNDANT - Keep existing |
+| **Monte Carlo Exotic** |  simulations.py (buggy) | `Monte-Carlo-*-main/` (5+ projects) |  REDUNDANT - Keep existing |
+| **Geometric Brownian Motion** |  simulations.py | `Monte-Carlo-Wealth-Simulator-main/` |  REDUNDANT - Keep existing |
+| **Stochastic Volatility (Heston)** |  simulations.py | Possibly in `quantlib_pro/` |  CHECK - May have overlap |
+| **Arithmetic Brownian Motion** |  stochastics.py |  Not found |  UNIQUE - Extract this |
+| **Bachelier Pricing** |  stochastics.py |  Not found |  UNIQUE - Extract this |
+| **Stochastic Model Framework** |  stochastics.py |  Not found |  USEFUL - Consider extracting |
 
 ---
 
@@ -26,59 +26,59 @@
 
 | Aspect | Q-Fin | Black-Scholes-Visual-Explainer | Winner |
 |--------|-------|--------------------------------|--------|
-| Correctness | ✅ Correct (except put gamma) | ✅ Likely correct | TIE |
-| Greeks | ✅ Delta, Gamma*, Vega, Theta | ✅ Full set + visuals | 👉 Existing |
-| Visualization | ❌ None | ✅ Interactive plots | 👉 Existing |
-| Performance | ✅ Fast (analytical) | ✅ Fast | TIE |
-| Tests | ❌ None | 🤷 Unknown | - |
+| Correctness |  Correct (except put gamma) |  Likely correct | TIE |
+| Greeks |  Delta, Gamma*, Vega, Theta |  Full set + visuals |  Existing |
+| Visualization |  None |  Interactive plots |  Existing |
+| Performance |  Fast (analytical) |  Fast | TIE |
+| Tests |  None |  Unknown | - |
 | **Recommendation** | - | - | **USE EXISTING** |
 
 ### Monte Carlo Vanilla Options
 
 | Aspect | Q-Fin | MC-Option-Pricing-Simulator | Winner |
 |--------|-------|------------------------------|--------|
-| Correctness | ⚠️ Has bugs | 🤷 Needs verification | - |
-| Performance | 🔴 Slow (Python loops) | 🤷 Unknown | - |
-| Features | GBM + Heston | 🤷 Unknown | - |
-| Path saving | ✅ Yes | 🤷 Unknown | - |
-| Tests | ❌ None | 🤷 Unknown | - |
+| Correctness |  Has bugs |  Needs verification | - |
+| Performance |  Slow (Python loops) |  Unknown | - |
+| Features | GBM + Heston |  Unknown | - |
+| Path saving |  Yes |  Unknown | - |
+| Tests |  None |  Unknown | - |
 | **Recommendation** | - | - | **USE EXISTING** |
 
 ### Monte Carlo Exotics
 
 | Option Type | Q-Fin | Existing Simulators | Status |
 |-------------|-------|---------------------|--------|
-| Asian | ✅ Has (untested) | `Monte-Carlo-*-main/` likely has | 🔴 REDUNDANT |
-| Barrier | 🔴 BROKEN | `Liquidity-Vacuum-Flash-Crash-Simulator-main/` may have | 🔴 BROKEN - Don't use |
-| Binary | ✅ Has (untested) | Unknown | 🟡 MAYBE UNIQUE |
-| Extendible | ⚠️ Has (bug in discount) | ❌ Not seen | 🟡 MAYBE UNIQUE (but buggy) |
+| Asian |  Has (untested) | `Monte-Carlo-*-main/` likely has |  REDUNDANT |
+| Barrier |  BROKEN | `Liquidity-Vacuum-Flash-Crash-Simulator-main/` may have |  BROKEN - Don't use |
+| Binary |  Has (untested) | Unknown |  MAYBE UNIQUE |
+| Extendible |  Has (bug in discount) |  Not seen |  MAYBE UNIQUE (but buggy) |
 
 ### Stochastic Processes
 
 | Process | Q-Fin | Existing | Recommendation |
 |---------|-------|----------|----------------|
-| GBM | ✅ Basic | `Monte-Carlo-Wealth-Simulator-main/` | 🔴 Use existing |
-| ABM | ✅ **Full implementation** | ❌ Not found | 🟢 **EXTRACT THIS** |
-| Heston SVM | ⚠️ Basic (buggy init) | Possibly in `quantlib_pro/` | 🟡 Check quantlib_pro first |
-| Jump Diffusion | ❌ None | Unknown | - |
-| SABR | ❌ None | Unknown | - |
+| GBM |  Basic | `Monte-Carlo-Wealth-Simulator-main/` |  Use existing |
+| ABM |  **Full implementation** |  Not found |  **EXTRACT THIS** |
+| Heston SVM |  Basic (buggy init) | Possibly in `quantlib_pro/` |  Check quantlib_pro first |
+| Jump Diffusion |  None | Unknown | - |
+| SABR |  None | Unknown | - |
 
 ---
 
 ## Unique Value Propositions
 
-### 🟢 Extract These from Q-Fin
+###  Extract These from Q-Fin
 
 #### 1. Arithmetic Brownian Motion (Bachelier Model)
 **File:** `Q-Fin-main/QFin/stochastics.py`  
 **Lines:** 26-65
 
 **Why valuable:**
-- ✅ Correct implementation
-- ✅ Not found in existing projects
-- ✅ Useful for futures/forwards pricing
-- ✅ Historical importance in quant finance
-- ✅ Low/negative rate environments
+-  Correct implementation
+-  Not found in existing projects
+-  Useful for futures/forwards pricing
+-  Historical importance in quant finance
+-  Low/negative rate environments
 
 **Integration path:**
 ```python
@@ -94,10 +94,10 @@ from qfin.stochastics import ArithmeticBrownianMotion
 **Lines:** 6-22
 
 **Why valuable:**
-- ✅ Clean abstract interface
-- ✅ Standardizes vanilla_pricing, calibrate, simulate
-- ✅ Can unify disparate Monte Carlo projects
-- ✅ Good OOP design pattern
+-  Clean abstract interface
+-  Standardizes vanilla_pricing, calibrate, simulate
+-  Can unify disparate Monte Carlo projects
+-  Good OOP design pattern
 
 **Integration path:**
 ```python
@@ -105,7 +105,7 @@ from qfin.stochastics import ArithmeticBrownianMotion
 # Use as base class for all stochastic models in project
 ```
 
-### 🔴 Do NOT Extract These
+###  Do NOT Extract These
 
 1. **Black-Scholes Classes** (`options.py`)
    - Reason: Duplicate functionality
@@ -127,7 +127,7 @@ from qfin.stochastics import ArithmeticBrownianMotion
 
 ## Integration Effort Estimation
 
-### Option A: Extract ABM Only (RECOMMENDED) ✅
+### Option A: Extract ABM Only (RECOMMENDED) 
 
 **What:**
 - Copy `ArithmeticBrownianMotion` class
@@ -151,7 +151,7 @@ from qfin.stochastics import ArithmeticBrownianMotion
 
 ---
 
-### Option B: Extract ABM + Framework (MODERATE) 🟡
+### Option B: Extract ABM + Framework (MODERATE) 
 
 **What:**
 - Extract `StochasticModel` ABC
@@ -174,7 +174,7 @@ from qfin.stochastics import ArithmeticBrownianMotion
 
 ---
 
-### Option C: Full Q-Fin Integration (NOT RECOMMENDED) ❌
+### Option C: Full Q-Fin Integration (NOT RECOMMENDED) 
 
 **What:**
 - Fix all bugs in Q-Fin
@@ -232,15 +232,15 @@ from qfin.stochastics import ArithmeticBrownianMotion
 
 ### What Q-Fin Has That Project Might Need
 
-✅ **Confirmed Gaps:**
+ **Confirmed Gaps:**
 1. Arithmetic Brownian Motion (Bachelier model)
 2. Unified stochastic model interface
 
-🟡 **Potential Gaps (Need to verify):**
+ **Potential Gaps (Need to verify):**
 1. Binary option pricing
 2. Extendible option pricing
 
-❌ **No Gaps (Already covered):**
+ **No Gaps (Already covered):**
 1. Black-Scholes pricing
 2. Monte Carlo simulations
 3. GBM simulation
@@ -252,24 +252,24 @@ from qfin.stochastics import ArithmeticBrownianMotion
 ## Recommendation Summary
 
 ### Phase 1: Immediate (Week 1)
-1. ✅ **Extract Arithmetic Brownian Motion**
+1.  **Extract Arithmetic Brownian Motion**
    - Port to `quantlib_pro/models/bachelier.py`
    - Add tests
    - Document
 
-2. ✅ **Archive Q-Fin**
+2.  **Archive Q-Fin**
    - Add README warning about bugs
    - Mark as "Reference Implementation Only"
    - Document known issues
 
 ### Phase 2: Optional (Month 1)
-3. 🟡 **Consider Stochastic Model Interface**
+3.  **Consider Stochastic Model Interface**
    - Evaluate if standardization adds value
    - Prototype with 2-3 existing models
    - Make go/no-go decision
 
 ### Phase 3: Cleanup (Month 2)
-4. ✅ **Remove Q-Fin-main/ if not needed**
+4.  **Remove Q-Fin-main/ if not needed**
    - After verification that ABM extracted correctly
    - After confirming no other dependencies
    - Keep git history for reference
@@ -307,12 +307,12 @@ from qfin.stochastics import ArithmeticBrownianMotion
 
 | Action | Verdict | Priority |
 |--------|---------|----------|
-| Use Q-Fin as-is | ❌ NO | - |
-| Fix Q-Fin bugs | ❌ NO | Low ROI |
-| Full integration | ❌ NO | Waste of time |
-| Extract ABM only | ✅ **YES** | **HIGH** |
-| Extract framework | 🟡 MAYBE | MEDIUM |
-| Archive Q-Fin | ✅ YES | HIGH |
+| Use Q-Fin as-is |  NO | - |
+| Fix Q-Fin bugs |  NO | Low ROI |
+| Full integration |  NO | Waste of time |
+| Extract ABM only |  **YES** | **HIGH** |
+| Extract framework |  MAYBE | MEDIUM |
+| Archive Q-Fin |  YES | HIGH |
 
 **Time investment:** 10-20 hours (ABM extraction)  
 **Expected value:** Adds missing Bachelier pricing to project  

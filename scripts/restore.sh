@@ -165,7 +165,7 @@ download_from_cloud() {
             ;;
     esac
     
-    log "✓ Download completed"
+    log " Download completed"
 }
 
 # ─── Verify Backups Exist ───────────────────────────────────────────────────
@@ -202,7 +202,7 @@ verify_backups() {
         exit 1
     fi
     
-    log "✓ All required backup files found"
+    log " All required backup files found"
 }
 
 # ─── Create Backup Before Restore ───────────────────────────────────────────
@@ -217,7 +217,7 @@ create_pre_restore_backup() {
         tar -czf "$pre_restore_dir/data.tar.gz" -C "$(dirname "$DATA_DIR")" "$(basename "$DATA_DIR")"
     fi
     
-    log "✓ Pre-restore backup saved to: $pre_restore_dir"
+    log " Pre-restore backup saved to: $pre_restore_dir"
 }
 
 # ─── Restore Data ───────────────────────────────────────────────────────────
@@ -261,7 +261,7 @@ restore_data() {
         tar -xf "$data_backup" -C "$(dirname "$DATA_DIR")"
     fi
     
-    log "✓ Data restored successfully"
+    log " Data restored successfully"
 }
 
 # ─── Restore Logs ───────────────────────────────────────────────────────────
@@ -296,7 +296,7 @@ restore_logs() {
         tar -xf "$logs_backup" -C "$(dirname "$LOG_DIR")"
     fi
     
-    log "✓ Logs restored successfully"
+    log " Logs restored successfully"
 }
 
 # ─── Restore Database ───────────────────────────────────────────────────────
@@ -373,7 +373,7 @@ restore_database() {
             ;;
     esac
     
-    log "✓ Database restored successfully"
+    log " Database restored successfully"
 }
 
 # ─── Restore Redis ──────────────────────────────────────────────────────────
@@ -422,7 +422,7 @@ restore_redis() {
         service redis start
     fi
     
-    log "✓ Redis restored successfully"
+    log " Redis restored successfully"
 }
 
 # ─── Verify Restore ─────────────────────────────────────────────────────────
@@ -431,7 +431,7 @@ verify_restore() {
     
     if [ "$RESTORE_DATA" = true ]; then
         if [ -d "$DATA_DIR" ]; then
-            log "✓ Data directory exists"
+            log " Data directory exists"
         else
             error "Data directory not found after restore!"
             exit 1
@@ -447,7 +447,7 @@ verify_restore() {
                     -U "$DB_USER" \
                     -d "$DB_NAME" \
                     -c "SELECT 1;" &>/dev/null; then
-                    log "✓ Database connection successful"
+                    log " Database connection successful"
                 else
                     error "Database connection failed!"
                     exit 1
@@ -456,7 +456,7 @@ verify_restore() {
         esac
     fi
     
-    log "✓ Restore verification completed"
+    log " Restore verification completed"
 }
 
 # ─── Main Execution ─────────────────────────────────────────────────────────

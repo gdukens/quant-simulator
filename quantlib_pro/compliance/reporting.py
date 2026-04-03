@@ -95,7 +95,7 @@ Total Violations: {len(self.violations)}
   Medium Severity: {len([v for v in self.violations if v.severity == 'MEDIUM'])}
   Low Severity: {len([v for v in self.violations if v.severity == 'LOW'])}
 
-Status: {'✓ COMPLIANT' if self.is_compliant else '✗ NON-COMPLIANT'}
+Status: {' COMPLIANT' if self.is_compliant else ' NON-COMPLIANT'}
 
 RISK METRICS
 ------------

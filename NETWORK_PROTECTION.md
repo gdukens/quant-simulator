@@ -1,22 +1,22 @@
-# 🛡️ Docker Network Protection Guide
+#  Docker Network Protection Guide
 
-## ✅ **NETWORKS RESTORED**
+##  **NETWORKS RESTORED**
 
 The following critical networks have been **successfully restored** and are now protected:
 
-- ✅ `supabase_network_sxdwyjyydsnvcbcrsyml` - Supabase integration network
-- ✅ `abtesting_default` - A/B testing framework network  
-- ✅ `quantlib-pro-network` - QuantLib Pro application network
+-  `supabase_network_sxdwyjyydsnvcbcrsyml` - Supabase integration network
+-  `abtesting_default` - A/B testing framework network  
+-  `quantlib-pro-network` - QuantLib Pro application network
 
-## 🚫 **DANGEROUS COMMAND to AVOID**
+##  **DANGEROUS COMMAND to AVOID**
 
 **NEVER use this command again:**
 ```bash
 docker network prune -f
 ```
-⚠️ This command **deletes ALL unused networks** without discrimination!
+ This command **deletes ALL unused networks** without discrimination!
 
-## ✅ **SAFE ALTERNATIVES**
+##  **SAFE ALTERNATIVES**
 
 ### 1. **Network Management Script**
 ```powershell
@@ -42,21 +42,21 @@ docker network prune -f
 .\scripts\safe-docker-cleanup.ps1 -All
 ```
 
-## 🔒 **Protected Networks**
+##  **Protected Networks**
 
 These networks are **NEVER deleted** by safe cleanup scripts:
 
 | Network | Purpose | Status |
 |---------|---------|--------|
-| `supabase_network_sxdwyjyydsnvcbcrsyml` | Supabase integration | ✅ Protected |
-| `abtesting_default` | A/B testing framework | ✅ Protected |
-| `quantlib-pro-network` | QuantLib Pro app | ✅ Protected |
-| `quantlib-network` | Production network | ✅ Protected |
-| `bridge` | Docker default | ✅ Protected |
-| `host` | Docker host network | ✅ Protected |
-| `none` | Docker null network | ✅ Protected |
+| `supabase_network_sxdwyjyydsnvcbcrsyml` | Supabase integration |  Protected |
+| `abtesting_default` | A/B testing framework |  Protected |
+| `quantlib-pro-network` | QuantLib Pro app |  Protected |
+| `quantlib-network` | Production network |  Protected |
+| `bridge` | Docker default |  Protected |
+| `host` | Docker host network |  Protected |
+| `none` | Docker null network |  Protected |
 
-## 📋 **Quick Commands**
+##  **Quick Commands**
 
 ```powershell
 # Emergency network restoration
@@ -73,4 +73,4 @@ docker network ls
 ```
 
 ---
-**🛡️ Your networks are now protected from accidental deletion!**
+** Your networks are now protected from accidental deletion!**

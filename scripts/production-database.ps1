@@ -1,4 +1,4 @@
-# 🚀 Production Database Setup & Fix
+#  Production Database Setup & Fix
 # This script resolves PostgreSQL authentication issues and prepares production database
 
 param(
@@ -9,12 +9,12 @@ param(
 )
 
 function Write-Production {
-    param([string]$Message, [string]$Color = "White", [string]$Icon = "🚀")
+    param([string]$Message, [string]$Color = "White", [string]$Icon = "")
     Write-Host "$Icon $Message" -ForegroundColor $Color
 }
 
 function Test-DatabaseConnection {
-    Write-Production "Testing PostgreSQL Connection..." "Yellow" "🔍"
+    Write-Production "Testing PostgreSQL Connection..." "Yellow" ""
     
     $testScript = @"
 import psycopg2
@@ -33,7 +33,7 @@ try:
     cursor = conn.cursor()
     cursor.execute('SELECT version();')
     version = cursor.fetchone()[0]
-    print('✅ SUCCESS: PostgreSQL Connected')
+    print(' SUCCESS: PostgreSQL Connected')
     print(f'Version: {version[:50]}...')
     
     # Test creating production schema
@@ -54,12 +54,12 @@ try:
     ''')
     conn.commit()
     
-    print('✅ Production schema created successfully')
+    print(' Production schema created successfully')
     cursor.close()
     conn.close()
     
 except Exception as e:
-    print(f'❌ FAILED: {e}')
+    print(f' FAILED: {e}')
     exit(1)
 "@
     
@@ -67,7 +67,7 @@ except Exception as e:
 }
 
 function Fix-Database {
-    Write-Production "Fixing PostgreSQL Production Authentication..." "Cyan" "🔧"
+    Write-Production "Fixing PostgreSQL Production Authentication..." "Cyan" ""
     
     # Step 1: Stop containers
     Write-Production "Stopping database containers..." "Yellow"
@@ -97,7 +97,7 @@ function Fix-Database {
 }
 
 function Reset-Database {
-    Write-Production "RESETTING Database (WARNING: All data will be lost)" "Red" "⚠️"
+    Write-Production "RESETTING Database (WARNING: All data will be lost)" "Red" ""
     Write-Host "Are you sure? Type 'RESET' to continue: " -NoNewline -ForegroundColor Yellow
     $confirmation = Read-Host
     

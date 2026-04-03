@@ -14,7 +14,7 @@
 
 ## **CURRENT STATE ASSESSMENT**
 
-### **Strengths** ✅
+### **Strengths** 
 | Component | Grade | Status |
 |-----------|-------|--------|
 | Architecture & Design | 9/10 | Production-ready |
@@ -26,7 +26,7 @@
 | Security & Compliance | 8/10 | JWT, audit, GDPR, MiFID II |
 | Observability | 8/10 | Prometheus, health checks |
 
-### **Critical Gaps** 🔴
+### **Critical Gaps** 
 | Gap | Current State | Impact | Priority |
 |-----|--------------|--------|----------|
 | **Live Market Data** | Mocked numpy data | Models run on fake data | P0 — Critical |
@@ -659,12 +659,12 @@ class DataManager:
 | **Data provider uptime** | N/A | >99.5% | Circuit breaker metrics |
 
 **Phase 1 Complete When:**
-- ✅ 100% of API endpoints use real market data (not mocked)
-- ✅ All portfolios, positions, trades persisted in PostgreSQL
-- ✅ Redis cache operational with >80% hit rate
-- ✅ Database migrations tested (up/down)
-- ✅ Integration tests pass with live data providers
-- ✅ Load test: 1000 req/min sustained for 10 minutes
+-  100% of API endpoints use real market data (not mocked)
+-  All portfolios, positions, trades persisted in PostgreSQL
+-  Redis cache operational with >80% hit rate
+-  Database migrations tested (up/down)
+-  Integration tests pass with live data providers
+-  Load test: 1000 req/min sustained for 10 minutes
 
 ---
 
@@ -1048,11 +1048,11 @@ server {
 | **System uptime** | Unknown | >99.9% | Prometheus uptime metric |
 
 **Phase 2 Complete When:**
-- ✅ WebSocket streaming operational with 1000+ concurrent connections
-- ✅ Monte Carlo simulations 3x faster via Dask
-- ✅ API runs with 3+ replicas behind load balancer
-- ✅ Load test: 5000 req/min sustained for 30 minutes
-- ✅ Zero-downtime deployment tested
+-  WebSocket streaming operational with 1000+ concurrent connections
+-  Monte Carlo simulations 3x faster via Dask
+-  API runs with 3+ replicas behind load balancer
+-  Load test: 5000 req/min sustained for 30 minutes
+-  Zero-downtime deployment tested
 
 ---
 
@@ -1369,7 +1369,7 @@ class AlertManager:
     
     def send_alert(self, alert: Dict):
         payload = {
-            "text": f"🚨 {alert['severity'].upper()}: {alert['summary']}",
+            "text": f" {alert['severity'].upper()}: {alert['summary']}",
             "attachments": [
                 {
                     "color": "danger" if alert['severity'] == "critical" else "warning",

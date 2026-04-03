@@ -297,7 +297,7 @@ class TestReporter:
             report.append("-" * 80)
             
             for result in failed:
-                report.append(f"❌ {result.test_name}")
+                report.append(f" {result.test_name}")
                 report.append(f"   Duration: {result.duration_ms:.1f}ms")
                 
                 if result.error_message:
@@ -545,7 +545,7 @@ class CoverageTracker:
             report.append("-" * 60)
             
             for module in sorted(self.modules_covered):
-                report.append(f"✓ {module}")
+                report.append(f" {module}")
             
             report.append("")
         

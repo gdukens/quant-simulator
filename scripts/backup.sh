@@ -73,7 +73,7 @@ preflight_checks() {
         exit 1
     fi
     
-    log "✓ Preflight checks passed"
+    log " Preflight checks passed"
 }
 
 # ─── Backup Data Directory ──────────────────────────────────────────────────
@@ -108,7 +108,7 @@ backup_data() {
     fi
     
     local size=$(du -h "$backup_file" | cut -f1)
-    log "✓ Data backup completed: $backup_file ($size)"
+    log " Data backup completed: $backup_file ($size)"
     
     echo "$backup_file"
 }
@@ -135,7 +135,7 @@ backup_logs() {
     fi
     
     local size=$(du -h "$backup_file" | cut -f1)
-    log "✓ Logs backup completed: $backup_file ($size)"
+    log " Logs backup completed: $backup_file ($size)"
     
     echo "$backup_file"
 }
@@ -191,7 +191,7 @@ backup_database() {
     fi
     
     local size=$(du -h "$backup_file" | cut -f1)
-    log "✓ Database backup completed: $backup_file ($size)"
+    log " Database backup completed: $backup_file ($size)"
     
     echo "$backup_file"
 }
@@ -221,7 +221,7 @@ backup_redis() {
                 gzip -f "$BACKUP_DIR/redis_${TIMESTAMP}.rdb"
             fi
             
-            log "✓ Redis backup completed"
+            log " Redis backup completed"
         else
             log "! Redis dump file not found at $redis_dump"
         fi
@@ -243,14 +243,14 @@ upload_to_cloud() {
     if [ -n "$S3_BUCKET" ] && command -v aws &> /dev/null; then
         log "Uploading to S3: s3://$S3_BUCKET/$(basename "$backup_file")"
         aws s3 cp "$backup_file" "s3://$S3_BACKUP_BUCKET/" --storage-class STANDARD_IA
-        log "✓ Uploaded to S3"
+        log " Uploaded to S3"
     fi
     
     # Google Cloud Storage
     if [ -n "$GCS_BUCKET" ] && command -v gsutil &> /dev/null; then
         log "Uploading to GCS: gs://$GCS_BUCKET/$(basename "$backup_file")"
         gsutil cp "$backup_file" "gs://$GCS_BACKUP_BUCKET/"
-        log "✓ Uploaded to GCS"
+        log " Uploaded to GCS"
     fi
     
     # Azure Blob Storage
@@ -261,7 +261,7 @@ upload_to_cloud() {
             --container-name "$AZURE_STORAGE_CONTAINER" \
             --file "$backup_file" \
             --name "$(basename "$backup_file")"
-        log "✓ Uploaded to Azure"
+        log " Uploaded to Azure"
     fi
 }
 
@@ -299,7 +299,7 @@ cleanup_old_backups() {
             done
     fi
     
-    log "✓ Cleanup completed"
+    log " Cleanup completed"
 }
 
 # ─── Generate Backup Manifest ───────────────────────────────────────────────
@@ -324,7 +324,7 @@ EOF
             echo "- $(basename "$file") ($size) [SHA256: $checksum]" >> "$manifest_file"
         done
     
-    log "✓ Manifest created: $manifest_file"
+    log " Manifest created: $manifest_file"
 }
 
 # ─── Send Notification ──────────────────────────────────────────────────────

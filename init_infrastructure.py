@@ -22,9 +22,9 @@ print("\n[1/4] Initializing database schema...")
 try:
     from quantlib_pro.data.database import init_db
     init_db()
-    print("✓ Database schema created")
+    print(" Database schema created")
 except Exception as e:
-    print(f"✗ Failed to create schema: {e}")
+    print(f" Failed to create schema: {e}")
     sys.exit(1)
 
 # Step 2: Test PostgreSQL connection
@@ -46,10 +46,10 @@ try:
         
         # Query users
         users_count = session.query(User).count()
-        print(f"✓ PostgreSQL working! Users in database: {users_count}")
+        print(f" PostgreSQL working! Users in database: {users_count}")
         
 except Exception as e:
-    print(f"✗ PostgreSQL connection failed: {e}")
+    print(f" PostgreSQL connection failed: {e}")
     sys.exit(1)
 
 # Step 3: Test Redis connection
@@ -72,10 +72,10 @@ try:
     r.set("quantlib:test", "infrastructure_ok")
     value = r.get("quantlib:test")
     
-    print(f"✓ Redis working! Test value: {value.decode('utf-8')}")
+    print(f" Redis working! Test value: {value.decode('utf-8')}")
     
 except Exception as e:
-    print(f"✗ Redis connection failed: {e}")
+    print(f" Redis connection failed: {e}")
     print("   (This is optional - system will work without caching)")
 
 # Step 4: Display configuration

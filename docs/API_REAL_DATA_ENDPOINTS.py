@@ -305,15 +305,15 @@ Benefits:
 
 """
 Existing /api/v1/data endpoints (simulated data):
-  ✓ Still available for testing
-  ✓ Use for development without API keys
-  ✓ Fast (no external API calls)
+   Still available for testing
+   Use for development without API keys
+   Fast (no external API calls)
 
 New /api/v1/realdata endpoints (real data):
-  ✓ Use for production
-  ✓ Real market data
-  ✓ Cached for performance
-  ✓ Persistent storage option
+   Use for production
+   Real market data
+   Cached for performance
+   Persistent storage option
 
 Migration Path:
   1. Test with /data endpoints (simulated)

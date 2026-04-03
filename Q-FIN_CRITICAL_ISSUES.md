@@ -1,11 +1,11 @@
 # Q-Fin Critical Issues Summary
 
 **Date:** February 24, 2026  
-**Status:** 🔴 NOT PRODUCTION READY
+**Status:**  NOT PRODUCTION READY
 
 ---
 
-## 🔴 CRITICAL BUGS (Fix Immediately)
+##  CRITICAL BUGS (Fix Immediately)
 
 ### 1. Barrier Options - Complete Failure
 **File:** `Q-Fin-main/QFin/simulations.py`  
@@ -16,8 +16,8 @@
 def simulate_price_gbm(self, strike, n, barrier, up, out, r, S, mu, sigma, dt, T):
     payouts = []
     for i in range(0, n):
-        payouts = []  # ❌ RESETS LIST - only last iteration kept!
-        for i in range(0, n):  # ❌ OVERWRITES loop variable
+        payouts = []  #  RESETS LIST - only last iteration kept!
+        for i in range(0, n):  #  OVERWRITES loop variable
 ```
 
 **Impact:** Barrier options return completely wrong prices  
@@ -33,7 +33,7 @@ def simulate_price_gbm(self, strike, n, barrier, up, out, r, S, mu, sigma, dt, T
 # BROKEN CODE
 def put_gamma(self, ...):
     # ...
-    z1 = norm.cdf(x1)  # ❌ Should be norm.pdf(x1)
+    z1 = norm.cdf(x1)  #  Should be norm.pdf(x1)
     z2 = z1/(asset_price*asset_volatility*math.sqrt(time_to_expiration))
     return z2
 ```
@@ -49,7 +49,7 @@ def put_gamma(self, ...):
 
 ```python
 # BROKEN CODE
-inst_var = np.sqrt(sigma)  # ❌ Sigma is volatility, not variance!
+inst_var = np.sqrt(sigma)  #  Sigma is volatility, not variance!
 ```
 
 **Impact:** All stochastic volatility models produce wrong paths  
@@ -64,7 +64,7 @@ inst_var = np.sqrt(sigma)  # ❌ Sigma is volatility, not variance!
 ```python
 # BROKEN CODE
 payouts.append((GBM2.simulated_path[-1] - strike)*np.exp(-r*T))
-# ❌ Should use (T + extension) for extended scenarios
+#  Should use (T + extension) for extended scenarios
 ```
 
 **Impact:** Extendible options mispriced  
@@ -72,7 +72,7 @@ payouts.append((GBM2.simulated_path[-1] - strike)*np.exp(-r*T))
 
 ---
 
-## 🟡 HIGH PRIORITY ISSUES
+##  HIGH PRIORITY ISSUES
 
 ### 5. No Input Validation
 - No checks for `T > 0`, `σ > 0`, `dt < T`
@@ -157,9 +157,9 @@ inst_var = sigma * sigma  # Convert volatility to variance
 
 ## Integration Decision
 
-✅ **RECOMMENDED:** Extract only Bachelier (ABM) model  
-❌ **NOT RECOMMENDED:** Use as-is  
-❌ **NOT RECOMMENDED:** Complete refactor (use better alternatives)
+ **RECOMMENDED:** Extract only Bachelier (ABM) model  
+ **NOT RECOMMENDED:** Use as-is  
+ **NOT RECOMMENDED:** Complete refactor (use better alternatives)
 
 **Effort to fix all bugs:** ~40-60 hours  
 **Value compared to alternatives:** LOW

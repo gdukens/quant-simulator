@@ -4,7 +4,7 @@
 
 set -e
 
-echo "🚀 QuantLib Pro - Azure Deployment Script"
+echo " QuantLib Pro - Azure Deployment Script"
 echo "=========================================="
 
 # Configuration
@@ -17,11 +17,11 @@ IMAGE_NAME="$ACR_NAME.azurecr.io/quantlib-pro:latest"
 
 # Check Azure CLI
 if ! command -v az &> /dev/null; then
-    echo "❌ Azure CLI not found. Please install it first."
+    echo " Azure CLI not found. Please install it first."
     exit 1
 fi
 
-echo "📋 Configuration:"
+echo " Configuration:"
 echo "  Resource Group: $RESOURCE_GROUP"
 echo "  Location: $LOCATION"
 echo "  ACR: $ACR_NAME"
@@ -29,24 +29,24 @@ echo "  App Name: $APP_NAME"
 echo ""
 
 # Step 1: Login to Azure (if not already logged in)
-echo "🔐 Step 1: Checking Azure login..."
+echo " Step 1: Checking Azure login..."
 az account show &> /dev/null || az login
 
-echo "✅ Azure login confirmed"
+echo " Azure login confirmed"
 
 # Step 2: Create Resource Group
 echo ""
-echo "📦 Step 2: Creating resource group..."
+echo " Step 2: Creating resource group..."
 az group create \
     --name $RESOURCE_GROUP \
     --location $LOCATION \
     --output none 2>/dev/null || echo "Resource group already exists"
 
-echo "✅ Resource group ready"
+echo " Resource group ready"
 
 # Step 3: Create Azure Container Registry
 echo ""
-echo "🗄️  Step 3: Creating Azure Container Registry..."
+echo "  Step 3: Creating Azure Container Registry..."
 az acr check-name --name $ACR_NAME --output none 2>/dev/null
 
 az acr create \
@@ -57,18 +57,18 @@ az acr create \
     --admin-enabled true \
     --output none 2>/dev/null || echo "ACR already exists"
 
-echo "✅ ACR ready"
+echo " ACR ready"
 
 # Step 4: Build and push Docker image
 echo ""
-echo "🐳 Step 4: Building and pushing Docker image to ACR..."
+echo " Step 4: Building and pushing Docker image to ACR..."
 az acr build \
     --registry $ACR_NAME \
     --image quantlib-pro:latest \
     --file Dockerfile \
     .
 
-echo "✅ Image pushed to ACR"
+echo " Image pushed to ACR"
 
 # Get ACR credentials
 ACR_USERNAME=$(az acr credential show --name $ACR_NAME --query username -o tsv)
@@ -76,7 +76,7 @@ ACR_PASSWORD=$(az acr credential show --name $ACR_NAME --query passwords[0].valu
 
 # Step 5: Choose deployment method
 echo ""
-echo "📦 Step 5: Deployment Method Selection"
+echo " Step 5: Deployment Method Selection"
 echo "  1) Azure App Service (Recommended for production)"
 echo "  2) Azure Container Instances (Simpler, lower cost)"
 echo ""
@@ -86,7 +86,7 @@ DEPLOY_METHOD=${DEPLOY_METHOD:-1}
 if [ "$DEPLOY_METHOD" == "1" ]; then
     # Deploy to Azure App Service
     echo ""
-    echo "🚢 Deploying to Azure App Service..."
+    echo " Deploying to Azure App Service..."
     
     # Create App Service Plan
     az appservice plan create \
@@ -133,12 +133,12 @@ if [ "$DEPLOY_METHOD" == "1" ]; then
     # Get URL
     APP_URL="https://${APP_NAME}.azurewebsites.net"
     
-    echo "✅ Deployed to App Service"
+    echo " Deployed to App Service"
     
 else
     # Deploy to Azure Container Instances
     echo ""
-    echo "🚢 Deploying to Azure Container Instances..."
+    echo " Deploying to Azure Container Instances..."
     
     az container create \
         --resource-group $RESOURCE_GROUP \
@@ -164,12 +164,12 @@ else
         --output tsv)
     APP_URL="http://${APP_URL}:8501"
     
-    echo "✅ Deployed to Container Instances"
+    echo " Deployed to Container Instances"
 fi
 
 # Step 6: Configure monitoring (Application Insights)
 echo ""
-echo "📊 Step 6: Setting up Application Insights..."
+echo " Step 6: Setting up Application Insights..."
 APPINSIGHTS_NAME="${APP_NAME}-insights"
 
 az monitor app-insights component create \
@@ -194,11 +194,11 @@ if [ "$DEPLOY_METHOD" == "1" ]; then
         --output none
 fi
 
-echo "✅ Monitoring configured"
+echo " Monitoring configured"
 
 # Step 7: Setup custom domain (optional)
 echo ""
-echo "🌐 Optional: Custom Domain Setup"
+echo " Optional: Custom Domain Setup"
 if [ "$DEPLOY_METHOD" == "1" ]; then
     echo "  To map a custom domain:"
     echo "  az webapp config hostname add --webapp-name $APP_NAME --resource-group $RESOURCE_GROUP --hostname YOUR-DOMAIN.com"
@@ -207,20 +207,20 @@ fi
 echo ""
 
 # Step 8: Health check
-echo "🏥 Step 8: Running health check..."
+echo " Step 8: Running health check..."
 sleep 20
 if curl -f -s "${APP_URL}/_stcore/health" > /dev/null 2>&1; then
-    echo "✅ Health check passed"
+    echo " Health check passed"
 else
-    echo "⚠️  Health check pending (service may still be starting)"
+    echo "  Health check pending (service may still be starting)"
 fi
 
 echo ""
-echo "✅ Deployment Complete!"
+echo " Deployment Complete!"
 echo "=========================================="
-echo "🌐 Application URL: $APP_URL"
+echo " Application URL: $APP_URL"
 echo ""
-echo "📊 Monitoring:"
+echo " Monitoring:"
 if [ "$DEPLOY_METHOD" == "1" ]; then
     echo "  Logs: az webapp log tail --name $APP_NAME --resource-group $RESOURCE_GROUP"
     echo "  App Insights: https://portal.azure.com/#resource/subscriptions/$(az account show --query id -o tsv)/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Insights/components/$APPINSIGHTS_NAME"
@@ -229,7 +229,7 @@ else
     echo "  Metrics: az container show --name $APP_NAME --resource-group $RESOURCE_GROUP"
 fi
 echo ""
-echo "🔧 Useful Commands:"
+echo " Useful Commands:"
 if [ "$DEPLOY_METHOD" == "1" ]; then
     echo "  Restart: az webapp restart --name $APP_NAME --resource-group $RESOURCE_GROUP"
     echo "  Scale: az appservice plan update --name $SERVICE_PLAN --resource-group $RESOURCE_GROUP --sku P1V2"
@@ -239,7 +239,7 @@ else
     echo "  Delete: az container delete --name $APP_NAME --resource-group $RESOURCE_GROUP --yes"
 fi
 echo ""
-echo "💡 Tips:"
+echo " Tips:"
 echo "  - Enable Azure CDN for global content delivery"
 echo "  - Setup Azure Front Door for load balancing"
 echo "  - Configure auto-scaling rules"

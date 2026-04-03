@@ -59,7 +59,7 @@ receivers:
   - name: 'critical-alerts'
     email_configs:
       - to: 'oncall@quantlibpro.com'
-        subject: '🚨 CRITICAL: {{ .GroupLabels.alertname }}'
+        subject: ' CRITICAL: {{ .GroupLabels.alertname }}'
         html: |
           <h2>Critical Alert: {{ .GroupLabels.alertname }}</h2>
           {{ range .Alerts }}
@@ -71,7 +71,7 @@ receivers:
     slack_configs:
       - api_url: '{{ .SlackURL }}'
         channel: '#quantlib-critical'
-        title: '🚨 CRITICAL ALERT'
+        title: ' CRITICAL ALERT'
         text: '{{ range .Alerts }}{{ .Annotations.summary }}\n{{ .Annotations.description }}{{ end }}'
         color: 'danger'
         
@@ -99,7 +99,7 @@ receivers:
     slack_configs:
       - api_url: '{{ .SlackURL }}'
         channel: '#security-alerts'
-        title: '🔒 Security Alert'
+        title: ' Security Alert'
         text: '{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
         color: 'warning'
         

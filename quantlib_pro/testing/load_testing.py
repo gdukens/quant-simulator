@@ -117,7 +117,7 @@ Response Times (ms):
   Min:                 {min(self.response_times) if self.response_times else 0:.2f}
   Max:                 {max(self.response_times) if self.response_times else 0:.2f}
 
-Status:                {'✅ PASS' if self.success_rate > 95 and self.p95_response_time < 1000 else '❌ FAIL'}
+Status:                {' PASS' if self.success_rate > 95 and self.p95_response_time < 1000 else ' FAIL'}
 """
 
 
@@ -465,7 +465,7 @@ class PerformanceBenchmark:
         benchmark = self.benchmarks[scenario_name]
         
         for metric, passed in validation.items():
-            status = "✅ PASS" if passed else "❌ FAIL"
+            status = " PASS" if passed else " FAIL"
             
             if metric == 'p95_latency':
                 lines.append(f"P95 Latency: {result.p95_response_time:.2f}ms / {benchmark['max_p95_ms']}ms {status}")
@@ -476,7 +476,7 @@ class PerformanceBenchmark:
             elif metric == 'success_rate':
                 lines.append(f"Success Rate: {result.success_rate:.1f}% / {benchmark['min_success_rate']}% {status}")
         
-        overall = "✅ ALL PASSED" if all(validation.values()) else "❌ SOME FAILED"
+        overall = " ALL PASSED" if all(validation.values()) else " SOME FAILED"
         lines.append(f"\nOverall: {overall}")
         
         return '\n'.join(lines)

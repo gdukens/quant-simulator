@@ -435,7 +435,7 @@ with monitor.track('portfolio_optimization'):
 # Check performance
 metrics = monitor.get_metrics('portfolio_optimization')
 if metrics['avg_duration_ms'] > 1000:
-    print("⚠️ Performance degradation detected!")
+    print(" Performance degradation detected!")
 ```
 
 ---
@@ -484,7 +484,7 @@ validator = ModelValidator(tolerance=0.01)
 results = validator.validate_all_models()
 
 if not results['all_passed']:
-    print("❌ Model validation failed!")
+    print(" Model validation failed!")
     print(results.generate_report())
 ```
 

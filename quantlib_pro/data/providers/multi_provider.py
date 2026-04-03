@@ -88,9 +88,9 @@ class MultiProviderDataFetcher:
             try:
                 av_fetcher = create_alpha_vantage_fetcher(api_key=alpha_vantage_key)
                 self.providers.append(("Alpha Vantage", av_fetcher))
-                log.info("✅ Alpha Vantage provider configured")
+                log.info(" Alpha Vantage provider configured")
             except ValueError as e:
-                log.warning(f"⚠️  Alpha Vantage not configured: {e}")
+                log.warning(f"  Alpha Vantage not configured: {e}")
         
         if enable_factset:
             try:
@@ -99,13 +99,13 @@ class MultiProviderDataFetcher:
                     api_key=factset_api_key
                 )
                 self.providers.append(("FactSet", fs_fetcher))
-                log.info("✅ FactSet provider configured")
+                log.info(" FactSet provider configured")
             except ValueError as e:
-                log.warning(f"⚠️  FactSet not configured: {e}")
+                log.warning(f"  FactSet not configured: {e}")
         
         if enable_capital_iq:
             log.warning(
-                "⚠️  Capital IQ provider not yet implemented. "
+                "  Capital IQ provider not yet implemented. "
                 "This feature is coming soon."
             )
         
@@ -140,13 +140,13 @@ class MultiProviderDataFetcher:
                     df = provider_fn(ticker, start, end)
                     
                     if df is not None and not df.empty:
-                        log.info(f"✅ {provider_name} succeeded for {ticker}")
+                        log.info(f" {provider_name} succeeded for {ticker}")
                         return df
                     else:
                         log.debug(f"{provider_name} returned empty data for {ticker}")
                 
                 except Exception as e:
-                    log.warning(f"❌ {provider_name} failed for {ticker}: {e}")
+                    log.warning(f" {provider_name} failed for {ticker}: {e}")
                     continue
             
             # All providers failed

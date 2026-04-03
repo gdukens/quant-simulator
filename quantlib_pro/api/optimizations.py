@@ -51,7 +51,7 @@ class AsyncRedisPool:
             health_check_interval=30
         )
         self.redis = aioredis.Redis(connection_pool=self.pool)
-        logger.info("✅ Redis connection pool initialized")
+        logger.info(" Redis connection pool initialized")
     
     async def close(self):
         """Close Redis connections."""
@@ -106,7 +106,7 @@ class AsyncDatabasePool:
             class_=AsyncSession,
             expire_on_commit=False
         )
-        logger.info("✅ Async database pool initialized")
+        logger.info(" Async database pool initialized")
     
     @asynccontextmanager
     async def get_session(self):
@@ -150,7 +150,7 @@ def cache_result(
             with track_performance(f"cache_lookup_{func.__name__}"):
                 cached_result = await redis_pool.get(cache_key)
                 if cached_result:
-                    logger.info(f"✅ Cache hit for {cache_key}")
+                    logger.info(f" Cache hit for {cache_key}")
                     return eval(cached_result)  # In production: use JSON
             
             # Execute function and cache result
@@ -161,7 +161,7 @@ def cache_result(
             asyncio.create_task(
                 redis_pool.set(cache_key, str(result), ttl)
             )
-            logger.info(f"💾 Cached result for {cache_key}")
+            logger.info(f" Cached result for {cache_key}")
             
             return result
         return wrapper
@@ -249,7 +249,7 @@ async def get_cached_market_data(tickers: list[str]) -> pd.DataFrame:
             data[ticker] = prices
         
         market_data = pd.DataFrame(data, index=dates)
-        logger.info(f"📊 Generated market data for {len(tickers)} assets")
+        logger.info(f" Generated market data for {len(tickers)} assets")
         
         return market_data
 
@@ -360,7 +360,7 @@ performance_monitor = PerformanceMonitor()
 
 async def startup_optimizations():
     """Initialize all performance optimizations."""
-    logger.info("🚀 Initializing API performance optimizations...")
+    logger.info(" Initializing API performance optimizations...")
     
     # Initialize Redis pool
     await redis_pool.initialize()
@@ -370,12 +370,12 @@ async def startup_optimizations():
     # await db_pool.initialize()
     
     # Warm up cache with common calculations
-    logger.info("🔥 Warming up caches...")
+    logger.info(" Warming up caches...")
     
-    logger.info("✅ API performance optimizations ready!")
+    logger.info(" API performance optimizations ready!")
 
 async def shutdown_optimizations():
     """Clean up performance optimization resources."""
-    logger.info("🛑 Shutting down API optimizations...")
+    logger.info(" Shutting down API optimizations...")
     await redis_pool.close()
-    logger.info("✅ Cleanup complete")
+    logger.info(" Cleanup complete")

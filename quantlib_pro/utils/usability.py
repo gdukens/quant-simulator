@@ -45,9 +45,9 @@ class HelpContent:
             {
                 'heading': 'Common Issues',
                 'content': '''
-                ❌ **"Optimization failed"**: Try reducing number of stocks or changing date range
-                ❌ **Negative Sharpe ratio**: Consider different stocks or time period
-                ❌ **All weight in one stock**: Add constraints (max 25% per position)
+                 **"Optimization failed"**: Try reducing number of stocks or changing date range
+                 **Negative Sharpe ratio**: Consider different stocks or time period
+                 **All weight in one stock**: Add constraints (max 25% per position)
                 '''
             },
         ]
@@ -158,10 +158,10 @@ class HelpContent:
             {
                 'heading': 'Avoiding Pitfalls',
                 'content': '''
-                ⚠️ **Overfitting**: Don't optimize too many parameters
-                ⚠️ **Look-ahead bias**: Only use data available at decision time
-                ⚠️ **Survivorship bias**: Include delisted stocks
-                ⚠️ **Transaction costs**: Always include realistic costs
+                 **Overfitting**: Don't optimize too many parameters
+                 **Look-ahead bias**: Only use data available at decision time
+                 **Survivorship bias**: Include delisted stocks
+                 **Transaction costs**: Always include realistic costs
                 '''
             },
         ]
@@ -218,7 +218,7 @@ def show_help_modal(content_key: str) -> None:
         return
     
     # Create modal using expander
-    with st.expander("📚 " + content['title'], expanded=False):
+    with st.expander(" " + content['title'], expanded=False):
         for section in content['sections']:
             st.markdown(f"### {section['heading']}")
             st.markdown(section['content'])
@@ -233,7 +233,7 @@ def show_tooltip(text: str, help_text: str) -> None:
         text: Main text to display
         help_text: Tooltip content
     """
-    st.markdown(f"{text} 💡", help=help_text)
+    st.markdown(f"{text} ", help=help_text)
 
 
 def show_info_box(title: str, content: str, type: str = "info") -> None:
@@ -262,7 +262,7 @@ def show_quick_tips(tips: List[str]) -> None:
     Args:
         tips: List of tip strings
     """
-    with st.expander("💡 Quick Tips", expanded=False):
+    with st.expander(" Quick Tips", expanded=False):
         for tip in tips:
             st.markdown(f"- {tip}")
 
@@ -289,18 +289,18 @@ def validate_input_with_feedback(
     """
     # Check hard limits
     if min_val is not None and value < min_val:
-        return False, f"❌ {field_name} must be >= {min_val}"
+        return False, f" {field_name} must be >= {min_val}"
     
     if max_val is not None and value > max_val:
-        return False, f"❌ {field_name} must be <= {max_val}"
+        return False, f" {field_name} must be <= {max_val}"
     
     # Check recommended range
     if recommended_range:
         rec_min, rec_max = recommended_range
         if value < rec_min or value > rec_max:
-            return True, f"⚠️ {field_name} is outside recommended range ({rec_min}-{rec_max})"
+            return True, f" {field_name} is outside recommended range ({rec_min}-{rec_max})"
     
-    return True, f"✅ {field_name} looks good"
+    return True, f" {field_name} looks good"
 
 
 def show_example_workflow(steps: List[dict]) -> None:
@@ -310,12 +310,12 @@ def show_example_workflow(steps: List[dict]) -> None:
     Args:
         steps: List of dicts with 'step', 'action', 'result' keys
     """
-    with st.expander("🎓 Example Workflow", expanded=False):
+    with st.expander(" Example Workflow", expanded=False):
         for i, step_info in enumerate(steps, 1):
             st.markdown(f"**Step {i}: {step_info['step']}**")
-            st.markdown(f"👉 {step_info['action']}")
+            st.markdown(f" {step_info['action']}")
             if 'result' in step_info:
-                st.markdown(f"✅ {step_info['result']}")
+                st.markdown(f" {step_info['result']}")
             st.markdown("")
 
 
@@ -329,7 +329,7 @@ def show_progress_checklist(items: List[dict]) -> None:
     st.markdown("### Progress Checklist")
     
     for item in items:
-        icon = "✅" if item.get('completed', False) else "⬜"
+        icon = "" if item.get('completed', False) else "⬜"
         st.markdown(f"{icon} {item['item']}")
 
 
@@ -343,7 +343,7 @@ class UserGuidance:
             st.session_state.first_visit = True
             
             st.info("""
-            👋 **Welcome to QuantLib Pro!**
+             **Welcome to QuantLib Pro!**
             
             This appears to be your first visit. Here are some quick tips:
             
@@ -352,7 +352,7 @@ class UserGuidance:
             3. **Try Options Pricing** to value derivatives and calculate Greeks
             4. **Explore Advanced Analytics** for regime detection and correlation analysis
             
-            Click the ❓ icon on any page for detailed help.
+            Click the  icon on any page for detailed help.
             """)
     
     @staticmethod
@@ -363,7 +363,7 @@ class UserGuidance:
         if tour_key not in st.session_state:
             st.session_state[tour_key] = 0
         
-        with st.expander(f"🎯 {feature} Tour", expanded=True):
+        with st.expander(f" {feature} Tour", expanded=True):
             step = st.session_state[tour_key]
             
             if step < len(steps):
@@ -382,7 +382,7 @@ class UserGuidance:
                         st.session_state[tour_key] += 1
                         st.rerun()
             else:
-                st.success("✅ Tour completed!")
+                st.success(" Tour completed!")
                 if st.button("Restart Tour"):
                     st.session_state[tour_key] = 0
                     st.rerun()
@@ -415,8 +415,8 @@ class UserGuidance:
                 rec_min, rec_max = rules['recommended']
                 
                 if current_value < rec_min:
-                    st.warning(f"⚠️ {current_value} is below typical range. {rules['help']}")
+                    st.warning(f" {current_value} is below typical range. {rules['help']}")
                 elif current_value > rec_max:
-                    st.warning(f"⚠️ {current_value} is above typical range. {rules['help']}")
+                    st.warning(f" {current_value} is above typical range. {rules['help']}")
                 else:
-                    st.success(f"✅ {current_value} is within typical range.")
+                    st.success(f" {current_value} is within typical range.")

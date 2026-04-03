@@ -82,7 +82,7 @@ def _format_value(v: Any) -> str:
             return f"{v:.4e}"
         return f"{v:.4f}"
     if isinstance(v, bool):
-        return "✓" if v else "✗"
+        return "" if v else ""
     if isinstance(v, (list, dict)):
         return json.dumps(v, default=str)[:50] + "..."
     return str(v)
@@ -91,17 +91,17 @@ def _format_value(v: Any) -> str:
 def print_success(message: str):
     """Print a success message."""
     if HAS_RICH:
-        console.print(f"[green]✓[/green] {message}")
+        console.print(f"[green][/green] {message}")
     else:
-        print(f"✓ {message}")
+        print(f" {message}")
 
 
 def print_error(message: str):
     """Print an error message."""
     if HAS_RICH:
-        console.print(f"[red]✗[/red] {message}")
+        console.print(f"[red][/red] {message}")
     else:
-        print(f"✗ {message}")
+        print(f" {message}")
 
 
 def print_warning(message: str):

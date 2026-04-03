@@ -1,5 +1,0 @@
-# Requirements for Stress Detection Project
-opencv-python
-mediapipe
-tkinter
-numpy

@@ -543,7 +543,7 @@ class ResilienceValidator:
         for result in self.test_results:
             pattern = result.get('pattern', 'unknown')
             passed = result.get('passed', False)
-            status = "✅ PASS" if passed else "❌ FAIL"
+            status = " PASS" if passed else " FAIL"
             
             lines.append(f"{pattern}: {status}")
         

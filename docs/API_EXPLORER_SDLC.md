@@ -81,79 +81,79 @@ The **API Explorer** is a Postman-like interactive dashboard embedded within the
 #### FR-001: Endpoint Discovery
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-001.1 | Display all API endpoints organized by category | P0 | ✅ Approved |
-| FR-001.2 | Show endpoint count per category | P1 | ✅ Approved |
-| FR-001.3 | Indicate HTTP method with color-coding | P0 | ✅ Approved |
-| FR-001.4 | Display endpoint description and path | P0 | ✅ Approved |
+| FR-001.1 | Display all API endpoints organized by category | P0 |  Approved |
+| FR-001.2 | Show endpoint count per category | P1 |  Approved |
+| FR-001.3 | Indicate HTTP method with color-coding | P0 |  Approved |
+| FR-001.4 | Display endpoint description and path | P0 |  Approved |
 
 #### FR-002: Search & Filter
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-002.1 | Global search bar at top of page | P0 | ✅ Approved |
-| FR-002.2 | Fuzzy matching on name, path, description | P0 | ✅ Approved |
-| FR-002.3 | Search results grouped by category | P1 | ✅ Approved |
-| FR-002.4 | Keyboard shortcut (Ctrl+K) to focus search | P2 | ✅ Approved |
-| FR-002.5 | Filter within sidebar endpoint list | P1 | ✅ Approved |
+| FR-002.1 | Global search bar at top of page | P0 |  Approved |
+| FR-002.2 | Fuzzy matching on name, path, description | P0 |  Approved |
+| FR-002.3 | Search results grouped by category | P1 |  Approved |
+| FR-002.4 | Keyboard shortcut (Ctrl+K) to focus search | P2 |  Approved |
+| FR-002.5 | Filter within sidebar endpoint list | P1 |  Approved |
 
 #### FR-003: Request Builder
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-003.1 | Editable URL bar with method selector | P0 | ✅ Approved |
-| FR-003.2 | Path parameter input fields | P0 | ✅ Approved |
-| FR-003.3 | Query parameter input fields | P0 | ✅ Approved |
-| FR-003.4 | JSON body editor with syntax highlighting | P0 | ✅ Approved |
-| FR-003.5 | JSON validation with error messages | P1 | ✅ Approved |
-| FR-003.6 | Headers configuration tab | P2 | 📋 Planned |
+| FR-003.1 | Editable URL bar with method selector | P0 |  Approved |
+| FR-003.2 | Path parameter input fields | P0 |  Approved |
+| FR-003.3 | Query parameter input fields | P0 |  Approved |
+| FR-003.4 | JSON body editor with syntax highlighting | P0 |  Approved |
+| FR-003.5 | JSON validation with error messages | P1 |  Approved |
+| FR-003.6 | Headers configuration tab | P2 |  Planned |
 
 #### FR-004: Request Execution
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-004.1 | Send button to execute request | P0 | ✅ Approved |
-| FR-004.2 | Loading indicator during request | P0 | ✅ Approved |
-| FR-004.3 | Display response status code | P0 | ✅ Approved |
-| FR-004.4 | Display response time (ms) | P0 | ✅ Approved |
-| FR-004.5 | Display response size (bytes) | P1 | ✅ Approved |
-| FR-004.6 | Connection error handling | P0 | ✅ Approved |
+| FR-004.1 | Send button to execute request | P0 |  Approved |
+| FR-004.2 | Loading indicator during request | P0 |  Approved |
+| FR-004.3 | Display response status code | P0 |  Approved |
+| FR-004.4 | Display response time (ms) | P0 |  Approved |
+| FR-004.5 | Display response size (bytes) | P1 |  Approved |
+| FR-004.6 | Connection error handling | P0 |  Approved |
 
 #### FR-005: Response Visualization
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-005.1 | JSON view with syntax highlighting | P0 | ✅ Approved |
-| FR-005.2 | Table view for array/object data | P1 | ✅ Approved |
-| FR-005.3 | Chart view for numeric data | P2 | ✅ Approved |
-| FR-005.4 | Copy response to clipboard | P1 | ✅ Approved |
+| FR-005.1 | JSON view with syntax highlighting | P0 |  Approved |
+| FR-005.2 | Table view for array/object data | P1 |  Approved |
+| FR-005.3 | Chart view for numeric data | P2 |  Approved |
+| FR-005.4 | Copy response to clipboard | P1 |  Approved |
 
 #### FR-006: Code Generation
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-006.1 | Generate Python requests code | P0 | ✅ Approved |
-| FR-006.2 | Generate curl command | P0 | ✅ Approved |
-| FR-006.3 | Generate JavaScript fetch code | P1 | ✅ Approved |
-| FR-006.4 | Copy code to clipboard | P0 | ✅ Approved |
+| FR-006.1 | Generate Python requests code | P0 |  Approved |
+| FR-006.2 | Generate curl command | P0 |  Approved |
+| FR-006.3 | Generate JavaScript fetch code | P1 |  Approved |
+| FR-006.4 | Copy code to clipboard | P0 |  Approved |
 
 #### FR-007: Code Playground
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-007.1 | Editable code area | P0 | ✅ Approved |
-| FR-007.2 | Run Python code button | P0 | ✅ Approved |
-| FR-007.3 | Display execution output | P0 | ✅ Approved |
-| FR-007.4 | Side-by-side code and output layout | P1 | ✅ Approved |
-| FR-007.5 | Reset code to original | P1 | ✅ Approved |
-| FR-007.6 | Execution time display | P2 | ✅ Approved |
+| FR-007.1 | Editable code area | P0 |  Approved |
+| FR-007.2 | Run Python code button | P0 |  Approved |
+| FR-007.3 | Display execution output | P0 |  Approved |
+| FR-007.4 | Side-by-side code and output layout | P1 |  Approved |
+| FR-007.5 | Reset code to original | P1 |  Approved |
+| FR-007.6 | Execution time display | P2 |  Approved |
 
 #### FR-008: History
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-008.1 | Store last N requests in session | P1 | ✅ Approved |
-| FR-008.2 | Display recent requests in sidebar | P1 | ✅ Approved |
-| FR-008.3 | Click to replay request | P1 | ✅ Approved |
+| FR-008.1 | Store last N requests in session | P1 |  Approved |
+| FR-008.2 | Display recent requests in sidebar | P1 |  Approved |
+| FR-008.3 | Click to replay request | P1 |  Approved |
 
 #### FR-009: Responsive Design
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-009.1 | Desktop layout (>1024px): side-by-side | P0 | ✅ Approved |
-| FR-009.2 | Tablet layout (<1024px): stacked | P1 | ✅ Approved |
-| FR-009.3 | Collapsible sidebar | P1 | ✅ Approved |
+| FR-009.1 | Desktop layout (>1024px): side-by-side | P0 |  Approved |
+| FR-009.2 | Tablet layout (<1024px): stacked | P1 |  Approved |
+| FR-009.3 | Collapsible sidebar | P1 |  Approved |
 
 ### 2.2 Non-Functional Requirements
 
@@ -479,7 +479,7 @@ class CodeExecutor:
 │ [Search APIs... ]                                                   │
 ├─────────────────────────────────────────────────────────────────────┤
 │ URL BAR (50px)                                                      │
-│ [METHOD ▼] [URL INPUT                                   ] [🚀 SEND] │
+│ [METHOD ▼] [URL INPUT                                   ] [ SEND] │
 ├────────────────┬────────────────────────────────────────────────────┤
 │ SIDEBAR (250px)│ MAIN CONTENT                                       │
 │                │ ┌────────────────────────────────────────────────┐ │
@@ -496,14 +496,14 @@ class CodeExecutor:
 │ ▶ Category 3   │ │ │ Response Data                              │ │ │
 │                │ │ └────────────────────────────────────────────┘ │ │
 │ ───────────    │ ├────────────────────────────────────────────────┤ │
-│ 📜 HISTORY     │ │ CODE PLAYGROUND (250px)                        │ │
-│ 🟩 POST /api.. │ │ [Python ▼] [📋 Copy] [▶️ RUN] [🔄 Reset]       │ │
-│ 🟦 GET /api..  │ │ ┌───────────────────┬────────────────────────┐ │ │
+│  HISTORY     │ │ CODE PLAYGROUND (250px)                        │ │
+│  POST /api.. │ │ [Python ▼] [ Copy] [▶ RUN] [ Reset]       │ │
+│  GET /api..  │ │ ┌───────────────────┬────────────────────────┐ │ │
 │                │ │ │ CODE EDITOR       │ OUTPUT                 │ │ │
 │                │ │ │ (50%)             │ (50%)                  │ │ │
 │                │ │ │                   │                        │ │ │
 │                │ │ │ import requests   │ {'status': 'ok'}       │ │ │
-│                │ │ │ ...               │ ✅ Done 0.45s          │ │ │
+│                │ │ │ ...               │  Done 0.45s          │ │ │
 │                │ │ └───────────────────┴────────────────────────┘ │ │
 │                │ └────────────────────────────────────────────────┘ │
 └────────────────┴────────────────────────────────────────────────────┘
@@ -536,14 +536,14 @@ class CodeExecutor:
 │ └─────────────────────────────┘ │
 ├─────────────────────────────────┤
 │ RESPONSE (150px)                │
-│ ✅ 200  ⏱️ 234ms                │
+│  200  ⏱ 234ms                │
 │ [JSON] [Table]                  │
 │ ┌─────────────────────────────┐ │
 │ │ {"weights": {...}}          │ │
 │ └─────────────────────────────┘ │
 ├─────────────────────────────────┤
 │ CODE (150px)                    │
-│ [🐍 Python ▼] [▶️ RUN]          │
+│ [ Python ▼] [▶ RUN]          │
 │ ┌─────────────────────────────┐ │
 │ │ import requests             │ │
 │ │ ...                         │ │
@@ -552,7 +552,7 @@ class CodeExecutor:
 │ OUTPUT (100px)                  │
 │ ┌─────────────────────────────┐ │
 │ │ {'status': 'ok'}            │ │
-│ │ ✅ Done 0.45s               │ │
+│ │  Done 0.45s               │ │
 │ └─────────────────────────────┘ │
 └─────────────────────────────────┘
 ```
@@ -1002,7 +1002,7 @@ class TestAPIExplorerIntegration:
         """Send button should execute request."""
         app.run()
         app.button("Health Check").click().run()
-        app.button("🚀 SEND").click().run()
+        app.button(" SEND").click().run()
         # Response should appear
         assert "200" in str(app.success)
     

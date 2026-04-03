@@ -8,9 +8,9 @@ QuantLib Pro supports multiple data providers with automatic failover:
 
 | Provider | Status | Free Tier | API Key Required | Best For |
 |----------|--------|-----------|------------------|----------|
-| **Yahoo Finance** | ✅ Active | Yes (unlimited) | No | Historical data, quick prototyping |
-| **Alpha Vantage** | ✅ Ready | Yes (500/day) | Yes | Backup source, intraday data |
-| **FactSet** | ✅ Ready | No | Yes | Enterprise data, fundamentals |
+| **Yahoo Finance** |  Active | Yes (unlimited) | No | Historical data, quick prototyping |
+| **Alpha Vantage** |  Ready | Yes (500/day) | Yes | Backup source, intraday data |
+| **FactSet** |  Ready | No | Yes | Enterprise data, fundamentals |
 | **Capital IQ** | ⏳ Placeholder | No | Yes | Coming soon - enterprise analytics |
 
 ---
@@ -190,47 +190,47 @@ print(f"Data source: {data.source}")
 ### Alpha Vantage
 
 **Pros:**
-- ✅ Free tier available (500 calls/day)
-- ✅ Easy to get started
-- ✅ Intraday data (1min, 5min, 15min, 30min, 60min)
-- ✅ Global coverage
-- ✅ No credit card required for free tier
+-  Free tier available (500 calls/day)
+-  Easy to get started
+-  Intraday data (1min, 5min, 15min, 30min, 60min)
+-  Global coverage
+-  No credit card required for free tier
 
 **Cons:**
-- ⚠️ Rate limits on free tier (5 calls/min)
-- ⚠️ Limited fundamental data
-- ⚠️ Occasional API downtime
+-  Rate limits on free tier (5 calls/min)
+-  Limited fundamental data
+-  Occasional API downtime
 
 **Best For:** Development, testing, backup data source
 
 ### FactSet
 
 **Pros:**
-- ✅ Enterprise-grade data quality
-- ✅ Comprehensive fundamentals
-- ✅ Global coverage (200+ exchanges)
-- ✅ Corporate actions, estimates, ownership data
-- ✅ Excellent uptime SLA
+-  Enterprise-grade data quality
+-  Comprehensive fundamentals
+-  Global coverage (200+ exchanges)
+-  Corporate actions, estimates, ownership data
+-  Excellent uptime SLA
 
 **Cons:**
-- ⚠️ Expensive (enterprise pricing)
-- ⚠️ Requires sales contact
-- ⚠️ Complex ticker format (region suffixes)
+-  Expensive (enterprise pricing)
+-  Requires sales contact
+-  Complex ticker format (region suffixes)
 
 **Best For:** Production systems, institutional use, comprehensive analysis
 
 ### Capital IQ
 
 **Pros:**
-- ✅ Deep fundamental data
-- ✅ Private company coverage
-- ✅ Corporate structure mapping
-- ✅ Credit ratings integration
+-  Deep fundamental data
+-  Private company coverage
+-  Corporate structure mapping
+-  Credit ratings integration
 
 **Cons:**
-- ⚠️ Enterprise-only (no free tier)
-- ⚠️ Not yet implemented in QuantLib Pro
-- ⚠️ Requires OAuth 2.0 setup
+-  Enterprise-only (no free tier)
+-  Not yet implemented in QuantLib Pro
+-  Requires OAuth 2.0 setup
 
 **Best For:** Credit analysis, M&A research, private markets (when available)
 
@@ -269,11 +269,11 @@ try:
     data = provider.fetch("AAPL")
 except AlphaVantageError as e:
     if "rate limit" in str(e).lower():
-        print("⚠️ Rate limit exceeded - wait 60 seconds")
+        print(" Rate limit exceeded - wait 60 seconds")
     elif "api error" in str(e).lower():
-        print("❌ Invalid ticker or API issue")
+        print(" Invalid ticker or API issue")
     else:
-        print(f"❌ Unexpected error: {e}")
+        print(f" Unexpected error: {e}")
 ```
 
 Circuit breakers prevent hammering failing services:
@@ -288,11 +288,11 @@ Circuit breakers prevent hammering failing services:
 Update your data management page to show provider status:
 
 ```python
-# In pages/9_📚_Data_Management.py
+# In pages/9__Data_Management.py
 
 from quantlib_pro.data.providers import MultiProviderDataFetcher
 
-st.subheader("📡 Active Data Providers")
+st.subheader(" Active Data Providers")
 
 fetcher = MultiProviderDataFetcher(
     enable_alpha_vantage=os.getenv("ALPHA_VANTAGE_ENABLED") == "true",
@@ -302,7 +302,7 @@ fetcher = MultiProviderDataFetcher(
 status = fetcher.get_provider_status()
 
 for provider in status['providers']:
-    st.success(f"✅ {provider} - Active")
+    st.success(f" {provider} - Active")
 
 # Show fallback chain
 with st.expander("View Fallback Chain"):
@@ -397,7 +397,7 @@ with st.expander("View Fallback Chain"):
    from quantlib_pro.data.providers import AlphaVantageProvider
    provider = AlphaVantageProvider()
    data = provider.fetch('AAPL', output_size='compact')
-   print(f'✅ Retrieved {len(data)} rows')
+   print(f' Retrieved {len(data)} rows')
    "
    ```
 

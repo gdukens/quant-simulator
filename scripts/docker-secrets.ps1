@@ -10,25 +10,25 @@ param(
 )
 
 function Write-SecureLog {
-    param([string]$Message, [string]$Color = "White", [string]$Icon = "🔒")
+    param([string]$Message, [string]$Color = "White", [string]$Icon = "")
     Write-Host "$Icon $Message" -ForegroundColor $Color
 }
 
 function Initialize-DockerSwarm {
-    Write-SecureLog "Initializing Docker Swarm for secrets management..." "Cyan" "🐳"
+    Write-SecureLog "Initializing Docker Swarm for secrets management..." "Cyan" ""
     
     # Check if already in swarm mode
     $swarmStatus = docker info --format "{{.Swarm.LocalNodeState}}" 2>$null
     
     if ($swarmStatus -eq "active") {
-        Write-SecureLog "✅ Docker Swarm already initialized" "Green" "✅"
+        Write-SecureLog " Docker Swarm already initialized" "Green" ""
     } else {
-        Write-SecureLog "🔄 Initializing Docker Swarm..." "Yellow" "🔄"
+        Write-SecureLog " Initializing Docker Swarm..." "Yellow" ""
         docker swarm init 2>$null
         if ($LASTEXITCODE -eq 0) {
-            Write-SecureLog "✅ Docker Swarm initialized successfully" "Green" "✅"
+            Write-SecureLog " Docker Swarm initialized successfully" "Green" ""
         } else {
-            Write-SecureLog "❌ Failed to initialize Docker Swarm" "Red" "❌"
+            Write-SecureLog " Failed to initialize Docker Swarm" "Red" ""
             return $false
         }
     }
@@ -36,10 +36,10 @@ function Initialize-DockerSwarm {
 }
 
 function Create-DockerSecrets {
-    Write-SecureLog "Creating Docker secrets from production environment..." "Cyan" "🔑"
+    Write-SecureLog "Creating Docker secrets from production environment..." "Cyan" ""
     
     if (!(Test-Path "../.env.production")) {
-        Write-SecureLog "❌ .env.production not found. Run production-secrets.ps1 -Generate first" "Red" "❌"
+        Write-SecureLog " .env.production not found. Run production-secrets.ps1 -Generate first" "Red" ""
         return $false
     }
     
@@ -58,37 +58,37 @@ function Create-DockerSecrets {
             # Check if secret already exists
             $existingSecret = docker secret ls --filter "name=$secretName" --format "{{.Name}}" 2>$null
             if ($existingSecret) {
-                Write-SecureLog "⚠️  Secret $secretName already exists, skipping..." "Yellow" "⚠️"
+                Write-SecureLog "  Secret $secretName already exists, skipping..." "Yellow" ""
             } else {
                 # Create secret
                 $secretValue | docker secret create $secretName - 2>$null
                 if ($LASTEXITCODE -eq 0) {
-                    Write-SecureLog "✅ Created secret: $secretName" "Green" "🔑"
+                    Write-SecureLog " Created secret: $secretName" "Green" ""
                 } else {
-                    Write-SecureLog "❌ Failed to create secret: $secretName" "Red" "❌"
+                    Write-SecureLog " Failed to create secret: $secretName" "Red" ""
                 }
             }
         }
     }
     
-    Write-SecureLog "✅ Docker secrets creation completed" "Green" "✅"
+    Write-SecureLog " Docker secrets creation completed" "Green" ""
     return $true
 }
 
 function Deploy-SecureStack {
     param([string]$StackName = "quantlibpro")
     
-    Write-SecureLog "Deploying secure QuantLib Pro stack..." "Cyan" "🚀"
+    Write-SecureLog "Deploying secure QuantLib Pro stack..." "Cyan" ""
     
     if (!(Test-Path "../docker-compose.secure.yml")) {
-        Write-SecureLog "❌ docker-compose.secure.yml not found" "Red" "❌"
+        Write-SecureLog " docker-compose.secure.yml not found" "Red" ""
         return $false
     }
     
     # Deploy stack with secrets
     docker stack deploy -c "../docker-compose.secure.yml" $StackName 2>$null
     if ($LASTEXITCODE -eq 0) {
-        Write-SecureLog "✅ Secure stack deployed successfully: $StackName" "Green" "🚀"
+        Write-SecureLog " Secure stack deployed successfully: $StackName" "Green" ""
         
         # Wait for services to be ready
         Write-SecureLog "⏳ Waiting for services to be ready..." "Blue" "⏳"
@@ -99,55 +99,55 @@ function Deploy-SecureStack {
         
         return $true
     } else {
-        Write-SecureLog "❌ Failed to deploy secure stack" "Red" "❌"
+        Write-SecureLog " Failed to deploy secure stack" "Red" ""
         return $false
     }
 }
 
 function Get-SecretsStatus {
-    Write-SecureLog "Docker Secrets Status:" "Cyan" "📊"
+    Write-SecureLog "Docker Secrets Status:" "Cyan" ""
     Write-SecureLog "════════════════════" "Gray"
     
     # Check swarm status
     $swarmStatus = docker info --format "{{.Swarm.LocalNodeState}}" 2>$null
     if ($swarmStatus -eq "active") {
-        Write-SecureLog "✅ Docker Swarm: Active" "Green" "✅"
+        Write-SecureLog " Docker Swarm: Active" "Green" ""
     } else {
-        Write-SecureLog "❌ Docker Swarm: Not initialized" "Red" "❌"
+        Write-SecureLog " Docker Swarm: Not initialized" "Red" ""
         return
     }
     
     # List secrets
     Write-SecureLog "" 
-    Write-SecureLog "🔑 Configured Secrets:" "Yellow" "🔑"
+    Write-SecureLog " Configured Secrets:" "Yellow" ""
     $secrets = docker secret ls --format "{{.Name}}\t{{.CreatedAt}}" 2>$null
     if ($secrets) {
         $secrets | ForEach-Object {
             $parts = $_ -split "\t"
-            Write-SecureLog "  🔒 $($parts[0]) (created: $($parts[1]))" "White" "🔒"
+            Write-SecureLog "   $($parts[0]) (created: $($parts[1]))" "White" ""
         }
     } else {
-        Write-SecureLog "  ⚠️  No secrets configured" "Yellow" "⚠️"
+        Write-SecureLog "    No secrets configured" "Yellow" ""
     }
     
     # List stacks
     Write-SecureLog "" 
-    Write-SecureLog "🚀 Deployed Stacks:" "Yellow" "🚀"
+    Write-SecureLog " Deployed Stacks:" "Yellow" ""
     $stacks = docker stack ls --format "{{.Name}}\t{{.Services}}" 2>$null
     if ($stacks) {
         $stacks | ForEach-Object {
             $parts = $_ -split "\t"
-            Write-SecureLog "  📦 $($parts[0]) ($($parts[1]) services)" "White" "📦"
+            Write-SecureLog "   $($parts[0]) ($($parts[1]) services)" "White" ""
         }
     } else {
-        Write-SecureLog "  ⚠️  No stacks deployed" "Yellow" "⚠️"
+        Write-SecureLog "    No stacks deployed" "Yellow" ""
     }
 }
 
 function Rotate-DockerSecrets {
     param([string[]]$SecretsToRotate = @("jwt_secret", "encryption_key", "api_master_key"))
     
-    Write-SecureLog "Rotating Docker secrets..." "Cyan" "🔄"
+    Write-SecureLog "Rotating Docker secrets..." "Cyan" ""
     
     # First, rotate the secrets in .env.production
     Set-Location ".."
@@ -155,7 +155,7 @@ function Rotate-DockerSecrets {
     Set-Location "scripts"
     
     foreach ($secretName in $SecretsToRotate) {
-        Write-SecureLog "🔄 Rotating secret: $secretName" "Yellow" "🔄"
+        Write-SecureLog " Rotating secret: $secretName" "Yellow" ""
         
         # Remove old secret
         docker secret rm $secretName 2>$null
@@ -172,14 +172,14 @@ function Rotate-DockerSecrets {
         if ($newValue) {
             $newValue | docker secret create $secretName - 2>$null
             if ($LASTEXITCODE -eq 0) {
-                Write-SecureLog "✅ Rotated: $secretName" "Green" "✅"
+                Write-SecureLog " Rotated: $secretName" "Green" ""
             } else {
-                Write-SecureLog "❌ Failed to rotate: $secretName" "Red" "❌"
+                Write-SecureLog " Failed to rotate: $secretName" "Red" ""
             }
         }
     }
     
-    Write-SecureLog "🔄 Secrets rotation completed. Redeploy stack to use new secrets." "Yellow" "🔄"
+    Write-SecureLog " Secrets rotation completed. Redeploy stack to use new secrets." "Yellow" ""
 }
 
 # Main execution
@@ -207,25 +207,25 @@ switch ($Action.ToLower()) {
     }
     
     default {
-        Write-SecureLog "🔒 QuantLib Pro - Docker Secrets Manager" "Cyan" "🔒"
+        Write-SecureLog " QuantLib Pro - Docker Secrets Manager" "Cyan" ""
         Write-SecureLog "══════════════════════════════════════" "Gray"
         Write-SecureLog ""
-        Write-SecureLog "Commands:" "Yellow" "📖"
+        Write-SecureLog "Commands:" "Yellow" ""
         Write-SecureLog "  -Action init      Initialize swarm & create secrets" "White"
         Write-SecureLog "  -Action deploy    Initialize, create secrets & deploy stack" "White" 
         Write-SecureLog "  -Action status    Show secrets and deployment status" "White"
         Write-SecureLog "  -Action rotate    Rotate secrets and update deployment" "White"
         Write-SecureLog ""
-        Write-SecureLog "Examples:" "Green" "💡"
+        Write-SecureLog "Examples:" "Green" ""
         Write-SecureLog "  .\docker-secrets.ps1 -Action init" "White"
         Write-SecureLog "  .\docker-secrets.ps1 -Action deploy" "White"
         Write-SecureLog "  .\docker-secrets.ps1 -Action status" "White"
         Write-SecureLog ""
-        Write-SecureLog "Security Benefits:" "Green" "🛡️"
-        Write-SecureLog "  • Secrets stored in Docker's encrypted store" "White" "🔐"
-        Write-SecureLog "  • Secrets never written to disk in containers" "White" "💾"
-        Write-SecureLog "  • Automatic secret rotation capabilities" "White" "🔄"
-        Write-SecureLog "  • Encrypted network communication" "White" "🔒"
-        Write-SecureLog "  • Swarm-mode high availability" "White" "⚡"
+        Write-SecureLog "Security Benefits:" "Green" ""
+        Write-SecureLog "  • Secrets stored in Docker's encrypted store" "White" ""
+        Write-SecureLog "  • Secrets never written to disk in containers" "White" ""
+        Write-SecureLog "  • Automatic secret rotation capabilities" "White" ""
+        Write-SecureLog "  • Encrypted network communication" "White" ""
+        Write-SecureLog "  • Swarm-mode high availability" "White" ""
     }
 }

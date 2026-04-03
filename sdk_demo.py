@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 
 def main():
     """Main demo function showcasing SDK capabilities."""
-    print("🚀 QuantLib Pro SDK Demo")
+    print(" QuantLib Pro SDK Demo")
     print("=" * 50)
     
     try:
@@ -32,22 +32,22 @@ def main():
         )
         
         # Initialize SDK
-        print("\n📊 Initializing QuantLib Pro SDK...")
+        print("\n Initializing QuantLib Pro SDK...")
         sdk = QuantLibSDK(config)
         
         # Perform health check
-        print("\n🔍 Performing SDK health check...")
+        print("\n Performing SDK health check...")
         health_status = sdk.health_check()
-        print(f"✅ SDK Status: {health_status.get('sdk_version', 'Unknown')}")
+        print(f" SDK Status: {health_status.get('sdk_version', 'Unknown')}")
         
         # Component status
         for component, status in health_status.get("components", {}).items():
-            status_icon = "✅" if status.get("status") == "healthy" else "⚠️"
+            status_icon = "" if status.get("status") == "healthy" else ""
             print(f"{status_icon} {component.capitalize()}: {status.get('status', 'unknown')}")
         
         # Demo 1: Portfolio Analysis
         print("\n" + "="*50)
-        print("📈 Demo 1: Portfolio Analysis")
+        print(" Demo 1: Portfolio Analysis")
         print("="*50)
         
         # Create a sample portfolio
@@ -55,12 +55,12 @@ def main():
         print(f"Creating portfolio with symbols: {symbols}")
         
         portfolio = sdk.portfolio.create_portfolio(symbols)
-        print(f"✅ Portfolio created: {portfolio['portfolio_id']}")
+        print(f" Portfolio created: {portfolio['portfolio_id']}")
         
         # Get sample data
         print("Fetching market data...")
         market_data = sdk.data.get_price_data(symbols, period="6m")
-        print(f"✅ Retrieved data: {market_data.shape}")
+        print(f" Retrieved data: {market_data.shape}")
         print(f"Date range: {market_data.index[0].date()} to {market_data.index[-1].date()}")
         
         # Calculate portfolio metrics
@@ -68,7 +68,7 @@ def main():
         returns = sdk.portfolio.calculate_returns(market_data)
         metrics = sdk.portfolio.calculate_portfolio_metrics(returns)
         
-        print("📊 Portfolio Performance:")
+        print(" Portfolio Performance:")
         print(f"   • Total Return: {metrics['total_return']:.2%}")
         print(f"   • Annualized Return: {metrics['annualized_return']:.2%}")
         print(f"   • Volatility: {metrics['volatility']:.2%}")
@@ -77,13 +77,13 @@ def main():
         
         # Demo 2: Risk Analysis
         print("\n" + "="*50)
-        print("⚠️  Demo 2: Risk Analysis")
+        print("  Demo 2: Risk Analysis")
         print("="*50)
         
         print("Calculating risk metrics...")
         risk_metrics = sdk.risk.calculate_portfolio_risk(market_data)
         
-        print("🎯 Risk Metrics:")
+        print(" Risk Metrics:")
         print(f"   • Portfolio Volatility: {risk_metrics['portfolio_volatility']:.2%}")
         print(f"   • VaR (95%): {risk_metrics['var_95']:.2%}")
         print(f"   • VaR (99%): {risk_metrics['var_99']:.2%}")
@@ -100,13 +100,13 @@ def main():
         }
         
         stress_results = sdk.risk.stress_test(returns, scenarios)
-        print("💥 Stress Test Results:")
+        print(" Stress Test Results:")
         for scenario, result in stress_results.items():
             print(f"   • {scenario}: {result['percentage_loss']:.2f}% loss")
         
         # Demo 3: Options Analysis
         print("\n" + "="*50)
-        print("📋 Demo 3: Options Analysis")
+        print(" Demo 3: Options Analysis")
         print("="*50)
         
         # Calculate Black-Scholes option price
@@ -117,14 +117,14 @@ def main():
         call_price = sdk.options.black_scholes(S, K, T, r, sigma, "call")
         put_price = sdk.options.black_scholes(S, K, T, r, sigma, "put")
         
-        print(f"✅ Call Option Price: ${call_price:.4f}")
-        print(f"✅ Put Option Price: ${put_price:.4f}")
+        print(f" Call Option Price: ${call_price:.4f}")
+        print(f" Put Option Price: ${put_price:.4f}")
         
         # Calculate Greeks
         print("Calculating option Greeks...")
         greeks = sdk.options.calculate_greeks(S, K, T, r, sigma, "call")
         
-        print("📈 Option Greeks:")
+        print(" Option Greeks:")
         print(f"   • Delta: {greeks['delta']:.4f}")
         print(f"   • Gamma: {greeks['gamma']:.4f}")
         print(f"   • Theta: {greeks['theta']:.4f}")
@@ -133,7 +133,7 @@ def main():
         
         # Demo 4: Quick Analysis
         print("\n" + "="*50)
-        print("⚡ Demo 4: Quick Analysis")
+        print(" Demo 4: Quick Analysis")
         print("="*50)
         
         print("Running quick analysis on tech stocks...")
@@ -142,45 +142,45 @@ def main():
         analysis = sdk.quick_analysis(tech_stocks, period="1y")
         
         if "error" not in analysis:
-            print("✅ Analysis completed successfully!")
+            print(" Analysis completed successfully!")
             print(f"   • Analysis timestamp: {analysis['analysis_timestamp']}")
             print(f"   • Symbols analyzed: {', '.join(analysis['symbols'])}")
             print(f"   • Period: {analysis['period']}")
         else:
-            print(f"⚠️ Analysis error: {analysis['error']}")
+            print(f" Analysis error: {analysis['error']}")
         
         # Demo 5: Economic Data
         print("\n" + "="*50)
-        print("🏛️  Demo 5: Economic Data")
+        print("  Demo 5: Economic Data")
         print("="*50)
         
         print("Retrieving economic indicators...")
         indicators = sdk.macro.get_economic_indicators()
         
-        print("📊 Economic Indicators:")
+        print(" Economic Indicators:")
         for indicator, value in indicators.items():
             print(f"   • {indicator.replace('_', ' ').title()}: {value}%")
         
         # Demo 6: Market Regime Detection
         print("\n" + "="*50)
-        print("🔄 Demo 6: Market Regime Detection")
+        print(" Demo 6: Market Regime Detection")
         print("="*50)
         
         print("Detecting market regime for SPY...")
         spy_data = sdk.data.get_price_data("SPY", period="3m")
         regime = sdk.market_regime.detect_regime(spy_data.iloc[:, 0])
         
-        print(f"📈 Current Market Regime: {regime.replace('_', ' ').title()}")
+        print(f" Current Market Regime: {regime.replace('_', ' ').title()}")
         
         # Summary
         print("\n" + "="*50)
-        print("🎉 SDK Demo Completed Successfully!")
+        print(" SDK Demo Completed Successfully!")
         print("="*50)
         
         print(f"""
-✅ All demos completed successfully!
+ All demos completed successfully!
 
-🚀 SDK Features Demonstrated:
+ SDK Features Demonstrated:
    • Portfolio creation and analysis
    • Risk metrics and stress testing
    • Options pricing and Greeks
@@ -188,9 +188,9 @@ def main():
    • Market regime detection
    • Quick analysis capabilities
 
-📦 Ready for production use or further development!
+ Ready for production use or further development!
 
-💡 Next Steps:
+ Next Steps:
    • Explore individual modules in depth
    • Customize SDK configuration
    • Build your own quantitative strategies
@@ -200,18 +200,18 @@ def main():
         return True
         
     except ImportError as e:
-        print(f"❌ Import Error: {e}")
+        print(f" Import Error: {e}")
         print("Make sure QuantLib Pro is properly installed.")
         return False
         
     except Exception as e:
-        print(f"❌ Demo Error: {e}")
+        print(f" Demo Error: {e}")
         print("Please check your installation and try again.")
         return False
 
 def check_dependencies():
     """Check if required dependencies are available."""
-    print("🔍 Checking dependencies...")
+    print(" Checking dependencies...")
     
     required_packages = [
         'numpy', 'pandas', 'scipy', 'matplotlib'
@@ -227,29 +227,29 @@ def check_dependencies():
     for package in required_packages:
         try:
             __import__(package)
-            print(f"✅ {package}")
+            print(f" {package}")
         except ImportError:
             missing_required.append(package)
-            print(f"❌ {package} (required)")
+            print(f" {package} (required)")
     
     for package in optional_packages:
         try:
             __import__(package)
-            print(f"✅ {package} (optional)")
+            print(f" {package} (optional)")
         except ImportError:
             missing_optional.append(package)
-            print(f"⚠️  {package} (optional)")
+            print(f"  {package} (optional)")
     
     if missing_required:
-        print(f"\n❌ Missing required packages: {', '.join(missing_required)}")
+        print(f"\n Missing required packages: {', '.join(missing_required)}")
         print("Install with: pip install " + ' '.join(missing_required))
         return False
     
     if missing_optional:
-        print(f"\n⚠️  Missing optional packages: {', '.join(missing_optional)}")
+        print(f"\n  Missing optional packages: {', '.join(missing_optional)}")
         print("Install with: pip install " + ' '.join(missing_optional))
     
-    print("✅ Dependencies check completed!")
+    print(" Dependencies check completed!")
     return True
 
 if __name__ == "__main__":
@@ -260,7 +260,7 @@ if __name__ == "__main__":
     
     # Check dependencies first
     if not check_dependencies():
-        print("\n❌ Please install missing required dependencies before running the demo.")
+        print("\n Please install missing required dependencies before running the demo.")
         sys.exit(1)
     
     print()
@@ -269,8 +269,8 @@ if __name__ == "__main__":
     success = main()
     
     if success:
-        print("\n🎯 Demo completed successfully!")
+        print("\n Demo completed successfully!")
         sys.exit(0)
     else:
-        print("\n❌ Demo failed. Please check the error messages above.")
+        print("\n Demo failed. Please check the error messages above.")
         sys.exit(1)

@@ -533,7 +533,7 @@ receivers:
   - name: 'slack-warnings'
     slack_configs:
       - channel: '#alerts-warnings'
-        title: '⚠️ Warning: {{ .GroupLabels.alertname }}'
+        title: ' Warning: {{ .GroupLabels.alertname }}'
         text: '{{ .CommonAnnotations.description }}'
         color: 'warning'
   

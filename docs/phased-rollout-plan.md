@@ -27,13 +27,13 @@ This document outlines the phased rollout strategy for QuantLib Pro production d
 - [ ] Prepare communication plan
 
 **Go/No-Go Criteria:**
-- ✅ All critical bugs resolved
-- ✅ Load testing meets performance targets
-- ✅ Security scan shows no critical vulnerabilities
-- ✅ Backup/restore procedures tested
-- ✅ Monitoring alerts configured
-- ✅ Rollback plan validated
-- ✅ On-call rotation established
+-  All critical bugs resolved
+-  Load testing meets performance targets
+-  Security scan shows no critical vulnerabilities
+-  Backup/restore procedures tested
+-  Monitoring alerts configured
+-  Rollback plan validated
+-  On-call rotation established
 
 **Sign-off Required:** Tech Lead, Security Lead, Product Owner
 
@@ -120,11 +120,11 @@ watch -n 10 "curl http://monitoring.quantlib.com/health"
 #### Go/No-Go Decision
 
 **After 24-48 hours, proceed to Phase 2 if:**
-- ✅ All success metrics met
-- ✅ No P0/P1 incidents
-- ✅ User feedback positive (>80% satisfaction)
-- ✅ No security incidents
-- ✅ Resource usage stable
+-  All success metrics met
+-  No P0/P1 incidents
+-  User feedback positive (>80% satisfaction)
+-  No security incidents
+-  Resource usage stable
 
 **Sign-off Required:** On-call Engineer, Tech Lead
 
@@ -182,11 +182,11 @@ During this phase, actively test:
 #### Go/No-Go Decision
 
 **After 2-3 days, proceed to Phase 3 if:**
-- ✅ All Phase 1 criteria still met
-- ✅ Performance stable under increased load
-- ✅ No degradation in user experience
-- ✅ Resource usage predictable and sustainable
-- ✅ No unexpected issues discovered
+-  All Phase 1 criteria still met
+-  Performance stable under increased load
+-  No degradation in user experience
+-  Resource usage predictable and sustainable
+-  No unexpected issues discovered
 
 **Sign-off Required:** On-call Engineer, Tech Lead, Product Owner
 
@@ -225,11 +225,11 @@ If time permits, conduct controlled failure testing:
 #### Go/No-Go Decision
 
 **After 2-3 days, proceed to Phase 4 if:**
-- ✅ System handling 50% load smoothly
-- ✅ No performance degradation
-- ✅ Auto-scaling working correctly
-- ✅ Cost projections accurate
-- ✅ Team confidence high
+-  System handling 50% load smoothly
+-  No performance degradation
+-  Auto-scaling working correctly
+-  Cost projections accurate
+-  Team confidence high
 
 **Sign-off Required:** On-call Engineer, Tech Lead, Product Owner, CFO (cost approval)
 
@@ -440,23 +440,23 @@ If automation fails, manual steps:
 ## Success Criteria
 
 ### Technical Success
-- ✅ 99.9% uptime during rollout
-- ✅ Error rate < 0.5%
-- ✅ P95 latency < 2s
-- ✅ No data integrity issues
-- ✅ All monitoring and alerting operational
+-  99.9% uptime during rollout
+-  Error rate < 0.5%
+-  P95 latency < 2s
+-  No data integrity issues
+-  All monitoring and alerting operational
 
 ### Business Success
-- ✅ User satisfaction maintained (>85%)
-- ✅ No critical feature regressions
-- ✅ Costs within budget
-- ✅ Time-to-rollout within plan (7-14 days)
+-  User satisfaction maintained (>85%)
+-  No critical feature regressions
+-  Costs within budget
+-  Time-to-rollout within plan (7-14 days)
 
 ### Team Success
-- ✅ No burnout incidents
-- ✅ Knowledge shared across team
-- ✅ Documentation updated
-- ✅ Process improvements identified
+-  No burnout incidents
+-  Knowledge shared across team
+-  Documentation updated
+-  Process improvements identified
 
 ---
 

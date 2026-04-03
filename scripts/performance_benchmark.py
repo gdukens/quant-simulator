@@ -1,5 +1,5 @@
 """
-🚀 QuantLib Pro - Production Performance Benchmarking
+ QuantLib Pro - Production Performance Benchmarking
 Validates API performance meets enterprise SLA requirements (<500ms)
 """
 
@@ -29,7 +29,7 @@ class ProductionBenchmark:
         
     def test_endpoint(self, endpoint: str, num_requests: int = 100, concurrent: int = 10) -> PerformanceResult:
         """Test a single endpoint performance"""
-        print(f"🧪 Testing {endpoint} ({num_requests} requests, {concurrent} concurrent)")
+        print(f" Testing {endpoint} ({num_requests} requests, {concurrent} concurrent)")
         
         response_times = []
         successful_requests = 0
@@ -46,7 +46,7 @@ class ProductionBenchmark:
                     return elapsed
                 return None
             except Exception as e:
-                print(f"❌ Request failed: {e}")
+                print(f" Request failed: {e}")
                 return None
         
         # Execute requests concurrently
@@ -59,7 +59,7 @@ class ProductionBenchmark:
                     response_times.append(result)
         
         if not response_times:
-            print(f"❌ No successful requests for {endpoint}")
+            print(f" No successful requests for {endpoint}")
             return PerformanceResult(endpoint, 0, 0, 0, 0, 0)
         
         # Calculate statistics
@@ -78,7 +78,7 @@ class ProductionBenchmark:
         )
         
         # Print results
-        status_icon = "✅" if p95_time < 500 else "❌"
+        status_icon = "" if p95_time < 500 else ""
         print(f"{status_icon} {endpoint}:")
         print(f"   Average: {avg_time:.1f}ms")
         print(f"   95th percentile: {p95_time:.1f}ms (SLA: <500ms)")
@@ -90,7 +90,7 @@ class ProductionBenchmark:
     
     def run_full_benchmark(self) -> bool:
         """Run complete performance benchmark suite"""
-        print("🚀 QuantLib Pro - Production Performance Benchmark")
+        print(" QuantLib Pro - Production Performance Benchmark")
         print("=" * 60)
         print(f"Target: All API endpoints <500ms (95th percentile)")
         print(f"Base URL: {self.base_url}")
@@ -126,44 +126,44 @@ class ProductionBenchmark:
     
     def generate_report(self):
         """Generate detailed performance report"""
-        print("📊 PERFORMANCE BENCHMARK SUMMARY")
+        print(" PERFORMANCE BENCHMARK SUMMARY")
         print("=" * 60)
         
         total_endpoints = len(self.results)
         passed_endpoints = sum(1 for r in self.results if r.p95_time_ms < 500 and r.success_rate >= 95)
         
-        print(f"🎯 SLA Compliance: {passed_endpoints}/{total_endpoints} endpoints passed")
-        print(f"📈 Overall Success Rate: {sum(r.success_rate for r in self.results) / total_endpoints:.1f}%")
+        print(f" SLA Compliance: {passed_endpoints}/{total_endpoints} endpoints passed")
+        print(f" Overall Success Rate: {sum(r.success_rate for r in self.results) / total_endpoints:.1f}%")
         print()
         
         # Detailed results table
-        print("📋 DETAILED RESULTS:")
+        print(" DETAILED RESULTS:")
         print("-" * 80)
         print(f"{'Endpoint':<40} {'Avg(ms)':<10} {'P95(ms)':<10} {'P99(ms)':<10} {'Success%':<10} {'Status'}")
         print("-" * 80)
         
         for result in self.results:
-            status = "✅ PASS" if result.p95_time_ms < 500 and result.success_rate >= 95 else "❌ FAIL"
+            status = " PASS" if result.p95_time_ms < 500 and result.success_rate >= 95 else " FAIL"
             print(f"{result.endpoint:<40} {result.avg_time_ms:<10.1f} {result.p95_time_ms:<10.1f} {result.p99_time_ms:<10.1f} {result.success_rate:<10.1f} {status}")
         
         print("-" * 80)
         
         # Performance recommendations
-        print("\n🔧 PERFORMANCE RECOMMENDATIONS:")
+        print("\n PERFORMANCE RECOMMENDATIONS:")
         
         slow_endpoints = [r for r in self.results if r.p95_time_ms >= 400]  # Warning threshold
         if slow_endpoints:
-            print("⚠️  Endpoints approaching SLA limit (≥400ms):")
+            print("  Endpoints approaching SLA limit (≥400ms):")
             for endpoint in slow_endpoints:
                 print(f"   • {endpoint.endpoint}: {endpoint.p95_time_ms:.1f}ms")
                 
-            print("\n💡 Optimization suggestions:")
+            print("\n Optimization suggestions:")
             print("   • Enable database connection pooling")
             print("   • Implement Redis caching for heavy queries")
             print("   • Add async/await for I/O operations")
             print("   • Optimize database queries and add indexes")
         else:
-            print("✅ All endpoints performing within optimal range")
+            print(" All endpoints performing within optimal range")
         
         # Save results to file
         report_data = {
@@ -187,7 +187,7 @@ class ProductionBenchmark:
         with open("performance_benchmark_report.json", "w") as f:
             json.dump(report_data, f, indent=2)
         
-        print(f"\n📄 Full report saved: performance_benchmark_report.json")
+        print(f"\n Full report saved: performance_benchmark_report.json")
 
 def main():
     import argparse
@@ -206,19 +206,19 @@ def main():
         # Test single endpoint
         result = benchmark.test_endpoint(args.endpoint, args.requests, args.concurrent)
         meets_sla = result.p95_time_ms < 500 and result.success_rate >= 95
-        print(f"SLA Compliance: {'✅ PASS' if meets_sla else '❌ FAIL'}")
+        print(f"SLA Compliance: {' PASS' if meets_sla else ' FAIL'}")
         return 0 if meets_sla else 1
     else:
         # Run full benchmark suite
         all_passed = benchmark.run_full_benchmark()
         
         if all_passed:
-            print("\n🎉 ALL PERFORMANCE BENCHMARKS PASSED!")
-            print("✅ Production deployment meets enterprise SLA requirements")
+            print("\n ALL PERFORMANCE BENCHMARKS PASSED!")
+            print(" Production deployment meets enterprise SLA requirements")
             return 0
         else:
-            print("\n❌ PERFORMANCE BENCHMARKS FAILED!")
-            print("🔧 Optimization required before production deployment")
+            print("\n PERFORMANCE BENCHMARKS FAILED!")
+            print(" Optimization required before production deployment")
             return 1
 
 if __name__ == "__main__":

@@ -451,13 +451,13 @@ class ModelValidator:
             lines.append(f"\n{model_name}: {model_passed}/{model_total} passed")
             
             for r in results:
-                status = "✅" if r.passed else "❌"
+                status = "" if r.passed else ""
                 error = f" (error: {r.error_pct:.2f}%)" if r.error_pct is not None else ""
                 lines.append(f"  {status} {r.test_name}: {r.actual_value:.6f} (expected: {r.expected_value:.6f}){error}")
         
         lines.append("")
         lines.append("=" * 80)
-        lines.append(f"Overall Status: {'✅ VALIDATED' if pass_rate >= 90 else '❌ VALIDATION FAILED'}")
+        lines.append(f"Overall Status: {' VALIDATED' if pass_rate >= 90 else ' VALIDATION FAILED'}")
         
         return '\n'.join(lines)
     

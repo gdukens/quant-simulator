@@ -9,7 +9,7 @@ from psycopg2.extras import RealDictCursor
 def test_with_password():
     """Test PostgreSQL connection WITH password"""
     try:
-        print("🔗 Connecting to PostgreSQL WITH password...")
+        print(" Connecting to PostgreSQL WITH password...")
         conn = psycopg2.connect(
             host='127.0.0.1', 
             port=5433,
@@ -18,13 +18,13 @@ def test_with_password():
             password='devpassword'  # Using the password we set
         )
         
-        print("✅ SUCCESS! PostgreSQL connection with password works!")
+        print(" SUCCESS! PostgreSQL connection with password works!")
         
         cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute("SELECT current_database(), current_user, version();")
         result = cur.fetchone()
         
-        print(f"📊 Database: {result['current_database']}")
+        print(f" Database: {result['current_database']}")
         print(f"   User: {result['current_user']}")
         print(f"   Version: {result['version'][:50]}...")
         
@@ -45,17 +45,17 @@ def test_with_password():
         print(f"   Test Record: {test_result['message']}")
         
         conn.close()
-        print("\n🎉 POSTGRESQL AUTHENTICATION COMPLETELY FIXED!")
+        print("\n POSTGRESQL AUTHENTICATION COMPLETELY FIXED!")
         return True
         
     except Exception as e:
-        print(f"❌ Still failed: {e}")
+        print(f" Still failed: {e}")
         return False
 
 def test_without_password():
     """Test without password to see if trust method works"""
     try:
-        print("\n🔗 Testing without password (trust method)...")
+        print("\n Testing without password (trust method)...")
         conn = psycopg2.connect(
             host='127.0.0.1', 
             port=5433,
@@ -64,12 +64,12 @@ def test_without_password():
             # No password
         )
         
-        print("✅ Trust method works!")
+        print(" Trust method works!")
         conn.close()
         return True
         
     except Exception as e:
-        print(f"❌ Trust method failed: {e}")
+        print(f" Trust method failed: {e}")
         return False
 
 if __name__ == "__main__":
@@ -82,9 +82,9 @@ if __name__ == "__main__":
     trust_works = test_without_password()
     
     if password_works:
-        print("\n✅ SOLUTION: Use password authentication")
+        print("\n SOLUTION: Use password authentication")
         print("   Update your connection strings to include password='devpassword'")
     elif trust_works:
-        print("\n✅ SOLUTION: Trust authentication working")
+        print("\n SOLUTION: Trust authentication working")
     else:
-        print("\n❌ Both methods failed - need different approach")
+        print("\n Both methods failed - need different approach")
